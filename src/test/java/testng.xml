@@ -31,10 +31,11 @@
 					<include name="allowAllPremission" />
 				</methods>
 			</class>
+			<!-- 首页应用推荐 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestRequisiteActivity">
 			    <methods>
 			        <include name="initCheck"/>
-			        <include name="checkReset"/>
+			        <include name="checkBackForward"/>
 			    </methods>
 			</class>
 		</classes>

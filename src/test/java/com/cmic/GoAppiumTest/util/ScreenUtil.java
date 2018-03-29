@@ -46,4 +46,8 @@ public class ScreenUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void lockScreen(){
+		DriverManger.getDriver().lockDevice();//锁屏，熄灭屏幕
+	}
 }

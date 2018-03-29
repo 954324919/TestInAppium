@@ -40,4 +40,8 @@ public class DeviceUtil {
 			return false;
 		}
 	}
+	
+	public static void shakeDevice(){
+//		DriverManger.getDriver().shakeDevice();
+	}
 }

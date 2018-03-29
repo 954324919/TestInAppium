@@ -9,4 +9,8 @@ public class App {
 	public static int PHONE_COUNT = 0;
 	
 	public static boolean SNAPSHOT_SWITCH = false; 
+	
+	//必备1.5的一些配置信息
+	public static String PACKAGE_NAME = "com.cmic.mmnes";//必备新包名1.5
+	public static String LAUNCHER_ACTIVITY="com.cmic.mmnes.activity.SplashActivity";
 }

@@ -63,10 +63,12 @@ public class TestRequisiteActivity {
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
-	public void checkReset() throws InterruptedException {// 1
+	public void checkBackForward(){// 1
 		WaitUtil.implicitlyWait(2);// 等待1S
 		AppUtil.closeApp();
 		WaitUtil.implicitlyWait(2);// 等待1S
+        ContextUtil.goTargetActivity(App.PACKAGE_NAME, ".activity.RequisiteActivity");		
+        WaitUtil.implicitlyWait(2);// 等待1S
 //		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 }
