@@ -17,4 +17,11 @@ public class ContextUtil {
 	public static String getCurrentActivity() {
 		return DriverManger.getDriver().currentActivity();
 	}
+	
+	// 访问目标Activity
+	public static void goTargetActivity(String packageName,String activityName) {
+		//测试内部应用com.cmic.mmnes/.activity.SearchActivity
+		//测试外部应用com.example.android.contactmanager/.ContactManager
+		DriverManger.getDriver().startActivity(packageName, activityName);
+	}
 }

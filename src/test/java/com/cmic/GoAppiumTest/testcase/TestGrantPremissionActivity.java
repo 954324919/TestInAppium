@@ -57,7 +57,6 @@ public class TestGrantPremissionActivity {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
-		AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
 	}
 
 	@Test
@@ -68,7 +67,7 @@ public class TestGrantPremissionActivity {
 		WaitUtil.forceWait(3);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void chekNotNotify() throws InterruptedException {// 点击不再询问弹窗
 		AndroidElement notifyCheckbox = mDriver
 				.findElement(By.id("com.android.packageinstaller:id/do_not_ask_checkbox"));

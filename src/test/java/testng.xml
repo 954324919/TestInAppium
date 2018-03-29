@@ -8,6 +8,16 @@
 	<!-- 测试用例 -->
 	<test name="Test" preserve-order="true">
 		<classes>
+		    <!-- 测试工信部弹窗 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkNoNotify" />
+					<include name="checkDenyProcotol" />
+					<include name="checkScrollProcotol" />
+					<include name="checkComfirmProcotol" />
+				</methods>
+			</class>
 		    <!-- 测试权限授权 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestGrantPremissionActivity">
 				<methods>
@@ -21,20 +31,17 @@
 					<include name="allowAllPremission" />
 				</methods>
 			</class>
+			<class name="com.cmic.GoAppiumTest.testcase.TestRequisiteActivity">
+			    <methods>
+			        <include name="initCheck"/>
+			        <include name="checkReset"/>
+			    </methods>
+			</class>
 		</classes>
 	</test>
 </suite>
 <!--  
 <classes>
-			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
-				<methods>
-					<include name="initCheck" />
-					<include name="checkNoNotify" />
-					<include name="checkDenyProcotol" />
-					<include name="checkScrollProcotol" />
-					<include name="checkComfirmProcotol" />
-				</methods>
-			</class>
 		</classes>
 		
  -->

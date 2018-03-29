@@ -52,7 +52,7 @@ public class TestRequisiteActivity {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
-		AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
+//		AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
 	}
 
 	@Test
@@ -65,8 +65,8 @@ public class TestRequisiteActivity {
 	@Test(dependsOnMethods = { "initCheck" })
 	public void checkReset() throws InterruptedException {// 1
 		WaitUtil.implicitlyWait(2);// 等待1S
-		AppUtil.resetApp();
+		AppUtil.closeApp();
 		WaitUtil.implicitlyWait(2);// 等待1S
-
+//		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 }

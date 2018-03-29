@@ -5,11 +5,18 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.android.AndroidKeyCode;
-
+/**
+ * @描述 用来暂时存放一些有意义的测试用例
+ * @author kiwi
+ *
+ */
 public class GoCheck {
 
 	private AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
@@ -32,5 +39,16 @@ public class GoCheck {
 		el.click();
 		Thread.sleep(3000);
 		driver.pressKeyCode(AndroidKeyCode.BACK);
+	}
+	
+	
+	@Test(dependsOnMethods={"initCheck"})
+	public void goAnyWhere(){
+		ContextUtil.goTargetActivity("com.cmic.mmnes", ".SearchActivity");
+		WaitUtil.implicitlyWait(2);
+		PageRouteUtil.pressBack();
+		ContextUtil.goTargetActivity("com.example.android.contactmanager", ".ContactAdder");
+		WaitUtil.implicitlyWait(2);
+		PageRouteUtil.pressBack();
 	}
 }

@@ -1,0 +1,29 @@
+#总结部分
+1.ResetApp Reset只是简单关闭App，然后再Launcher应用
+2.注解所有@Test用例，加入Enable可关闭所有测试并不被TestNG识别
+3.使用preserve-order可控制Class粒度级别的测试用例集顺序进行
+4.使用以下方法控制Method顺序执行（https://blog.csdn.net/d6619309/article/details/52755578）
+   (1) 使用priority指定执行顺序(默认值为0)，数值越小，越靠前执行
+   (2) 从方法名称做手脚
+   (3) 在xml里面使用<include>指定需要执行的方法和顺序
+5.不可通过直接跳转到达某个不可导出export的Activity，0328/仅仅认为只能跳转到Intent.Main/Category。Launcher的Activity
+6.理论上kill不会导致Appium进行所有测试，卸载软件不能让Appium停止测试
+
+
+
+#TODO部分
+1.在0329/仍然不能使用关闭initCheck来关闭初始检验异常后跳过其他不能进行的测试用例，仅用Enable注解管理
+
+
+#改进部分
+1.在运行之前要先检查程序，比如用例有没有加入xml管理、应用是不是应删除，避免浪费重启时间
+
+#异常
+1.不可直接跳转
+org.openqa.selenium.WebDriverException: 
+An unknown server-side error occurred while processing the command. 
+Original error: Error occured while starting App. Original error: Error executing adbExec. 
+Original error: 'Command 'E\:\\AndroidStudioSDKUpdate\\platform-tools\\adb.exe -P 5037 -s cf49f213 shell am start -W -n com.cmic.mmnes/.activity.SearchActivity -S' exited with code 1'; Stderr: 'java.lang.SecurityException: Permission Denial: starting Intent 
+{cmp=com.cmic.mmnes/.activity.SearchActivity } from null (pid=26867, uid=2000) not exported from uid 10220
+	
+	
