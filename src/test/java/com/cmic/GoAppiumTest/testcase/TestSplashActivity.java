@@ -99,7 +99,7 @@ public class TestSplashActivity {
 		System.out.println("checkScrollProcotol");
 		// 滑动协议至其底部
 		By by = By.className("android.widget.ScrollView");
-		ElementUtil.swipeControl(by, com.cmic.GoAppiumTest.Heading.DOWN);
+		ElementUtil.swipeControl(by, com.cmic.GoAppiumTest.helper.Heading.DOWN);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" },enabled=false)

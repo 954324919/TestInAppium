@@ -3,8 +3,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
-import com.cmic.GoAppiumTest.Heading;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.Heading;
+
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 

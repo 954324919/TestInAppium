@@ -20,7 +20,7 @@
 #adb指令(http://www.mamicode.com/info-detail-2218552.html)
 1.adb shell pm list package -f #查看包名
 2.adb shell dumpsys window |findstr mCurrent 抓取当前Activity
-3.
+3.adb shell pm clear <packagename> 清空缓存
 
 #改进部分
 1.在运行之前要先检查程序，比如用例有没有加入xml管理、应用是不是应删除，避免浪费重启时间

@@ -12,8 +12,10 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -52,7 +54,7 @@ public class TestRequisiteActivity {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
-//		AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
+		// AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
 	}
 
 	@Test
@@ -60,15 +62,32 @@ public class TestRequisiteActivity {
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.RequisiteActivity");
+		ScreenUtil.screenShot("进入装机必备界面");
+		WaitUtil.implicitlyWait(2);
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkOneSelect() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkAllSelect() {
+
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
-	public void checkBackForward(){// 1
+	public void futureHope() {
+		PageRedirect.redirect2RequestiteActivity();
+		;// 等待1S
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkBackForward() {// 一旦回退，只能回到首页
 		WaitUtil.implicitlyWait(2);// 等待1S
 		AppUtil.closeApp();
 		WaitUtil.implicitlyWait(2);// 等待1S
-        ContextUtil.goTargetActivity(App.PACKAGE_NAME, ".activity.RequisiteActivity");		
-        WaitUtil.implicitlyWait(2);// 等待1S
-//		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+		ContextUtil.goTargetActivity(App.PACKAGE_NAME, ".activity.RequisiteActivity");
+		WaitUtil.implicitlyWait(2);// 等待1S
 	}
 }

@@ -1,5 +1,7 @@
 package com.cmic.GoAppiumTest.util;
 
+import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 
 public class AppUtil {
@@ -20,5 +22,16 @@ public class AppUtil {
 
 	public static void killApp() {
 		DriverManger.getDriver().close();
+	}
+
+	/**
+	 * 清除应用缓存
+	 * 
+	 * @param packageName
+	 */
+	public static void clearAppData(String packageName) {
+		System.err.println(packageName);
+		AdbManager.excuteAdbShell("adb shell pm clear " + packageName);
+		WaitUtil.implicitlyWait(2);
 	}
 }

@@ -36,6 +36,9 @@
 			    <methods>
 			        <include name="initCheck"/>
 			        <include name="checkBackForward"/>
+			        <include name="checkOneSelect"/>
+			        <include name="checkAllSelect"/>
+			        <include name="futureHope"/>
 			    </methods>
 			</class>
 		</classes>
