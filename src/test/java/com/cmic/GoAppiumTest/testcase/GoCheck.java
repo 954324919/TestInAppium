@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -50,5 +51,10 @@ public class GoCheck {
 		ContextUtil.goTargetActivity("com.example.android.contactmanager", ".ContactAdder");
 		WaitUtil.implicitlyWait(2);
 		PageRouteUtil.pressBack();
+	}
+	
+	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	public void futureHope() {//检查重定向通过
+		PageRedirect.redirect2RequestiteActivity();
 	}
 }

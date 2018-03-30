@@ -2,6 +2,8 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -15,6 +17,7 @@ import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -66,28 +69,60 @@ public class TestRequisiteActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkOneSelect() {
-
-	}
-
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkAllSelect() {
-
+		AndroidElement element = mDriver.findElement(By.xpath("//android.widget.CheckBox[@text=' 全选']"));
+		element.click();
+		ScreenUtil.screenShot("点击全选CheckBox");
+		WaitUtil.implicitlyWait(2);
+		element.click();
+		ScreenUtil.screenShot("点击全选CheckBox恢复");
+		WaitUtil.implicitlyWait(2);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
-	public void futureHope() {
-		PageRedirect.redirect2RequestiteActivity();
-		;// 等待1S
+	public void checkOneSelect() {
+		AndroidElement element = mDriver.findElement(By.xpath(
+				"//android.support.v7.widget.RecyclerView[@resource-id='com.cmic.mmnes:id/rv_app']/android.widget.RelativeLayout[1]"));
+		// 点击复选框所属的LinearLayout
+		element.click();
+		WaitUtil.implicitlyWait(2);
+		ScreenUtil.screenShot("点击复选框选中");
+		AndroidElement checkBox = (AndroidElement) element.findElement(By.id("com.cmic.mmnes:id/checkbox"));
+		// 再次点击复选框
+		checkBox.click();
+		ScreenUtil.screenShot("点击复选框恢复");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkBackForward() {// 一旦回退，只能回到首页
+		PageRouteUtil.pressBack();
+		assertEquals(ContextUtil.getCurrentActivity(), ".Launcher");
+		WaitUtil.implicitlyWait(1);// 等待1S
+		AppUtil.launchApp();
 		WaitUtil.implicitlyWait(2);// 等待1S
-		AppUtil.closeApp();
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+		WaitUtil.implicitlyWait(1);// 等待1S
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	public void checkEnterMain() {// 进入首页
+		// android.support.v7.widget.RecyclerView[@resource-id='com.cmic.mmnes:id/rv_app']/android.widget.RelativeLayout[3]
+		PageRedirect.redirect2RequestiteActivity();
+		// com.cmic.mmnes:id/tv_main
+		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
+		mainButton.click();
 		WaitUtil.implicitlyWait(2);// 等待1S
-		ContextUtil.goTargetActivity(App.PACKAGE_NAME, ".activity.RequisiteActivity");
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	public void checkOneGoDown() {
+		PageRedirect.redirect2RequestiteActivity();
+		// com.cmic.mmnes:id/tv_main
+		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_load"));
+		mainButton.click();
 		WaitUtil.implicitlyWait(2);// 等待1S
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
 	}
 }

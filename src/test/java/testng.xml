@@ -35,10 +35,11 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestRequisiteActivity">
 			    <methods>
 			        <include name="initCheck"/>
-			        <include name="checkBackForward"/>
-			        <include name="checkOneSelect"/>
 			        <include name="checkAllSelect"/>
-			        <include name="futureHope"/>
+			        <include name="checkOneSelect"/>
+			        <include name="checkBackForward"/>
+			        <include name="checkEnterMain"/>
+			        <include name="checkOneGoDown"/>
 			    </methods>
 			</class>
 		</classes>
