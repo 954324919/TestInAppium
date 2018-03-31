@@ -7,6 +7,8 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.DeviceUtil;
+import com.cmic.GoAppiumTest.util.NetworkUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -56,5 +58,11 @@ public class GoCheck {
 	@Test(dependsOnMethods = { "initCheck" },enabled=false)
 	public void futureHope() {//检查重定向通过
 		PageRedirect.redirect2RequestiteActivity();
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	public void testNetworkStatus() {
+		System.err.println(NetworkUtil.getNetworkState());
+		System.err.println(DeviceUtil.getDeviceTime());
 	}
 }

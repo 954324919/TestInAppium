@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
+import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.NetworkUtil;
@@ -51,7 +52,7 @@ public class TestMainActivity {
 		// AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
 	}
 
-	@Test
+	@Test(enabled=false)
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -60,19 +61,49 @@ public class TestMainActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" },enabled=false)
 	public void testNotification() {
 		DeviceUtil.openNotification();
 		WaitUtil.implicitlyWait(2);
-		DeviceUtil.closeNotification();;
+		DeviceUtil.closeNotification();
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
-	public void testNetworkStatus() {
-		System.err.println(NetworkUtil.getNetworkState());
-		System.err.println(DeviceUtil.getDeviceTime());
+	@Test
+	public void testBack4SplashNoTip() {// 测试Splash跳过工信部弹窗
+
 	}
-	
-	
+
+	@Test
+	public void testBack4SpalshTip() {// 测试Splash的工信部提示
+
+	}
+
+	@Test
+	public void scroll2Bottom() {// 测试滑动到底部
+
+	}
+
+	@Test
+	public void switchToOtherTab() {// 测试其他Tab(软件-游戏)
+
+	}
+
+	@Test
+	public void refreshBatch() {// 点击换一批
+
+	}
+
+	@Test
+	@Tips(description = "测试精选福利", riskPoint = "页面变动")
+	public void testWellSelect() {// 测试精选福利
+
+	}
+
+	@Test
+	@Tips(description = "测试点击精品应用", riskPoint = "页面变动")
+	public void checkGreatGame() {
+        
+	}
+
 }

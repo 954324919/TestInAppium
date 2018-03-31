@@ -30,6 +30,7 @@
 					<include name="checkPermissionRefuse" />
 					<include name="checkPermissionRetry" />
 					<include name="allowAllPremission" />
+					<include name="testBack4SplashNoTip" />
 				</methods>
 			</class>
 			<!-- 首页应用推荐 -->
@@ -53,7 +54,6 @@
 				<methods>
 					<include name="initCheck" />
 					<include name="testNotification" />
-					<include name="testNetworkStatus" />
 				</methods>
 			</class>
 		</classes>

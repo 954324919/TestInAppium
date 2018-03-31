@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
@@ -166,5 +167,14 @@ public class TestGrantPremissionActivity {
 		// 进入首页，进行截图
 		ScreenUtil.screenShot("进入推荐页");
 		WaitUtil.forceWait(2);
+	}
+	
+	@Test(dependsOnMethods = { "allowAllPremission" })
+	@Tips(description = "测试Splash跳过工信部弹窗", //
+			riskPoint = "必须进入应用推荐之后，耦合度最低", //
+			triggerTime = "在第一次测试时关闭Spalsh的工信部弹窗不再提示进入首页之后")
+	public void testBack4SplashNoTip() {// 测试Splash跳过工信部弹窗
+		AppUtil.softResetApp();
+        WaitUtil.implicitlyWait(2);
 	}
 }

@@ -69,7 +69,7 @@ public class TestSplashActivity {
 		Assert.assertEquals(currentActivityName, ".activity.SplashActivity");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkNoNotify() throws InterruptedException {// 1
 		System.out.println("checkNoNotify");
 		// TODO 不再提示需要测试重入，从进入首页后返回检验
@@ -80,7 +80,7 @@ public class TestSplashActivity {
 		WaitUtil.forceWait(1);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkDenyProcotol() {// 2
 		System.out.println("checkDenyProcotol");
 		// 点击拒绝协议
@@ -94,7 +94,7 @@ public class TestSplashActivity {
 		AppUtil.launchApp();
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkScrollProcotol() {// 3
 		System.out.println("checkScrollProcotol");
 		// 滑动协议至其底部
@@ -102,7 +102,7 @@ public class TestSplashActivity {
 		ElementUtil.swipeControl(by, com.cmic.GoAppiumTest.helper.Heading.DOWN);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkComfirmProcotol() {// 4
 		System.out.println("checkComfirmProcotol....");
 		// 点击同意并使用
