@@ -57,7 +57,10 @@ public class PageRedirect {
 	 * 重定向到MainActivity
 	 */
 	public static void redirect2MainActivity() {
-
+        redirect2RequestiteActivity();
+        AndroidElement mainButton = driver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
+		mainButton.click();
+		WaitUtil.implicitlyWait(2);// 等待1S
 	}
 
 	/**

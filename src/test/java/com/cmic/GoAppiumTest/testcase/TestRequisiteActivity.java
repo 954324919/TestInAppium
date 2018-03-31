@@ -60,7 +60,7 @@ public class TestRequisiteActivity {
 		// AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -69,7 +69,7 @@ public class TestRequisiteActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkAllSelect() {
 		AndroidElement element = mDriver.findElement(By.xpath("//android.widget.CheckBox[@text=' 全选']"));
 		element.click();
@@ -80,7 +80,7 @@ public class TestRequisiteActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkOneSelect() {
 		AndroidElement element = mDriver.findElement(By.xpath(
 				"//android.support.v7.widget.RecyclerView[@resource-id='com.cmic.mmnes:id/rv_app']/android.widget.RelativeLayout[1]"));
@@ -94,7 +94,7 @@ public class TestRequisiteActivity {
 		ScreenUtil.screenShot("点击复选框恢复");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkBackForward() {// 一旦回退，只能回到首页
 		PageRouteUtil.pressBack();
 		assertEquals(ContextUtil.getCurrentActivity(), ".Launcher");
@@ -105,10 +105,9 @@ public class TestRequisiteActivity {
 		WaitUtil.implicitlyWait(1);// 等待1S
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkEnterMain() {// 进入首页
-		// android.support.v7.widget.RecyclerView[@resource-id='com.cmic.mmnes:id/rv_app']/android.widget.RelativeLayout[3]
-		PageRedirect.redirect2RequestiteActivity();
+		PageRedirect.redirect2RequestiteActivity(); // 此为清除缓存的行为，开启全部测试的时候必须开启
 		// com.cmic.mmnes:id/tv_main
 		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
 		mainButton.click();
@@ -116,13 +115,14 @@ public class TestRequisiteActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
-	public void checkOneGoDown() {
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkOneGoDownload() {// 进入下载中心
 		PageRedirect.redirect2RequestiteActivity();
 		// com.cmic.mmnes:id/tv_main
 		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_load"));
 		mainButton.click();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(3);// 等待1S
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
+		WaitUtil.implicitlyWait(1);// 等待1S
 	}
 }

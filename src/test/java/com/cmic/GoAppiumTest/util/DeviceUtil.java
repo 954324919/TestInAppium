@@ -2,6 +2,7 @@ package com.cmic.GoAppiumTest.util;
 
 import org.openqa.selenium.Capabilities;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 
 public class DeviceUtil {
@@ -22,12 +23,15 @@ public class DeviceUtil {
 
 	/**
 	 * 简单比较两个APK的版本高低，取巧待完善
-	 * @param currentSdk 当前
-	 * @param targetSdk  目标
+	 * 
+	 * @param currentSdk
+	 *            当前
+	 * @param targetSdk
+	 *            目标
 	 * @return
 	 */
 	public static boolean moreThanTargetSdkVersion(String targetSdk) {
-		String currentSdk = getDeviceVersion();//7.1.2
+		String currentSdk = getDeviceVersion();// 7.1.2
 		try {
 			String temp = currentSdk.substring(0, currentSdk.indexOf("."));
 			String temp1 = targetSdk.substring(0, targetSdk.indexOf("."));
@@ -40,8 +44,43 @@ public class DeviceUtil {
 			return false;
 		}
 	}
-	
-	public static void shakeDevice(){
-//		DriverManger.getDriver().shakeDevice();
+
+	public static void shakeDevice() {
+		// DriverManger.getDriver().shakeDevice();
 	}
+
+	public static void openNotification() {
+		App.NOTIFICATION_STATUS = true;
+		DriverManger.getDriver().openNotifications();
+	}
+
+	/**
+	 * @ 风险 不能确定是否下拉Notification，先取巧
+	 */
+	public static void closeNotification() {
+		if (App.NOTIFICATION_STATUS)
+			PageRouteUtil.pressBack();// 后退则会关闭Notification
+		App.NOTIFICATION_STATUS = false;
+	}
+
+	public static String getDeviceTime() {
+		return DriverManger.getDriver().getDeviceTime();
+	}
+
+	public static void getOrientation() {
+		DriverManger.getDriver().getOrientation();
+	}
+
+	public static void lockDevice() {
+		DriverManger.getDriver().lockDevice();
+	}
+
+	public static boolean getLockStatus() {
+		return DriverManger.getDriver().isLocked();
+	}
+
+	public static void unLockDevice() {
+		DriverManger.getDriver().unlockDevice();
+	}
+
 }
