@@ -13,8 +13,10 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
@@ -90,45 +92,69 @@ public class TestMainActivity {
 		// TODO 必要时截图
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "测试滑动跳转其他Tab(软件-游戏)", //
 			riskPoint = "UI变动")
 	public void testSlip2OtherTab() throws InterruptedException {
 		WaitUtil.forceWait(5);
-		int width = ScreenUtil.getDeviceWidth();
-		int height = ScreenUtil.getDeviceHeight();
-        ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
-        WaitUtil.forceWait(5);
-        ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
-        WaitUtil.forceWait(5);
-        //TODO 必要时截图
+		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
+		WaitUtil.forceWait(5);
+		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
+		WaitUtil.forceWait(5);
+		// TODO 必要时截图
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	@Tips(description = "测试精选福利", riskPoint = "页面变动")
-	public void testWellSelect() {// 测试精选福利
-		AndroidElement wellSelectItemTv = mDriver.findElement(By.xpath(
-				"//android.widget.FrameLayout[1]/android.support.v4.view.ViewPager[1]/android.support.v7.widget.RecyclerView[1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]"));
-		System.out.println(wellSelectItemTv.getText());
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "测试精选福利", riskPoint = "页面变动||MM的安装状态，目前只假定其安装和没安装两种情况")
+	public void testWellSelect() throws InterruptedException {// 测试精选福利
+		String wellSelectorUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"精选福利\")";
+		AndroidElement wellSelectItemTv = mDriver.findElementByAndroidUIAutomator(wellSelectorUiSelector);
+		if (AppUtil.isInstall(App.MM_PACKAGE_NAME)) {
+			System.out.println("Hi");
+			wellSelectItemTv.click();
+			WaitUtil.forceWait(1500);
+			AppUtil.killApp(App.MM_PACKAGE_NAME);// 杀死MM
+			// TODO 截图
+		} else {
+			System.out.println("He");
+			wellSelectItemTv.click();
+			AppUtil.handleInfoSwitch2Native();
+			// RiskPoint 不一定进来就是BS页面,当前是这个情况，用Back返回
+			// TODO 截图
+			// WaitUtil.forceWait(1000); //Sleep有找不到控件的风险
+			mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
+		}
 	}
-	
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+
+	@Test(dependsOnMethods = { "testWellSelect" })
 	@Tips(description = "测试点击精品应用", riskPoint = "页面变动", triggerTime = "需要切换到游戏的Tab")
-	public void checkGreatGame() {
-		ScrollUtil.scrollToPrecent(Direction.RIGHT, 50);
-		WaitUtil.implicitlyWait(2);
-		AndroidElement wellSelectItemTv = mDriver.findElement(By.xpath(
-				"//android.widget.FrameLayout[1]/android.support.v4.view.ViewPager[1]/android.support.v7.widget.RecyclerView[1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]"));
-		System.out.println(wellSelectItemTv.getText());
-		WaitUtil.implicitlyWait(2);
-		ScrollUtil.scrollToPrecent(Direction.LEFT, 50);
+	public void checkGreatGame() throws InterruptedException {
+		WaitUtil.forceWait(5000);
+		ScrollUtil.scrollToPrecent(Direction.LEFT, 1000);
+		String greatGameUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"品牌游戏\")";
+		AndroidElement greatGameTv = mDriver.findElementByAndroidUIAutomator(greatGameUiSelector);
+		if (AppUtil.isInstall(App.MM_PACKAGE_NAME)) {
+			System.out.println("Hi");
+			greatGameTv.click();
+			WaitUtil.forceWait(1500);
+			AppUtil.killApp(App.MM_PACKAGE_NAME);// 杀死MM
+			// TODO 截图
+		} else {
+			System.out.println("He");
+			greatGameTv.click();
+			WaitUtil.forceWait(3500);
+			// RiskPoint 不一定进来就是BS页面,当前是这个情况，用Back返回
+			ScreenUtil.screenShot("精选福利BS");
+			PageRouteUtil.pressBack();
+		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void scroll2Bottom() {// 测试滑动到底部
 		ScrollUtil.scrollToBase();
 	}
 
+	//TODO 从这里开始
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(riskPoint = "非全Xpath,UI变动的风险")
 	public void refreshBatch() {// 点击换一批

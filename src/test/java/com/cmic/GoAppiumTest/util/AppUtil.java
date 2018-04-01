@@ -1,13 +1,17 @@
 package com.cmic.GoAppiumTest.util;
 
+import java.util.Set;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
 
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class AppUtil {
@@ -55,10 +59,58 @@ public class AppUtil {
 	}
 
 	public static boolean isInstall(String packageName) {
-        return DriverManger.getDriver().isAppInstalled(packageName);
+		return DriverManger.getDriver().isAppInstalled(packageName);
 	}
 
-	public static void isInstall1(String packageName) {
-        
+	public static void killApp(String packageName) {
+		AdbManager.excuteAdbShell("adb shell am force-stop " + packageName);
+	}
+
+	public static void handleInfoSwitch2Native() {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		Set<String> contextNames = driver.getContextHandles();
+		System.out.println(contextNames.size());
+		for (String contextName : contextNames) {
+			// 用于返回被测app是NATIVE_APP还是WEBVIEW，如果两者都有就是混合型App
+			if (!contextName.contains("WEBVIEW")) {
+				// 让appium切换到webview模式以便查找web元素
+				driver.context(contextName);
+				System.out.println("切换到webview：" + contextName);
+				break;
+			}
+		}
+	}
+
+	public static void handleInfoSwitch2Webview() {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		Set<String> contextNames = driver.getContextHandles();
+		System.out.println(contextNames.size());
+		for (String contextName : contextNames) {
+			// 用于返回被测app是NATIVE_APP还是WEBVIEW，如果两者都有就是混合型App
+			if (contextName.contains("WEBVIEW")) {
+				// 让appium切换到webview模式以便查找web元素
+				driver.context(contextName);
+				System.out.println("切换到webview：" + contextName);
+				break;
+			}
+		}
+	}
+
+	public static HandlerStatus getHandleStatus() {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		Set<String> contextNames = driver.getContextHandles();
+		System.out.println(contextNames.size());
+		for (String contextName : contextNames) {
+			// 用于返回被测app是NATIVE_APP还是WEBVIEW，如果两者都有就是混合型App
+			if (contextName.contains("WEBVIEW")) {
+				return HandlerStatus.HYBRID;
+			}
+		}
+		return HandlerStatus.NATIVE;
+	}
+
+	public enum HandlerStatus {
+		HYBRID,//混合应用，包含Webview
+		NATIVE//原生应用，不包含Webview
 	}
 }

@@ -21,6 +21,9 @@
 10.thread.sleep() 是线程休眠若干秒，JAVA去实现。等待的时间需要预估的比较准确，
 但实际上这是很难做到。而且系统一直再等待，预估的长了，时间就白白的浪费了，预估短了，不起作用。
 implicitlyWait() 不是休眠，是设置超时时间，是每个driver自己去实现的
+11.adb shell am force-stop 包名，杀死一个应用
+12.先执行依赖部分，再执行非依赖部分。可见MainActivyt测试
+13.HanlderInfo(https://blog.csdn.net/achang21/article/details/73331201)
 
 #TODO部分
 1.在0329/仍然不能使用关闭initCheck来关闭初始检验异常后跳过其他不能进行的测试用例，仅用Enable注解管理
