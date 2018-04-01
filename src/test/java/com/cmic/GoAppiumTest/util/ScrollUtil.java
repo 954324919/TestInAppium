@@ -1,5 +1,7 @@
 package com.cmic.GoAppiumTest.util;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriver;
 
@@ -10,9 +12,9 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class ScrollUtil {
-	public static final int SCROLL_TIME = 1000;
+	public static final int SCROLL_TIME = 2000;
 
-	enum Direction {
+	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
 	}
 
@@ -38,25 +40,51 @@ public class ScrollUtil {
 			break;
 		}
 	}
-	
+
 	public static void screentRotate(ScreenOrientation oreentation) {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		driver.rotate(oreentation);
 	}
-	
+
 	/**
 	 * 如果是滑动的话，建议使用classname 来遍历，
 	 * 通过for循环遍历出当前显示的text是否是需要查找的如果不是，滑动操作，直到找到并点击，xpath不太实用这种滑动页面
+	 * 
 	 * @param element
 	 */
 	public static void scrollToElement(String xPath) {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
-		if(ElementUtil.isElementExistByXpath(xPath)) {
+		if (ElementUtil.isElementExistByXpath(xPath)) {
 			scrollToPrecent(Direction.DOWN, 50);
 		}
-		//存在xpath已经定位而没有出现的情况
-		//TODO 优化
+		// 存在xpath已经定位而没有出现的情况
+		// TODO 优化
 	}
-	
-	
+
+	public static void scrollToBase() {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		int width = driver.manage().window().getSize().width;
+		int height = driver.manage().window().getSize().height;
+		String str1;
+		String str2;
+		do {
+			str1 = driver.getPageSource();
+			driver.swipe(width / 2, height * 3 / 4, width / 2, height / 4, 500);
+			WaitUtil.implicitlyWait(1);
+			str2 = driver.getPageSource();
+		} while (!str1.equals(str2));
+	}
+
+	public static void scrollToTargetWidget(AndroidDriver<AndroidElement> driver, By by) {
+		int width = driver.manage().window().getSize().width;
+		int height = driver.manage().window().getSize().height;
+
+		while (!ElementUtil.isElementPresent(by)) {
+			try {
+				driver.findElement(by);
+			} catch (NoSuchElementException e) {
+				driver.swipe(width / 2, height / 2, width / 2, height / 3, 100);
+			}
+		}
+	}
 }

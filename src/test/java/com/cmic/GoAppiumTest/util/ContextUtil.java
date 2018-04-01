@@ -1,5 +1,6 @@
 package com.cmic.GoAppiumTest.util;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 
@@ -35,8 +36,8 @@ public class ContextUtil {
 	}
 
 	// 是否安装
-	public static boolean isInstalled(String packageName) {
-		return DriverManger.getDriver().isAppInstalled(packageName);
+	public static boolean isTestAppInstalled() {
+		return DriverManger.getDriver().isAppInstalled(App.PACKAGE_NAME);
 	}
 
 	// 安装应用

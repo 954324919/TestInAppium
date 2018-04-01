@@ -12,6 +12,13 @@
 	(1)类名System.out.println("[Button Add Contact]Class: "+el.getClass());   
 	(2)控件类型 System.out.println("[Button Add Contact]TagName: "+el.getTagName());
 	(3)控件的值System.out.println("[Button Add Contact]Text: "+el.getText());
+8.抛出异常仍然会继续进行，只不过会导致严重的界面NoSuchException
+9.
+// 跳到软件-榜单的分界面
+//		driver.findElementByAndroidUIAutomator("new UiSelector().resourceId(\"com.aspire.mm:id/hscrollid\")"
+//				+ ".childSelector(new UiSelector().resourceId(\"android:id/tabs\")"
+//				+ ".childSelector(new UiSelector().index(3)))").click();
+
 
 #TODO部分
 1.在0329/仍然不能使用关闭initCheck来关闭初始检验异常后跳过其他不能进行的测试用例，仅用Enable注解管理

@@ -1,10 +1,12 @@
 package com.cmic.GoAppiumTest.util;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Heading;
+import com.cmic.GoAppiumTest.helper.Tips;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -74,4 +76,26 @@ public class ElementUtil {
 			break;
         }
     }
+    
+    @Tips(description="与isElementAccessable共同页面验证存在控件")
+	public static boolean isElementPresent(By by) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		try {
+			driver.findElement(by);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+    @Tips(description="与isElementPresent共同页面验证存在控件")
+	public  boolean isElementAccessable(By by) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		try {
+			driver.findElement(by).isDisplayed();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

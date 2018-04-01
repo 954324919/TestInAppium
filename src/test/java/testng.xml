@@ -30,7 +30,8 @@
 					<include name="checkPermissionRefuse" />
 					<include name="checkPermissionRetry" />
 					<include name="allowAllPremission" />
-					<include name="testBack4SplashNoTip" />
+					<include name="testBack4SplashNoCancelTip" />
+					<include name="testBack4SplashCancelTip" />
 				</methods>
 			</class>
 			<!-- 首页应用推荐 -->
@@ -49,11 +50,17 @@
 
 	<test name="Test4Regular">
 		<classes>
-			<!-- 应用首页 -->
+			<!-- 必备应用的首页 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivity">
 				<methods>
 					<include name="initCheck" />
 					<include name="testNotification" />
+					<include name="checkClick2OtherTab" />
+					<include name="testSlip2OtherTab" />
+					<include name="testWellSelect" />
+					<include name="checkGreatGame" />
+					<include name="scroll2Bottom" />
+					<include name="refreshBatch" />
 				</methods>
 			</class>
 		</classes>

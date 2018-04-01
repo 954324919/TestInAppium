@@ -3,7 +3,6 @@ package com.cmic.GoAppiumTest.util;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
-import org.testng.asserts.Assertion;
 
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
@@ -53,5 +52,13 @@ public class AppUtil {
 		System.err.println("清除应用缓存并杀死应用进程");
 		AdbManager.excuteAdbShell("adb shell pm clear " + packageName);
 		WaitUtil.implicitlyWait(2);
+	}
+
+	public static boolean isInstall(String packageName) {
+        return DriverManger.getDriver().isAppInstalled(packageName);
+	}
+
+	public static void isInstall1(String packageName) {
+        
 	}
 }

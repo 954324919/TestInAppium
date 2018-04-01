@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -61,7 +62,7 @@ public class TestGrantPremissionActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(enabled=false)
 	public void initCheck() throws InterruptedException {// 1
 		System.out.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(".permission.ui.GrantPermissionsActivity", ContextUtil.getCurrentActivity());
@@ -156,7 +157,7 @@ public class TestGrantPremissionActivity {
 		assertEquals(".permission.ui.GrantPermissionsActivity", ContextUtil.getCurrentActivity());
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" },enabled=false)
 	public void allowAllPremission() throws InterruptedException {// 必备1.5已知拥有4个高级权限
 		AndroidElement buttonAllow = mDriver
 				.findElement(By.id("com.android.packageinstaller:id/permission_allow_button"));
@@ -168,13 +169,25 @@ public class TestGrantPremissionActivity {
 		ScreenUtil.screenShot("进入推荐页");
 		WaitUtil.forceWait(2);
 	}
-	
-	@Test(dependsOnMethods = { "allowAllPremission" })
-	@Tips(description = "测试Splash跳过工信部弹窗", //
+
+	@Test(dependsOnMethods = { "allowAllPremission" }, enabled = false)
+	@Tips(description = "测试Splash不取消工信部弹窗", //
 			riskPoint = "必须进入应用推荐之后，耦合度最低", //
 			triggerTime = "在第一次测试时关闭Spalsh的工信部弹窗不再提示进入首页之后")
-	public void testBack4SplashNoTip() {// 测试Splash跳过工信部弹窗
+	public void testBack4SplashNoCancelTip() {// 测试Splash跳过工信部弹窗
 		AppUtil.softResetApp();
-        WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(2);
+		Assert.assertEquals(ContextUtil.getCurrentActivity(), ".activity.SplashActivity");
+		WaitUtil.implicitlyWait(1);
+	}
+
+	@Test(dependsOnMethods = { "allowAllPremission" }, enabled = false)
+	@Tips(description = "和testBack4SplashNoCancelTip相同情况下测试Splash取消跳过工信部弹窗", //
+			riskPoint = "需要重启应用")
+	public void testBack4SplashCancelTip() {
+		PageRedirect.redirect2SplashActivity();// 重入Splash默认下次不再提示
+		WaitUtil.implicitlyWait(2);
+		Assert.assertEquals(ContextUtil.getCurrentActivity(), ".activity.SplashActivity");
+		WaitUtil.implicitlyWait(1);
 	}
 }
