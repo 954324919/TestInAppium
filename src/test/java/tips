@@ -18,7 +18,9 @@
 //		driver.findElementByAndroidUIAutomator("new UiSelector().resourceId(\"com.aspire.mm:id/hscrollid\")"
 //				+ ".childSelector(new UiSelector().resourceId(\"android:id/tabs\")"
 //				+ ".childSelector(new UiSelector().index(3)))").click();
-
+10.thread.sleep() 是线程休眠若干秒，JAVA去实现。等待的时间需要预估的比较准确，
+但实际上这是很难做到。而且系统一直再等待，预估的长了，时间就白白的浪费了，预估短了，不起作用。
+implicitlyWait() 不是休眠，是设置超时时间，是每个driver自己去实现的
 
 #TODO部分
 1.在0329/仍然不能使用关闭initCheck来关闭初始检验异常后跳过其他不能进行的测试用例，仅用Enable注解管理
@@ -40,5 +42,7 @@ An unknown server-side error occurred while processing the command.
 Original error: Error occured while starting App. Original error: Error executing adbExec. 
 Original error: 'Command 'E\:\\AndroidStudioSDKUpdate\\platform-tools\\adb.exe -P 5037 -s cf49f213 shell am start -W -n com.cmic.mmnes/.activity.SearchActivity -S' exited with code 1'; Stderr: 'java.lang.SecurityException: Permission Denial: starting Intent 
 {cmp=com.cmic.mmnes/.activity.SearchActivity } from null (pid=26867, uid=2000) not exported from uid 10220
-	
+2.滑动异常-加大Sleep时间
+Encountered internal error running command:  {"jsonwp":{"sessionId":"6a6db355-f675-4a4c-ba0b-a5d87ac5e4b2","status":13,
+"value":"Swipe did not complete successfully"}}
 	

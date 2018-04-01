@@ -71,7 +71,7 @@ public class TestMainActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "测试点击跳转其他Tab(软件-游戏)", //
 			riskPoint = "UI变动")
 	public void checkClick2OtherTab() {//
@@ -90,14 +90,18 @@ public class TestMainActivity {
 		// TODO 必要时截图
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试滑动跳转其他Tab(软件-游戏)", //
 			riskPoint = "UI变动")
-	public void testSlip2OtherTab() {
-		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
-		WaitUtil.implicitlyWait(2);
-		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
-		WaitUtil.implicitlyWait(2);
+	public void testSlip2OtherTab() throws InterruptedException {
+		WaitUtil.forceWait(5);
+		int width = ScreenUtil.getDeviceWidth();
+		int height = ScreenUtil.getDeviceHeight();
+        ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
+        WaitUtil.forceWait(5);
+        ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
+        WaitUtil.forceWait(5);
+        //TODO 必要时截图
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
@@ -107,7 +111,7 @@ public class TestMainActivity {
 				"//android.widget.FrameLayout[1]/android.support.v4.view.ViewPager[1]/android.support.v7.widget.RecyclerView[1]/android.widget.RelativeLayout[1]/android.widget.TextView[1]"));
 		System.out.println(wellSelectItemTv.getText());
 	}
-
+	
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "测试点击精品应用", riskPoint = "页面变动", triggerTime = "需要切换到游戏的Tab")
 	public void checkGreatGame() {
