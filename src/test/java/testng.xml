@@ -68,14 +68,24 @@
 				</methods>
 			</class>
 			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivityExtra">
-			    <methods>
-			        <include name="initCheck"/>
-			        <include name="checkNotifyNum"/>
-			        <include name="checkSearchKeyWordCycle"/>
-			        <include name="zoomAndShrink"/>
-			        <include name="lockOrNotEffect"/>
-			        <include name="configChangeOreatation"/>
-			    </methods>
+				<methods>
+					<include name="initCheck" />
+					<include name="checkNotifyNum" />
+					<include name="checkSearchKeyWordCycle" />
+					<include name="zoomAndShrink" />
+					<include name="lockOrNotEffect" />
+					<include name="configChangeOreatation" />
+				</methods>
+			</class>
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivity">
+				<methods>
+					<include name="initCheck" />
+				</methods>
+			</class>
+			<class name="com.cmic.GoAppiumTest.testcase.TestDownloadManagerActivity">
+				<methods>
+					<include name="initCheck" />
+				</methods>
 			</class>
 		</classes>
 	</test>

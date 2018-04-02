@@ -56,10 +56,9 @@ public class TestMainActivity {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
-//		 AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -102,12 +101,12 @@ public class TestMainActivity {
 		WaitUtil.forceWait(5);
 		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
 		WaitUtil.forceWait(5);
-		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80); 
+		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
 		WaitUtil.forceWait(5);
 		// TODO 必要时截图
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "测试精选福利", riskPoint = "页面变动||MM的安装状态，目前只假定其安装和没安装两种情况")
 	public void testWellSelect() throws InterruptedException {// 测试精选福利
 		System.out.println("精选福利");
@@ -130,39 +129,39 @@ public class TestMainActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "testWellSelect" },enabled=false)
+	@Test(dependsOnMethods = { "testWellSelect" }, enabled = false)
 	public void scroll2SoftWareBottom() {// 测试滑动到底部
 		ScrollUtil.scrollToBase();
 	}
 
-	@Test(dependsOnMethods = { "scroll2SoftWareBottom" },enabled=false)
-	public void moreSoftware() throws InterruptedException{
-		String moreBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"更多软件\").resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\")"; 
+	@Test(dependsOnMethods = { "scroll2SoftWareBottom" }, enabled = false)
+	public void moreSoftware() throws InterruptedException {
+		String moreBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"更多软件\").resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\")";
 		AndroidElement moreBtn = mDriver.findElementByAndroidUIAutomator(moreBtnUiSelector);
 		moreBtn.click();
-		//TODO 必要时进行截图
-		if(AppUtil.isInstall(App.MM_PACKAGE_NAME)){//MM已经安装
+		// TODO 必要时进行截图
+		if (AppUtil.isInstall(App.MM_PACKAGE_NAME)) {// MM已经安装
 			WaitUtil.forceWait(2);
 			AppUtil.killApp(App.MM_PACKAGE_NAME);// 杀死MM
-		}else{//没有安装，进入应用详情
-         	Assert.assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
-         	PageRouteUtil.pressBack();
-         	WaitUtil.forceWait(2);
+		} else {// 没有安装，进入应用详情
+			Assert.assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
+			PageRouteUtil.pressBack();
+			WaitUtil.forceWait(2);
 		}
 	}
-	
+
 	// TODO 从这里开始
-	@Test(dependsOnMethods = { "scroll2SoftWareBottom" },enabled=false)
+	@Test(dependsOnMethods = { "scroll2SoftWareBottom" }, enabled = false)
 	@Tips(riskPoint = "非全Xpath,UI变动的风险，依赖于scrollBottom", description = "点击换一批")
 	public void refreshSoftBatch() throws InterruptedException {// 点击换一批(\"\")
-		String gameUiSelector ="new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"换一批\")";
+		String gameUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"换一批\")";
 		AndroidElement topGameTab = mDriver.findElementByAndroidUIAutomator(gameUiSelector);
 		topGameTab.click();
 		WaitUtil.forceWait(1);
 	}
-	
-	//TODO 当前需要跳过该部分的测试    @Test(dependsOnMethods = { "refreshSoftBatch" })
-	@Test(dependsOnMethods = { "initCheck" })
+
+	// TODO 当前需要跳过该部分的测试 @Test(dependsOnMethods = { "refreshSoftBatch" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "测试点击精品应用", riskPoint = "页面变动", triggerTime = "需要切换到游戏的Tab")
 	public void checkGreatGame() throws InterruptedException {
 		System.out.println("品牌游戏");
@@ -185,33 +184,33 @@ public class TestMainActivity {
 			mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
 		}
 	}
-	
-	@Test(dependsOnMethods = { "checkGreatGame" })
-	public void check2GameBottom(){
+
+	@Test(dependsOnMethods = { "checkGreatGame" }, enabled = false)
+	public void check2GameBottom() {
 		ScrollUtil.scrollToBase();
 	}
-	
-	@Test(dependsOnMethods = { "check2GameBottom" })
-	public void moreGame() throws InterruptedException{
-		String moreBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"更多游戏\").resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\")"; 
+
+	@Test(dependsOnMethods = { "check2GameBottom" }, enabled = false)
+	public void moreGame() throws InterruptedException {
+		String moreBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"更多游戏\").resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\")";
 		AndroidElement moreBtn = mDriver.findElementByAndroidUIAutomator(moreBtnUiSelector);
 		moreBtn.click();
-		//TODO 必要时进行截图
-		if(AppUtil.isInstall(App.MM_PACKAGE_NAME)){//MM已经安装
+		// TODO 必要时进行截图
+		if (AppUtil.isInstall(App.MM_PACKAGE_NAME)) {// MM已经安装
 			WaitUtil.forceWait(2);
 			AppUtil.killApp(App.MM_PACKAGE_NAME);// 杀死MM
-		}else{//没有安装，进入应用详情
-         	Assert.assertEquals(ContextUtil.getCurrentActivity(), "/.activity.DetailActivity");
-         	PageRouteUtil.pressBack();
-         	WaitUtil.forceWait(2);
+		} else {// 没有安装，进入应用详情
+			Assert.assertEquals(ContextUtil.getCurrentActivity(), "/.activity.DetailActivity");
+			PageRouteUtil.pressBack();
+			WaitUtil.forceWait(2);
 		}
 	}
-	
+
 	// TODO 从这里开始
-	@Test(dependsOnMethods = { "moreGame" })
+	@Test(dependsOnMethods = { "moreGame" }, enabled = false)
 	@Tips(riskPoint = "非全Xpath,UI变动的风险，依赖于scrollBottom", description = "点击换一批")
 	public void refreshGameBatch() throws InterruptedException {// 点击换一批(\"\")
-		String gameUiSelector ="new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"换一批\")";
+		String gameUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"换一批\")";
 		AndroidElement topGameTab = mDriver.findElementByAndroidUIAutomator(gameUiSelector);
 		topGameTab.click();
 		WaitUtil.forceWait(1);

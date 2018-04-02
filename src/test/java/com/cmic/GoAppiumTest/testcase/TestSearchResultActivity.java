@@ -1,5 +1,9 @@
 package com.cmic.GoAppiumTest.testcase;
 
-public class TestSearchResultActivity {
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 
+public class TestSearchResultActivity {
+	private String mTag;
+	private AndroidDriver<AndroidElement> mDriver;
 }
