@@ -58,10 +58,24 @@
 					<include name="checkClick2OtherTab" />
 					<include name="testSlip2OtherTab" />
 					<include name="testWellSelect" />
+					<include name="scroll2SoftWareBottom" />
+					<include name="moreSoftware" />
+					<include name="refreshSoftBatch" />
 					<include name="checkGreatGame" />
-					<include name="scroll2Bottom" />
-					<include name="refreshBatch" />
+					<include name="check2GameBottom" />
+					<include name="moreGame" />
+					<include name="refreshGameBatch" />
 				</methods>
+			</class>
+			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivityExtra">
+			    <methods>
+			        <include name="initCheck"/>
+			        <include name="checkNotifyNum"/>
+			        <include name="checkSearchKeyWordCycle"/>
+			        <include name="zoomAndShrink"/>
+			        <include name="lockOrNotEffect"/>
+			        <include name="configChangeOreatation"/>
+			    </methods>
 			</class>
 		</classes>
 	</test>

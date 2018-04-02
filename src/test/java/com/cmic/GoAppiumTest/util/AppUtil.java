@@ -75,7 +75,7 @@ public class AppUtil {
 			if (!contextName.contains("WEBVIEW")) {
 				// 让appium切换到webview模式以便查找web元素
 				driver.context(contextName);
-				System.out.println("切换到webview：" + contextName);
+				System.out.println("切换到：" + contextName);
 				break;
 			}
 		}
@@ -90,7 +90,7 @@ public class AppUtil {
 			if (contextName.contains("WEBVIEW")) {
 				// 让appium切换到webview模式以便查找web元素
 				driver.context(contextName);
-				System.out.println("切换到webview：" + contextName);
+				System.out.println("切换到：" + contextName);
 				break;
 			}
 		}
