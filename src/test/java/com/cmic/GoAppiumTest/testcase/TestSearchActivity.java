@@ -2,6 +2,7 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -16,6 +17,7 @@ import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
@@ -130,20 +132,28 @@ public class TestSearchActivity {
 		assertEquals(currentItemCount, originItemCount);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
-	@Tips(description = "点击随机的一个热词Item", riskPoint = "耦合度过高，与下列clickTheClearSearchRly风险点太高")
+	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Tips(description = "点击随机的一个热词Item", //
+			riskPoint = "耦合度过高，与下列clickTheClearSearchRly风险点太高")
 	public void randomCheckOne() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
 		Random random = new Random();
-		//TODO 模拟一个数字
-		int randomIndex = random.nextInt(mDriver.findElementsByClassName("android.widget.LinearLayout").size());
-		String hotKeyItemXPath = "//android.widget.ScrollView/android.widget.LinearLayout[" + randomIndex + "]";
-		AndroidElement hotkeyItem = mDriver.findElement(By.xpath(hotKeyItemXPath));
-		String hotKeyInnerTvXpath = "//android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout["
-				+ randomIndex + "]/android.widget.TextView[1]";
-		System.out.println(hotKeyInnerTvXpath);
-		AndroidElement hotKeyInnerTv = mDriver.findElement(By.xpath(hotKeyInnerTvXpath));
-		System.out.println(searchBeforePerform = hotKeyInnerTv.getText());
+		// TODO 模拟一个数字
+		List<AndroidElement> list = mDriver.findElementsByClassName("android.widget.LinearLayout");
+		System.out.println(list.size());
+		int randomIndex = 0;
+		if (list.size() > 3) {
+			randomIndex = random.nextInt(list.size() - 3);
+		} else {
+			System.err.println("页面显示不全");
+			return;
+		}
+		AndroidElement hotkeyItem = list.get(randomIndex);
+		searchBeforePerform = hotkeyItem.getText();
+		if (searchBeforePerform.equals("软件") || searchBeforePerform.equals("游戏") || searchBeforePerform.equals("热门")) {
+			searchBeforePerform = list.get(randomIndex + 1).getText();
+		}
+		System.out.println("点击Item为："+searchBeforePerform);
 		// TODO 必要时截图
 		hotkeyItem.click();
 		WaitUtil.forceWait(2);
@@ -151,15 +161,14 @@ public class TestSearchActivity {
 		PageRouteUtil.pressBack();
 	}
 
-	@Test(dependsOnMethods = { "randomCheckOne" })
+	@Test(dependsOnMethods = { "randomCheckOne" },enabled=false)
 	@Tips(description = "点击搜索栏目的clear图标||同意默认情况写下为不显示，受randomCheckOne影响可见")
 	public void clickTheClearSearchRly() {
 		LogUtil.printCurrentMethodName();
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
-	@Tips(description = "热搜联想")
-	public void checkSearchRalation() {
-		LogUtil.printCurrentMethodName();
+		//TODO 必要时截图
+		if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/search_clear_iv"))) {
+            AndroidElement clearIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_clear_iv"));
+            clearIv.click();
+		}
 	}
 }

@@ -86,12 +86,12 @@
 					<include name="closeTheWordList" />
 					<include name="randomCheckOne" />
 					<include name="clickTheClearSearchRly" />
-					<include name="checkSearchRalation" />
 				</methods>
 			</class>
-			<class name="com.cmic.GoAppiumTest.testcase.TestDownloadManagerActivity">
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivityRelation">
 				<methods>
 					<include name="initCheck" />
+					<include name="checkSearchRalation" />
 				</methods>
 			</class>
 		</classes>

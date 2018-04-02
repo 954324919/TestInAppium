@@ -2,12 +2,17 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.Random;
+
+import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
+import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.NetworkUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -23,6 +28,7 @@ import io.appium.java_client.android.AndroidKeyCode;
 public class GoCheck {
 
 	private AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+	private AndroidDriver<AndroidElement> mDriver = DriverManger.getDriver();
 
 	@Test
 	public void test() throws InterruptedException {
@@ -64,5 +70,26 @@ public class GoCheck {
 	public void testNetworkStatus() {
 		System.err.println(NetworkUtil.getNetworkState());
 		System.err.println(DeviceUtil.getDeviceTime());
+	}
+	
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "点击随机的一个热词Item", riskPoint = "耦合度过高，与下列clickTheClearSearchRly风险点太高")
+	public void randomCheckOne() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		Random random = new Random();
+		//TODO 模拟一个数字
+		int randomIndex = random.nextInt(mDriver.findElementsByClassName("android.widget.LinearLayout").size());
+		String hotKeyItemXPath = "//android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout[" + randomIndex + "]";
+		AndroidElement hotkeyItem = mDriver.findElement(By.xpath(hotKeyItemXPath));
+		String hotKeyInnerTvXpath = "//android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout["
+				+ randomIndex + "]/android.widget.TextView[1]";
+		System.out.println(hotKeyInnerTvXpath);
+		AndroidElement hotKeyInnerTv = mDriver.findElement(By.xpath(hotKeyInnerTvXpath));
+//		System.out.println(searchBeforePerform = hotKeyInnerTv.getText());
+		// TODO 必要时截图
+		hotkeyItem.click();
+		WaitUtil.forceWait(2);
+		// TODO 风险不一定退出
+		PageRouteUtil.pressBack();
 	}
 }
