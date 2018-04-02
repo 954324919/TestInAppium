@@ -88,10 +88,11 @@
 					<include name="clickTheClearSearchRly" />
 				</methods>
 			</class>
-			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivityRelation">
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivityExtra">
 				<methods>
 					<include name="initCheck" />
 					<include name="checkSearchRalation" />
+					<include name="checkClickDownload" />
 				</methods>
 			</class>
 		</classes>
