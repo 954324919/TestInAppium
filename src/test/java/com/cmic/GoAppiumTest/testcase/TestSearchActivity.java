@@ -2,6 +2,8 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.Random;
+
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -11,8 +13,11 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -32,6 +37,8 @@ public class TestSearchActivity {
 
 	private int originItemCount;
 	private int currentItemCount;
+	private String rollHotKeyInMainAct;// 滚动热词
+	private String searchBeforePerform;
 
 	@BeforeMethod
 	public void tipBeforeTestCase() {
@@ -49,6 +56,7 @@ public class TestSearchActivity {
 	public void beforeClass() {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
+		PageRedirect.redirect2MainActivity();
 		WaitUtil.implicitlyWait(2);
 		AndroidElement searchLayout = mDriver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
 		searchLayout.click();
@@ -69,9 +77,10 @@ public class TestSearchActivity {
 		ScreenUtil.screenShot("进入必备应用搜索界面");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "点击搜索ActionBar的后退")
 	public void checkBack() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
 		AndroidElement backIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_back_layout"));
 		backIv.click();
 		WaitUtil.forceWait(2);
@@ -81,23 +90,26 @@ public class TestSearchActivity {
 				+ ".childSelector(new UiSelector().className(\"android.widget.TextView\"))";
 		System.out.println(rollHotKeyWordUiSelector);
 		AndroidElement rollHotKeyWordTv = mDriver.findElementByAndroidUIAutomator(rollHotKeyWordUiSelector);
-		System.out.println(rollHotKeyWordTv.getText());
+		rollHotKeyInMainAct = rollHotKeyWordTv.getText();
 		// 再次点击返回SearchActivity
 		AndroidElement searchLayout = mDriver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
 		searchLayout.click();
 		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "checkBack" })
+	@Test(dependsOnMethods = { "checkBack" }, enabled = false)
 	@Tips(description = "被传入的热词")
 	public void checkWordFromOutside() {//
+		LogUtil.printCurrentMethodName();
 		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
-		System.out.println(searchEt.getText());
+		// TODO 必要时截图
+		assertEquals(searchEt.getText(), rollHotKeyInMainAct);
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "checkWordFromOutside" }, enabled = false)
 	@Tips(description = "点击加载更多")
 	public void checkGetMore() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
 		originItemCount = mDriver.findElementsByClassName("android.widget.LinearLayout").size();
 		AndroidElement getMoreIv = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_more"));
 		getMoreIv.click();
@@ -107,10 +119,10 @@ public class TestSearchActivity {
 
 	}
 
-	@Test(dependsOnMethods = { "checkGetMore" })
+	@Test(dependsOnMethods = { "checkGetMore" }, enabled = false)
 	@Tips(description = "点击收起更多")
 	public void closeTheWordList() throws InterruptedException {
-		originItemCount = mDriver.findElementsByClassName("android.widget.LinearLayout").size();
+		LogUtil.printCurrentMethodName();
 		AndroidElement getMoreIv = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_more"));
 		getMoreIv.click();
 		WaitUtil.forceWait(2);
@@ -118,21 +130,36 @@ public class TestSearchActivity {
 		assertEquals(currentItemCount, originItemCount);
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "点击随机的一个热词Item", riskPoint = "耦合度过高，与下列clickTheClearSearchRly风险点太高")
+	public void randomCheckOne() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		Random random = new Random();
+		//TODO 模拟一个数字
+		int randomIndex = random.nextInt(mDriver.findElementsByClassName("android.widget.LinearLayout").size());
+		String hotKeyItemXPath = "//android.widget.ScrollView/android.widget.LinearLayout[" + randomIndex + "]";
+		AndroidElement hotkeyItem = mDriver.findElement(By.xpath(hotKeyItemXPath));
+		String hotKeyInnerTvXpath = "//android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout["
+				+ randomIndex + "]/android.widget.TextView[1]";
+		System.out.println(hotKeyInnerTvXpath);
+		AndroidElement hotKeyInnerTv = mDriver.findElement(By.xpath(hotKeyInnerTvXpath));
+		System.out.println(searchBeforePerform = hotKeyInnerTv.getText());
+		// TODO 必要时截图
+		hotkeyItem.click();
+		WaitUtil.forceWait(2);
+		// TODO 风险不一定退出
+		PageRouteUtil.pressBack();
+	}
+
+	@Test(dependsOnMethods = { "randomCheckOne" })
+	@Tips(description = "点击搜索栏目的clear图标||同意默认情况写下为不显示，受randomCheckOne影响可见")
+	public void clickTheClearSearchRly() {
+		LogUtil.printCurrentMethodName();
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "热搜联想")
 	public void checkSearchRalation() {
-
-	}
-
-	@Test
-	@Tips(description = "点击随机的一个热词Item")
-	public void randomCheckOne() {
-
-	}
-
-	@Test
-	@Tips(description = "点击搜索栏目的clear图标")
-	public void clickTheClearSearchRly() {
-
+		LogUtil.printCurrentMethodName();
 	}
 }

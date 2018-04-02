@@ -80,6 +80,13 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivity">
 				<methods>
 					<include name="initCheck" />
+					<include name="checkBack" />
+					<include name="checkWordFromOutside" />
+					<include name="checkGetMore" />
+					<include name="closeTheWordList" />
+					<include name="randomCheckOne" />
+					<include name="clickTheClearSearchRly" />
+					<include name="checkSearchRalation" />
 				</methods>
 			</class>
 			<class name="com.cmic.GoAppiumTest.testcase.TestDownloadManagerActivity">
