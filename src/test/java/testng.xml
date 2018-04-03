@@ -91,8 +91,13 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivityExtra">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkClickDownload" />
 					<include name="checkSearchRalation" />
+					<include name="checkClickDownload" />
+					<include name="checkClick2DetailByDirectItem" />
+					<include name="checkClick2SearchResultByEasyItem" />
+					<include name="checkSearchHistory" />
+					<include name="checkEnterDetailFromHistory" />
+					<include name="checkClearHistory" />
 				</methods>
 			</class>
 		</classes>

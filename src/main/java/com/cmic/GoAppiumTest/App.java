@@ -25,6 +25,15 @@ public class App {
 	//被测应用版本
 	public static final String APP_VERSION = "1.5.0";
 	
+	//TODO 不稳定,对于不同版本需要进行修改
+	//必备1.5的一些界面参数，用于一些难以进行定位的控件
+	public static final int STATUS_BAR_HEIGHT_DP = 24; 
+	public static final int TITLE_BAR_HEIGHT_DP = 50; 
+	//搜索联想
+	public static final int RELATION_DIRECTION_ITEM_HEIGHT_DP= 85;
+	public static final int RELATION_NORMAL_ITEM_HEIGHT_DP= 28;
+	//
+	public static final int MARGIN_LEFT_OR_RIGHT_DP= 15;//有14和16的版本
 	
 	
 	//默认用户目录为当前工作目录

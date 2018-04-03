@@ -87,7 +87,18 @@ public class ElementUtil {
 			return false;
 		}
 	}
-
+    
+    @Tips(description="与isElementAccessable共同页面验证存在控件")
+	public static boolean isElementPresent(String uiSelector) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		try {
+			driver.findElementByAndroidUIAutomator(uiSelector);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+    
     @Tips(description="与isElementPresent共同页面验证存在控件")
 	public  boolean isElementAccessable(By by) {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();

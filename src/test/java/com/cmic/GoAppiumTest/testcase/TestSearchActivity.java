@@ -70,7 +70,7 @@ public class TestSearchActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -132,7 +132,7 @@ public class TestSearchActivity {
 		assertEquals(currentItemCount, originItemCount);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "点击随机的一个热词Item", //
 			riskPoint = "耦合度过高，与下列clickTheClearSearchRly风险点太高")
 	public void randomCheckOne() throws InterruptedException {
@@ -153,7 +153,7 @@ public class TestSearchActivity {
 		if (searchBeforePerform.equals("软件") || searchBeforePerform.equals("游戏") || searchBeforePerform.equals("热门")) {
 			searchBeforePerform = list.get(randomIndex + 1).getText();
 		}
-		System.out.println("点击Item为："+searchBeforePerform);
+		System.out.println("点击Item为：" + searchBeforePerform);
 		// TODO 必要时截图
 		hotkeyItem.click();
 		WaitUtil.forceWait(2);
@@ -161,14 +161,14 @@ public class TestSearchActivity {
 		PageRouteUtil.pressBack();
 	}
 
-	@Test(dependsOnMethods = { "randomCheckOne" },enabled=false)
+	@Test(dependsOnMethods = { "randomCheckOne" }, enabled = false)
 	@Tips(description = "点击搜索栏目的clear图标||同意默认情况写下为不显示，受randomCheckOne影响可见")
 	public void clickTheClearSearchRly() {
 		LogUtil.printCurrentMethodName();
-		//TODO 必要时截图
+		// TODO 必要时截图
 		if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/search_clear_iv"))) {
-            AndroidElement clearIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_clear_iv"));
-            clearIv.click();
+			AndroidElement clearIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_clear_iv"));
+			clearIv.click();
 		}
 	}
 }

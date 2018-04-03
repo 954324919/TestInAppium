@@ -16,8 +16,10 @@ import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.KeyboardUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -33,6 +35,8 @@ import io.appium.java_client.android.AndroidElement;
 public class TestSearchActivityExtra {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;
+
+	private String searchHistoryItem;
 
 	@BeforeMethod
 	public void tipBeforeTestCase() {
@@ -58,16 +62,16 @@ public class TestSearchActivityExtra {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
 		WaitUtil.forceWait(2);
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
-		ScreenUtil.screenShot("进入必备应用搜索界面");
+		ScreenUtil.screenShot("进入必备应用搜索界面-无搜索历史");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, timeOut = 15000)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "热搜联想")
 	public void checkSearchRalation() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -76,40 +80,114 @@ public class TestSearchActivityExtra {
 		et.click();// 点击出现搜索联想
 		ScreenUtil.screenShot("联想搜索前...");
 		et.sendKeys("移动");
-		WaitUtil.forceWait(1500);
+		WaitUtil.forceWait(2);
 		ScreenUtil.screenShot("联想搜索后...");
-		KeyboardUtil.hideKeyBoard();
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, timeOut = 15000)
+	@Test(dependsOnMethods = { "checkSearchRalation" }, timeOut = 15000, enabled = false)
 	@Tips(description = "点击下载", //
-			riskPoint = "由于自动补全控件无法定位，当前预期先使用坐标定位，待解决。不抛出异常，只做正向验证//"
-					+ "待补充Robotium白盒测试")
+			riskPoint = "由于自动补全控件无法定位，当前预期先使用坐标定位，待解决。不抛出异常，只做正向验证//" + "待补充Robotium白盒测试")
 	public void checkClickDownload() {
 		LogUtil.printCurrentMethodName();
-//		System.out.println(AppUtil.getStatuBar());
-		System.out.println(AppUtil.getActionBar());
+		// TODO 当前不实现
+		// 点击下载按钮
+		// 0402当前只能使用这种效果较差的方法
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
-	public void checkClick2DetailByRalationItem() {
+	@Test(dependsOnMethods = { "checkSearchRalation" }, enabled = false)
+	@Tips(description = "点击直达的联想条目", riskPoint = "联想结果不确定，不一定能点中")
+	public void checkClick2DetailByDirectItem() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
-		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/status_btn"));
-		System.out.println(eList.size());
+		ScreenUtil.screenShot("联想搜索后点击直达条目前...");
+		// 1.进行点击
+		int targetXPx = ScreenUtil.getDeviceWidth() / 2;
+		int targetYPx = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight()
+				+ ScreenUtil.dp2Px(App.RELATION_DIRECTION_ITEM_HEIGHT_DP) / 2;
+		System.err.println(targetXPx + " " + targetYPx);
+		ScreenUtil.singleTap(targetXPx, targetYPx);
+		WaitUtil.forceWait(2);
+		ScreenUtil.screenShot("联想搜索后点击直达条目前...");
+		// 预期
+		if (ContextUtil.getCurrentActivity().equals(".activity.DetailActivity")) {
+			PageRouteUtil.pressBack();
+		} else if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/pager_indicator"))) {
+			PageRouteUtil.pressBack();
+		} else {// 没有点中
+		}
+		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "checkClickDownload" }, enabled = false)
+	@Tips(description = "点击简单的联想条目", riskPoint = "联想结果不确定，不一定能点中")
+	public void checkClick2SearchResultByEasyItem() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		// 0.前置操作,显示搜索联想
+		AndroidElement et = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
+		et.clear();
+		et.click();// 点击出现搜索联想
+		et.sendKeys("移动");
+		WaitUtil.forceWait(2);
+		KeyboardUtil.hideKeyBoard();
+		ScreenUtil.screenShot("联想搜索后点击简单条目前...");
+		// 1.进行点击
+		int targetXPx = ScreenUtil.getDeviceWidth() / 2;
+		int targetYPx = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight()
+				+ ScreenUtil.dp2Px(App.RELATION_DIRECTION_ITEM_HEIGHT_DP * 2 + 10);
+		System.err.println(targetXPx + " " + targetYPx);
+		ScreenUtil.singleTap(targetXPx, targetYPx);
+		WaitUtil.forceWait(2);
+		ScreenUtil.screenShot("联想搜索后点击简单条目后...");
+		// 预期
+		if (ContextUtil.getCurrentActivity().equals(".activity.DetailActivity")) {
+			PageRouteUtil.pressBack();
+		} else if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/pager_indicator"))) {
+			AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
+			searchHistoryItem = searchEt.getText();
+			PageRouteUtil.pressBack();
+		} else {// 没有点中
+
+		}
+		WaitUtil.forceWait(2);
+	}
+
+	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" }, enabled = false)
 	public void checkSearchHistory() {
 		LogUtil.printCurrentMethodName();
+		ScreenUtil.screenShot("搜索历史生成");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
-	public void checkEnterDetailFromHistory() {
+	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" }, enabled = false)
+	public void checkEnterDetailFromHistory() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
+		if (searchHistoryItem == null) {
+			AndroidElement et = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
+			et.click();// 点击出现搜索联想
+			et.sendKeys(searchHistoryItem = "移动");
+			WaitUtil.forceWait(2);
+		}
+		String itemHistoryUiSeletor = "new UiSelector().className(\"android.widget.TextView\").textContains(\""
+				+ searchHistoryItem + "\")";
+		AndroidElement item = mDriver.findElementByAndroidUIAutomator(itemHistoryUiSeletor);
+		item.click();
+		WaitUtil.forceWait(2);
+		ScreenUtil.screenShot("点击搜索历史");
+		PageRouteUtil.pressBack();
+		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" }, enabled = false)
 	public void checkClearHistory() {
 		LogUtil.printCurrentMethodName();
+		ScreenUtil.screenShot("点击清除历史前");
+		if (ElementUtil
+				.isElementPresent("new UiSelector().className(\"android.widget.TextView\").textContains(\"清除\")")) {
+			AndroidElement clearHistoryIcon = mDriver.findElementByAndroidUIAutomator(
+					" new UiSelector().className(\"android.widget.TextView\").textContains(\"清除\")");
+			clearHistoryIcon.click();
+			ScreenUtil.screenShot("点击清除历史后");
+			boolean isVisiable = ElementUtil
+					.isElementPresent("new UiSelector().className(\"android.widget.TextView\").textContains(\"搜索历史\")");
+			assertEquals(isVisiable, false);
+		}
 	}
 }

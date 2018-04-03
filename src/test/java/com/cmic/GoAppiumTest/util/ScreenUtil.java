@@ -6,16 +6,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.Tips;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class ScreenUtil {
+
+	public static int DPI = 0;
+
 	public static int getDeviceWidth() {
 		return DriverManger.getDriver().manage().window().getSize().width;
 	}
@@ -52,18 +57,46 @@ public class ScreenUtil {
 		DriverManger.getDriver().lockDevice();// 锁屏，熄灭屏幕
 	}
 
+	@Tips(description = "用于获取设备的dpi", //
+			riskPoint = "目前只支持Win，不同的操作系统需要兼容")
 	public static int getScreenDpi() {
+		if (DPI != 0) {
+			return DPI;
+		}
 		String cmdResult = AdbManager.excuteAdbShellGetResultGrep("adb shell dumpsys window displays", "dpi");
 		String[] tar = cmdResult.split(" ");
 		for (int i = 1; i < tar.length; i++) {
 			if (tar[i].equals(" ") || !tar[i].contains("dpi"))
 				continue;
 			try {
-				return Integer.parseInt(tar[i].replaceAll("[a-zA-z]", ""));
+				DPI = Integer.parseInt(tar[i].replaceAll("[a-zA-z]", ""));
+				return DPI;
 			} catch (Exception e) {
 				return 0;
 			}
 		}
 		return 0;
+	}
+
+	public static void singleTap(int x, int y) {
+		DriverManger.getDriver().tap(1, x, y, 100);
+	}
+
+	public static int dp2Px(int dp) {
+		getScreenDpi();
+		return (int) (dp * (DPI / 160.0));
+	}
+
+	public static int dx2Dp(int px) {
+		getScreenDpi();
+		return (int) (px / (DPI / 160.0));
+	}
+
+	public static int getStatusBarHeight() {
+		return dp2Px(App.STATUS_BAR_HEIGHT_DP);
+	}
+
+	public static int getActionBarHeight() {
+		return dp2Px(App.TITLE_BAR_HEIGHT_DP);
 	}
 }
