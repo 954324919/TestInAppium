@@ -5,6 +5,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriver;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 
 import io.appium.java_client.AppiumDriver;
@@ -25,14 +26,15 @@ public class ScrollUtil {
 		int height = ScreenUtil.getDeviceHeight() - 1;
 		switch (direction) {
 		case UP:
-			driver.swipe(width / 2, height, width / 2, height * precentRate / 100, SCROLL_TIME);
+			int endY = height - height / 100 * precentRate;
+			driver.swipe(width / 2, height, width / 2, endY, SCROLL_TIME);
 			break;
 		case DOWN:
-			driver.swipe(width / 2, width * precentRate / 100, width / 2, 1, SCROLL_TIME);
+			int startY = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight();
+			driver.swipe(width / 2, startY, width / 2, ((height - startY)-(height - startY) / 100 * precentRate), SCROLL_TIME);
 			break;
 		case LEFT:
-			int offset = width-width/100*precentRate;
-			driver.swipe(width, height / 2, offset, height / 2, SCROLL_TIME);
+			driver.swipe(width, height / 2, (width - width / 100 * precentRate), height / 2, SCROLL_TIME);
 			break;
 		case RIGHT:
 			driver.swipe(1, height / 2, width * precentRate / 100, height / 2, SCROLL_TIME);
@@ -88,7 +90,7 @@ public class ScrollUtil {
 			}
 		}
 	}
-	
+
 	public static void scrollToHalfScreen() {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		int width = driver.manage().window().getSize().width;
