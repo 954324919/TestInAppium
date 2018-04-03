@@ -65,11 +65,29 @@ public class PageRedirect {
 
 	/**
 	 * 重定向到DownloadManagerActivity
+	 * @throws InterruptedException 
 	 */
-	public static void redirect2DownloadManagerActivity() {
-
+	public static void redirect2DownloadManagerActivity() throws InterruptedException {
+		redirect2MainActivity();
+		WaitUtil.implicitlyWait(2);// 等待1S
+		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/managerview"));
+		managerRly.click();
+		WaitUtil.forceWait(2);
 	}
 
+	/**
+	 * 重定向到SettingActivity
+	 * @throws InterruptedException 
+	 */
+	public static void redirect2SettingActivity() throws InterruptedException {
+		redirect2DownloadManagerActivity();
+		WaitUtil.implicitlyWait(2);// 等待1S
+		AndroidElement settingRly = driver.findElement(By.id("com.cmic.mmnes:id/setting_iv"));
+		settingRly.click();
+		WaitUtil.forceWait(2);
+	}
+	
+	
 	@SuppressWarnings("unused")
 	private enum TargetActivity {
 		SPLASH_ACTIVITY, // 闪屏页面

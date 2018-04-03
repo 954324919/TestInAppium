@@ -113,6 +113,20 @@
 					<include name="checkDropDown2Refesh" />
 				</methods>
 			</class>
+				<!-- 必备应用的下载管理测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestDownloadManagerActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkSlide2OtherTab" />
+					<include name="checkClick2OtherTab" />
+				</methods>
+			</class>
+				<!-- 必备应用的设置管理测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSettingActivity">
+				<methods>
+					<include name="initCheck" />
+				</methods>
+			</class>
 		</classes>
 	</test>
 </suite>
