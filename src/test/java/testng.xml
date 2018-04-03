@@ -125,6 +125,12 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestSettingActivity">
 				<methods>
 					<include name="initCheck" />
+					<include name="shareTheApp" />
+					<include name="checkAutoUpdate" />
+					<include name="downloadTipShow" />
+					<include name="downloadTipCloseInOtherWay" />
+					<include name="checkSetTheRange" />
+					<include name="aboutTheApp" />
 				</methods>
 			</class>
 		</classes>

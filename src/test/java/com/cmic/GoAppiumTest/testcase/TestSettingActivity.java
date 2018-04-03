@@ -14,6 +14,9 @@ import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -23,7 +26,7 @@ import io.appium.java_client.android.AndroidElement;
 public class TestSettingActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;
-	
+
 	@BeforeMethod
 	public void tipBeforeTestCase() {
 		// 点击同意并使用
@@ -49,7 +52,7 @@ public class TestSettingActivity {
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
-	
+
 	@Test
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
@@ -57,5 +60,105 @@ public class TestSettingActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SettingActivity");
 		ScreenUtil.screenShot("进入必备应用设置中心界面");
 		WaitUtil.implicitlyWait(2);
+	}
+
+	@Test(dependsOnMethods = { "shareTheApp" })
+	@Tips(description = "检查自更新设置的影响")
+	public void checkAutoUpdate() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement updateSetting = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_zero_layout"));
+		updateSetting.click();
+		// TODO 检查影响，0404暂不实现
+		WaitUtil.forceWait(1);
+		updateSetting.click();
+		// TODO 检查影响，0404暂不实现
+		WaitUtil.forceWait(1);
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "检查下载提示的影响")
+	public void downloadTipShow() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
+		notifyLly.click();
+		// TODO 检查影响，0404暂不实现
+		WaitUtil.forceWait(1);
+		boolean notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		assertEquals(notifyLlyIsPresent, true);
+		if (notifyLlyIsPresent) {
+			PageRouteUtil.pressBack();
+		}
+		WaitUtil.forceWait(1);
+	}
+
+	@Test(dependsOnMethods = { "downloadTipShow" })
+	@Tips(description = "检查下载提示的影响")
+	public void downloadTipCloseInOtherWay() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
+		// 重新点击显示NotifyDialog
+		notifyLly.click();
+		WaitUtil.forceWait(1);
+		boolean notifyLlyIsPresent;
+		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		assertEquals(notifyLlyIsPresent, true);
+		AndroidElement clearIcon = mDriver.findElement(By.id("com.cmic.mmnes:id/close_iv"));
+		clearIcon.click();
+		WaitUtil.forceWait(1);
+		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		assertEquals(notifyLlyIsPresent, false);
+		// 重新点击显示NotifyDialog
+		notifyLly.click();
+		WaitUtil.forceWait(1);
+		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		assertEquals(notifyLlyIsPresent, true);
+		AndroidElement cancelIcon = mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_cancel"));
+		cancelIcon.click();
+		WaitUtil.forceWait(1);
+		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		assertEquals(notifyLlyIsPresent, false);
+	}
+
+	@Test(dependsOnMethods = { "downloadTipShow" })
+	@Tips(description = "检查下载提示的影响")
+	public void checkSetTheRange() {//
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement notifyContentTv = mDriver
+				.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_content"));
+		System.out.println(notifyContentTv.getText().replaceAll("[^0-9]", ""));
+	}
+
+	@Test(dependsOnMethods = { "checkSetTheRange", "downloadTipCloseInOtherWay" })
+	@Tips(description = "检查关于应用功能")
+	public void aboutTheApp() throws InterruptedException {//
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement aboutLly = mDriver.findElement(By.id("com.cmic.mmnes:id/ll_about"));
+		aboutLly.click();
+		WaitUtil.forceWait(1);
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.AboutActivity");
+		PageRouteUtil.pressBack();
+		WaitUtil.forceWait(1);
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "检查分享应用功能")
+	public void shareTheApp() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
+		shareLly.click();
+		// TODO 检查影响，0404暂不实现
+		WaitUtil.forceWait(4);
+		boolean shareLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_cancel"));
+		assertEquals(shareLlyIsPresent, true);
+		if (shareLlyIsPresent) {
+			PageRouteUtil.pressBack();
+		}
+		WaitUtil.forceWait(1);
 	}
 }
