@@ -2,6 +2,8 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -11,8 +13,8 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.KeyboardUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -81,16 +83,19 @@ public class TestSearchActivityExtra {
 
 	@Test(dependsOnMethods = { "initCheck" }, timeOut = 15000)
 	@Tips(description = "点击下载", //
-			riskPoint = "由于自动补全控件无法定位，当前预期先使用坐标定位，待解决。不抛出异常，只做正向验证")
+			riskPoint = "由于自动补全控件无法定位，当前预期先使用坐标定位，待解决。不抛出异常，只做正向验证//"
+					+ "待补充Robotium白盒测试")
 	public void checkClickDownload() {
 		LogUtil.printCurrentMethodName();
-		AndroidElement element = mDriver.findElementByClassName("android.widget.ListView");
-		System.out.println(element.getCoordinates().toString());
+//		System.out.println(AppUtil.getStatuBar());
+		System.out.println(AppUtil.getActionBar());
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	public void checkClick2DetailByRalationItem() {
 		LogUtil.printCurrentMethodName();
+		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/status_btn"));
+		System.out.println(eList.size());
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

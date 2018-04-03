@@ -110,7 +110,19 @@ public class AppUtil {
 	}
 
 	public enum HandlerStatus {
-		HYBRID,//混合应用，包含Webview
-		NATIVE//原生应用，不包含Webview
+		HYBRID, // 混合应用，包含Webview
+		NATIVE// 原生应用，不包含Webview
+	}
+
+	public static int getStatuBar() {// 状态栏高度
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		AndroidElement actionBarLly = driver.findElementById("com.cmic.mmnes:id/bg_ll");
+		return actionBarLly.getRect().getHeight();
+	}
+
+	public static int getActionBar() {// ActionBar高度||Search栏高度
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		AndroidElement actionBarLly = driver.findElementById("com.cmic.mmnes:id/search_title");
+		return actionBarLly.getRect().getHeight();
 	}
 }

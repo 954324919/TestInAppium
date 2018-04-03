@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -46,8 +47,23 @@ public class ScreenUtil {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void lockScreen(){
-		DriverManger.getDriver().lockDevice();//锁屏，熄灭屏幕
+
+	public static void lockScreen() {
+		DriverManger.getDriver().lockDevice();// 锁屏，熄灭屏幕
+	}
+
+	public static int getScreenDpi() {
+		String cmdResult = AdbManager.excuteAdbShellGetResultGrep("adb shell dumpsys window displays", "dpi");
+		String[] tar = cmdResult.split(" ");
+		for (int i = 1; i < tar.length; i++) {
+			if (tar[i].equals(" ") || !tar[i].contains("dpi"))
+				continue;
+			try {
+				return Integer.parseInt(tar[i].replaceAll("[a-zA-z]", ""));
+			} catch (Exception e) {
+				return 0;
+			}
+		}
+		return 0;
 	}
 }
