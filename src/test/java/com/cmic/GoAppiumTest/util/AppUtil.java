@@ -13,6 +13,7 @@ import com.cmic.GoAppiumTest.helper.Tips;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.android.AndroidKeyCode;
 
 public class AppUtil {
 	// 先closeApp然后在launchAPP,此类方法都一定程度破坏了App的完整性
@@ -124,5 +125,13 @@ public class AppUtil {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		AndroidElement actionBarLly = driver.findElementById("com.cmic.mmnes:id/search_title");
 		return actionBarLly.getRect().getHeight();
+	}
+
+	@Tips(description="后台运行")
+	public static void runInBackground() {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		driver.runAppInBackground(5);
+		driver.pressKeyCode(AndroidKeyCode.HOME);
+
 	}
 }

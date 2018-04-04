@@ -13,6 +13,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -60,6 +61,66 @@ public class TestSettingActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SettingActivity");
 		ScreenUtil.screenShot("进入必备应用设置中心界面");
 		WaitUtil.implicitlyWait(2);
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "检查分享应用功能")
+	public void shareTheApp() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
+		shareLly.click();
+		// TODO 检查影响，0404暂不实现
+		WaitUtil.forceWait(4);
+		boolean shareLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_cancel"));
+		assertEquals(shareLlyIsPresent, true);
+		if (shareLlyIsPresent) {
+			PageRouteUtil.pressBack();
+		}
+		WaitUtil.forceWait(1);
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	public void shareByLink() throws InterruptedException {
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
+		shareLly.click();
+		// TODO 检查影响，0404暂不实现
+		WaitUtil.forceWait(4);
+		
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareByLinkLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_copy"));
+		shareByLinkLly.click();
+
+	}
+
+	// 在0404，赞不检查其复制的字段
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "测试更多分享|目前只有短信分享的方式", riskPoint = "")
+	public void shareByMore() throws InterruptedException {
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
+		shareLly.click();
+		// TODO 检查影响，0404暂不实现
+		WaitUtil.forceWait(4);
+		
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareByMoreLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_share"));
+		shareByMoreLly.click();
+		// 抓取Toast
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareByMessageLly = mDriver.findElement(By.id("com.cmic.mmnes:id/item_layout"));
+		shareByMessageLly.click();
+		//
+		WaitUtil.forceWait(2);
+		String targetPackageName = ContextUtil.getPackageName();
+		assertEquals(targetPackageName != App.PACKAGE_NAME, true);
+		AppUtil.killApp(targetPackageName);
+		PageRouteUtil.pressHome();
+		WaitUtil.forceWait(2);
+		AppUtil.softResetApp();
 	}
 
 	@Test(dependsOnMethods = { "shareTheApp" })
@@ -142,23 +203,6 @@ public class TestSettingActivity {
 		WaitUtil.forceWait(1);
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.AboutActivity");
 		PageRouteUtil.pressBack();
-		WaitUtil.forceWait(1);
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
-	@Tips(description = "检查分享应用功能")
-	public void shareTheApp() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
-		shareLly.click();
-		// TODO 检查影响，0404暂不实现
-		WaitUtil.forceWait(4);
-		boolean shareLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_cancel"));
-		assertEquals(shareLlyIsPresent, true);
-		if (shareLlyIsPresent) {
-			PageRouteUtil.pressBack();
-		}
 		WaitUtil.forceWait(1);
 	}
 }

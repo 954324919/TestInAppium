@@ -3,6 +3,7 @@ package com.cmic.GoAppiumTest.util;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.Tips;
 
 /**
  * 应用上下文
@@ -19,6 +20,25 @@ public class ContextUtil {
 	// 获取当前应用
 	public static String getCurrentActivity() {
 		return DriverManger.getDriver().currentActivity();
+	}
+
+	//获取应用包名
+	@Tips(riskPoint="实际上是一种取巧的方式，不一定稳定")
+	public static String getPackageName() {
+		String execResult = AdbManager.excuteAdbShellGetResultGrep("adb shell dumpsys activity", "mFocusedActivity");
+		String[] spiltResult = execResult.split(" ");
+		String targetInfo = null;
+		for (String tar : spiltResult) {
+			if (tar.contains("/")) {
+				targetInfo = tar;
+				break;
+			}
+		}
+		if (targetInfo != null) {
+			String[] info = targetInfo.split("/");
+			return info[0];
+		}
+		return "";
 	}
 
 	/**
