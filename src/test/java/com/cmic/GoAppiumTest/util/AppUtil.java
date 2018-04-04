@@ -33,6 +33,20 @@ public class AppUtil {
 			Assert.assertEquals(true, false);
 		}
 	}
+	
+	@Tips(description="后台运行")
+	public static void runInBackground4AWhile() {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		driver.pressKeyCode(AndroidKeyCode.HOME);
+		try {
+			WaitUtil.implicitlyWait(2);
+			AndroidElement remoteAppWidget = DriverManger.getDriver()
+					.findElement(By.xpath("//android.widget.TextView[@text='必备应用' and @content-desc='必备应用']"));
+			remoteAppWidget.click();
+		} catch (NoSuchElementException e) {
+			Assert.assertEquals(true, false);
+		}
+	} 
 
 	// 关闭应用，其实就是按home键把应用置于后台
 	public static void closeApp() {
@@ -125,13 +139,5 @@ public class AppUtil {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		AndroidElement actionBarLly = driver.findElementById("com.cmic.mmnes:id/search_title");
 		return actionBarLly.getRect().getHeight();
-	}
-
-	@Tips(description="后台运行")
-	public static void runInBackground() {
-		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
-		driver.runAppInBackground(5);
-		driver.pressKeyCode(AndroidKeyCode.HOME);
-
 	}
 }

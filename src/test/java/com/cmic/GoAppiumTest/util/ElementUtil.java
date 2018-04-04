@@ -5,6 +5,9 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Heading;
@@ -117,10 +120,22 @@ public class ElementUtil {
 	}
 
 	@Tips(description = "黏贴复制内容", riskPoint = "未测试")
-	public static void CtrlVPaste(AndroidElement el) {
+	public static void ctrlVPaste(AndroidElement el) {
 		el.click(); // 获取焦点
 		// Ctrl+V组合操作
 		DriverManger.getDriver().pressKeyCode(50, AndroidKeyMetastate.META_CTRL_ON);
+	}
+
+	public static boolean isTargetToast(String targetToast) {
+		try {
+			final WebDriverWait wait = new WebDriverWait(DriverManger.getDriver(), 3);
+			Assert.assertNotNull(wait.until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + targetToast + "')]"))));
+			System.out.println("找到了toast "+targetToast);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

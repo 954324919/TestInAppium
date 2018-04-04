@@ -63,15 +63,12 @@ public class TestSettingActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" },enabled=false)
 	@Tips(description = "检查分享应用功能")
 	public void shareTheApp() throws InterruptedException {
+		goShare();
 		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
-		shareLly.click();
 		// TODO 检查影响，0404暂不实现
-		WaitUtil.forceWait(4);
 		boolean shareLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_cancel"));
 		assertEquals(shareLlyIsPresent, true);
 		if (shareLlyIsPresent) {
@@ -79,15 +76,22 @@ public class TestSettingActivity {
 		}
 		WaitUtil.forceWait(1);
 	}
-
-	@Test(dependsOnMethods = { "initCheck" })
-	public void shareByLink() throws InterruptedException {
+	
+	public void goShare(){
 		WaitUtil.implicitlyWait(2);
 		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
 		shareLly.click();
-		// TODO 检查影响，0404暂不实现
-		WaitUtil.forceWait(4);
-		
+		try {
+			WaitUtil.forceWait(4);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test(dependsOnMethods = { "shareTheApp" },enabled=false)
+	public void shareByLink() throws InterruptedException {
+		goShare();
 		LogUtil.printCurrentMethodName();
 		WaitUtil.implicitlyWait(2);
 		AndroidElement shareByLinkLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_copy"));
@@ -96,15 +100,10 @@ public class TestSettingActivity {
 	}
 
 	// 在0404，赞不检查其复制的字段
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "shareByLink" },enabled=false)
 	@Tips(description = "测试更多分享|目前只有短信分享的方式", riskPoint = "")
 	public void shareByMore() throws InterruptedException {
-		WaitUtil.implicitlyWait(2);
-		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
-		shareLly.click();
-		// TODO 检查影响，0404暂不实现
-		WaitUtil.forceWait(4);
-		
+		goShare();
 		LogUtil.printCurrentMethodName();
 		WaitUtil.implicitlyWait(2);
 		AndroidElement shareByMoreLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_share"));
@@ -123,7 +122,7 @@ public class TestSettingActivity {
 		AppUtil.softResetApp();
 	}
 
-	@Test(dependsOnMethods = { "shareTheApp" })
+	@Test(dependsOnMethods = { "initCheck" },enabled=false)
 	@Tips(description = "检查自更新设置的影响")
 	public void checkAutoUpdate() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -137,7 +136,7 @@ public class TestSettingActivity {
 		WaitUtil.forceWait(1);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" },enabled=false)
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipShow() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -154,7 +153,7 @@ public class TestSettingActivity {
 		WaitUtil.forceWait(1);
 	}
 
-	@Test(dependsOnMethods = { "downloadTipShow" })
+	@Test(dependsOnMethods = { "downloadTipShow" },enabled=false)
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipCloseInOtherWay() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -183,7 +182,7 @@ public class TestSettingActivity {
 		assertEquals(notifyLlyIsPresent, false);
 	}
 
-	@Test(dependsOnMethods = { "downloadTipShow" })
+	@Test(dependsOnMethods = { "downloadTipShow" },enabled=false)
 	@Tips(description = "检查下载提示的影响")
 	public void checkSetTheRange() {//
 		LogUtil.printCurrentMethodName();
@@ -193,16 +192,6 @@ public class TestSettingActivity {
 		System.out.println(notifyContentTv.getText().replaceAll("[^0-9]", ""));
 	}
 
-	@Test(dependsOnMethods = { "checkSetTheRange", "downloadTipCloseInOtherWay" })
-	@Tips(description = "检查关于应用功能")
-	public void aboutTheApp() throws InterruptedException {//
-		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement aboutLly = mDriver.findElement(By.id("com.cmic.mmnes:id/ll_about"));
-		aboutLly.click();
-		WaitUtil.forceWait(1);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.AboutActivity");
-		PageRouteUtil.pressBack();
-		WaitUtil.forceWait(1);
-	}
+	
+	
 }
