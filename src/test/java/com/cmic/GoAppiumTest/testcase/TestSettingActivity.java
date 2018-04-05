@@ -3,6 +3,8 @@ package com.cmic.GoAppiumTest.testcase;
 import static org.testng.Assert.assertEquals;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -54,7 +56,7 @@ public class TestSettingActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -63,66 +65,7 @@ public class TestSettingActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
-	@Tips(description = "检查分享应用功能")
-	public void shareTheApp() throws InterruptedException {
-		goShare();
-		LogUtil.printCurrentMethodName();
-		// TODO 检查影响，0404暂不实现
-		boolean shareLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_cancel"));
-		assertEquals(shareLlyIsPresent, true);
-		if (shareLlyIsPresent) {
-			PageRouteUtil.pressBack();
-		}
-		WaitUtil.forceWait(1);
-	}
-	
-	public void goShare(){
-		WaitUtil.implicitlyWait(2);
-		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
-		shareLly.click();
-		try {
-			WaitUtil.forceWait(4);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@Test(dependsOnMethods = { "shareTheApp" },enabled=false)
-	public void shareByLink() throws InterruptedException {
-		goShare();
-		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement shareByLinkLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_copy"));
-		shareByLinkLly.click();
-
-	}
-
-	// 在0404，赞不检查其复制的字段
-	@Test(dependsOnMethods = { "shareByLink" },enabled=false)
-	@Tips(description = "测试更多分享|目前只有短信分享的方式", riskPoint = "")
-	public void shareByMore() throws InterruptedException {
-		goShare();
-		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement shareByMoreLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_share"));
-		shareByMoreLly.click();
-		// 抓取Toast
-		WaitUtil.implicitlyWait(2);
-		AndroidElement shareByMessageLly = mDriver.findElement(By.id("com.cmic.mmnes:id/item_layout"));
-		shareByMessageLly.click();
-		//
-		WaitUtil.forceWait(2);
-		String targetPackageName = ContextUtil.getPackageName();
-		assertEquals(targetPackageName != App.PACKAGE_NAME, true);
-		AppUtil.killApp(targetPackageName);
-		PageRouteUtil.pressHome();
-		WaitUtil.forceWait(2);
-		AppUtil.softResetApp();
-	}
-
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "检查自更新设置的影响")
 	public void checkAutoUpdate() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -136,15 +79,13 @@ public class TestSettingActivity {
 		WaitUtil.forceWait(1);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipShow() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
-		notifyLly.click();
 		// TODO 检查影响，0404暂不实现
-		WaitUtil.forceWait(1);
+		showDialog();
+		WaitUtil.implicitlyWait(2);
 		boolean notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
 		assertEquals(notifyLlyIsPresent, true);
 		if (notifyLlyIsPresent) {
@@ -153,7 +94,18 @@ public class TestSettingActivity {
 		WaitUtil.forceWait(1);
 	}
 
-	@Test(dependsOnMethods = { "downloadTipShow" },enabled=false)
+	public void showDialog() {
+		WaitUtil.implicitlyWait(2);
+		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
+		notifyLly.click();
+		try {
+			WaitUtil.forceWait(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipCloseInOtherWay() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -182,16 +134,63 @@ public class TestSettingActivity {
 		assertEquals(notifyLlyIsPresent, false);
 	}
 
-	@Test(dependsOnMethods = { "downloadTipShow" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "检查下载提示的影响")
-	public void checkSetTheRange() {//
+	public void setRangeByEditText() {
+		showDialog();
 		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement et = mDriver.findElement(By.id("com.cmic.mmnes:id/flow_setting_et"));
+		et.clear();
+		et.sendKeys("250");
+		ScreenUtil.screenShot("输入250M时提示");
+		// 点击确认
+		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
 		WaitUtil.implicitlyWait(2);
 		AndroidElement notifyContentTv = mDriver
 				.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_content"));
-		System.out.println(notifyContentTv.getText().replaceAll("[^0-9]", ""));
+		String setDownloadRangerResult = notifyContentTv.getText().replaceAll("[^0-9]", "");
+		assertEquals(setDownloadRangerResult, "250");
+		// 回复原先的Seekbar状态
+		showDialog();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement et1 = mDriver.findElement(By.id("com.cmic.mmnes:id/flow_setting_et"));
+		et1.clear();
+		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
 	}
 
-	
-	
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void setRangeBySeekbar() throws InterruptedException {
+		showDialog();
+		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(2);
+		String seekBarUiSelector = "new UiSelector().className(\"android.widget.SeekBar\").resourceId(\"com.cmic.mmnes:id/flow_seekbar\")";
+		AndroidElement seekbar = mDriver.findElementByAndroidUIAutomator(seekBarUiSelector);
+		seekbar.clear();
+		// 点击Seekbar中间点
+		// 获取控件开始位置的坐标轴
+		Point start = seekbar.getLocation();
+		int startX = start.x;
+		int startY = start.y;
+		// 获取控件宽高
+		Dimension q = seekbar.getSize();
+		int x = q.getWidth();
+		int y = q.getHeight();
+		// 计算出控件结束坐标
+		int endX = x + startX;
+		int endY = y + startY;
+		// 计算中间点坐标
+		int centreX = (endX + startX) / 2;
+		int centreY = (endY + startY) / 2;
+		// 点击
+		ScreenUtil.singleTap(centreX, centreY);
+		WaitUtil.forceWait(1);
+		ScreenUtil.screenShot("输入250M时提示");
+		// 点击确认
+		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
+		WaitUtil.implicitlyWait(2);
+		AndroidElement notifyContentTv = mDriver
+				.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_content"));
+		assertEquals(notifyContentTv.getText().replaceAll("[^0-9]", ""), "250");
+	}
 }

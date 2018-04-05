@@ -128,7 +128,8 @@
 					<include name="checkAutoUpdate" />
 					<include name="downloadTipShow" />
 					<include name="downloadTipCloseInOtherWay" />
-					<include name="checkSetTheRange" />
+					<include name="setRangeByEditText" />
+					<include name="setRangeBySeekbar" />
 				</methods>
 			</class>
 
