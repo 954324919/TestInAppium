@@ -143,7 +143,7 @@
 				</methods>
 			</class>
 
-			<!-- 必备应用的关于应用测试 -->
+			<!-- 必备应用的分享应用测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestShareActivity">
 				<methods>
 					<include name="initCheck" />
@@ -152,6 +152,31 @@
 					<include name="shareByMore" />
 				</methods>
 			</class>
+			
+			
+			<!-- 必备应用的主页集团广告与FavorActivity测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestWebviewADActivity">
+				<methods>
+					<include name="initCheck" />
+				</methods>
+			</class>
+			
+			
+			<!-- 必备应用的搜索结果SearchActivity#ResultFragment测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchResultActivity">
+				<methods>
+					<include name="initCheck" />
+				</methods>
+			</class>
+			
+			
+			<!-- 必备应用的应用详情页DetailActivity测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestDetailActivity">
+				<methods>
+					<include name="initCheck" />
+				</methods>
+			</class>
+			
 		</classes>
 	</test>
 </suite>
