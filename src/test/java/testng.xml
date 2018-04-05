@@ -158,6 +158,10 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestWebviewADActivity">
 				<methods>
 					<include name="initCheck" />
+					<include name="checkMainSoftAdShow" />
+					<include name="checkMainSoftAdContent" />
+					<include name="checMainGameAdShow" />
+					<include name="checkMainGameAdContent" />
 				</methods>
 			</class>
 			

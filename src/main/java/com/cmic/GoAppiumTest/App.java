@@ -28,7 +28,8 @@ public class App {
 	//TODO 不稳定,对于不同版本需要进行修改
 	//必备1.5的一些界面参数，用于一些难以进行定位的控件
 	public static final int STATUS_BAR_HEIGHT_DP = 24; 
-	public static final int TITLE_BAR_HEIGHT_DP = 50; 
+	public static final int TITLE_BAR_HEIGHT_DP = 50;
+	public static final int MAIN_AD_WEBVIEW_HEIGHT = 148;
 	//搜索联想
 	public static final int RELATION_DIRECTION_ITEM_HEIGHT_DP= 85;
 	public static final int RELATION_NORMAL_ITEM_HEIGHT_DP= 28;

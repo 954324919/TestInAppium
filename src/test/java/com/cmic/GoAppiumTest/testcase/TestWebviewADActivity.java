@@ -2,6 +2,8 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -14,8 +16,10 @@ import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -51,7 +55,7 @@ public class TestWebviewADActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -60,24 +64,61 @@ public class TestWebviewADActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test
-	public void checMainGameAdShow() {
-
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Tips(description = "检查SoftWare底部的集团广告", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
+	public void checkMainSoftAdShow() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		String AdClass = "android.support.v4.view.ViewPager";
+		List<AndroidElement> elementList = mDriver.findElementsByClassName(AdClass);
+		WaitUtil.implicitlyWait(16);
+		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/index_item_rl"));
+		ScrollUtil.scrollToBase();
+		WaitUtil.forceWait(2);
+		String gameAdClass = "android.support.v4.view.ViewPager";
+		List<AndroidElement> elementListAfterScroll = mDriver.findElementsByClassName(gameAdClass);
+		// 滑动到底部，集团广告的ViewPage，主页的ViewPage
+		assertEquals(elementList.size() != elementListAfterScroll.size(), true);
 	}
 
-	@Test
-	public void checkMainGameAdContent() {
-
+	@Test(dependsOnMethods = { "checkMainSoftAdShow" }, enabled = false)
+	public void checkMainSoftAdContent() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
+		// 进入该方法说明了底部的集团广告存在
+		elementList.get(elementList.size() - 1).click();
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.FavorActivity");
+		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
+		e.click();
+		WaitUtil.forceWait(2);
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 
-	@Test
-	public void checkMainSoftAdShow() {
-
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Tips(description = "检查GameTab底部的集团广告", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
+	public void checMainGameAdShow() throws InterruptedException {
+		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
+		LogUtil.printCurrentMethodName();
+		String gameAdClass = "android.support.v4.view.ViewPager";
+		List<AndroidElement> elementList = mDriver.findElementsByClassName(gameAdClass);
+		WaitUtil.implicitlyWait(16);
+		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/index_item_rl"));
+		ScrollUtil.scrollToBase();
+		WaitUtil.forceWait(2);
+		List<AndroidElement> elementListAfterScroll = mDriver.findElementsByClassName(gameAdClass);
+		// 滑动到底部，集团广告的ViewPage，主页的ViewPage
+		assertEquals(elementList.size() != elementListAfterScroll.size(), true);
 	}
 
-	@Test
-	public void checkMainSoftAdContent() {
-
+	@Test(dependsOnMethods = { "checMainGameAdShow" }, enabled = false)
+	public void checkMainGameAdContent() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
+		// 进入该方法说明了底部的集团广告存在
+		elementList.get(elementList.size() - 1).click();
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.FavorActivity");
+		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
+		e.click();
+		WaitUtil.forceWait(2);
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
-
 }
