@@ -119,6 +119,15 @@
 					<include name="initCheck" />
 					<include name="checkSlide2OtherTab" />
 					<include name="checkClick2OtherTab" />
+					<include name="checkRamdomEnterDetail" />
+					<include name="checkUpdateOne" />
+					<include name="checkUpdateAll" />
+					<include name="checkUpdate2Baseline" />
+					<include name="checkDownloadPauseAndResumeOne" />
+					<include name="checkDownloadPauseAndResumeAll" />
+					<include name="checkDeleteDownloadTask" />
+					<include name="checkDeleteTaskAndKeepTheFile" />
+
 				</methods>
 			</class>
 			<!-- 必备应用的设置管理测试 -->
@@ -152,8 +161,8 @@
 					<include name="shareByMore" />
 				</methods>
 			</class>
-			
-			
+
+
 			<!-- 必备应用的主页集团广告与FavorActivity测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestWebviewADActivity">
 				<methods>
@@ -164,23 +173,42 @@
 					<include name="checkMainGameAdContent" />
 				</methods>
 			</class>
-			
-			
+
+
 			<!-- 必备应用的搜索结果SearchActivity#ResultFragment测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestSearchResultActivity">
 				<methods>
 					<include name="initCheck" />
+					<include name="checkSild2OtherTab" />
+					<include name="checkClick2OtherTab" />
+					<include name="checkRandomClick2Detail" />
+					<include name="checkRandomClick2Download" />
+					<include name="checkDownloadButtonUpdate" />
+					<include name="checkSearch2Baseline" />
+					<include name="checkErrorInput4EmptyPage" />
 				</methods>
 			</class>
-			
-			
+
+
 			<!-- 必备应用的应用详情页DetailActivity测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestDetailActivity">
 				<methods>
 					<include name="initCheck" />
+					<include name="checkActionBarSearch" />
+					<include name="checkTheImageScrollView" />  <!-- 100 MileStone -->
+					<include name="checkImageBrower" />
+					<include name="checkWithoutInstall" />
+					<include name="checkBriefIntroduction" />
+					<include name="checkAdInDetail" />
+					<include name="checkOtherInstall" />
+					<include name="checkPermission" />
+					<include name="checkTipOff" />
+					<include name="checkPostTipOffReport" />
+					<include name="checkBottomDownload" />
+					<include name="checkRightTopNumTip" />
 				</methods>
 			</class>
-			
+
 		</classes>
 	</test>
 </suite>

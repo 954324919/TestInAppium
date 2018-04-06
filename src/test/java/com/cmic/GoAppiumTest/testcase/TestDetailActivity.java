@@ -34,6 +34,8 @@ public class TestDetailActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;
 
+	private String mTempItemName;
+
 	@BeforeMethod
 	public void tipBeforeTestCase() {
 		// 点击同意并使用
@@ -59,6 +61,9 @@ public class TestDetailActivity {
 		WaitUtil.implicitlyWait(5);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
 		AndroidElement e = eList.get(index);
+		WaitUtil.implicitlyWait(2);
+		mTempItemName = mDriver.findElements(By.id("com.cmic.mmnes:id/recommend_item_appname_tv")).get(index).getText();
+		System.out.println(mTempItemName);
 		e.click();
 		System.out.println("测试用例集[" + mTag + "]开始");
 	}
@@ -76,9 +81,9 @@ public class TestDetailActivity {
 		ScreenUtil.screenShot("进入必备详情页面");
 		WaitUtil.implicitlyWait(2);
 	}
-	
-	@Test
-	public void checkActionBarSearch() throws InterruptedException{
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkActionBarSearch() throws InterruptedException {
 		mDriver.findElement(By.id("com.cmic.mmnes:id/search_iv")).click();
 		// 是否进入SearchActivity页面
 		WaitUtil.forceWait(2);
@@ -86,6 +91,66 @@ public class TestDetailActivity {
 		PageRouteUtil.pressBack();
 		WaitUtil.forceWait(1);
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkTheImageScrollView() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkImageBrower() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Tips(description = "检查体验免安装", riskPoint = "可能不存在")
+	public void checkWithoutInstall() {
+		// TODO
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkBriefIntroduction() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkAdInDetail() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkOtherInstall() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkPermission() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Tips(description = "测试举报")
+	public void checkTipOff() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Tips(description = "测试举报页面", riskPoint = "造成脏数据|遍历深度浅")
+	public void checkPostTipOffReport() {
+		// TODO
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Tips(description = "测试下载|不同网络状态和Notice级别可能存在影响")
+	public void checkBottomDownload() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Tips(description = "测试下载计数")
+	public void checkRightTopNumTip() {
+
 	}
 
 }

@@ -23,6 +23,7 @@ import io.appium.java_client.android.AndroidElement;
 
 /**
  * @TODO 后期可单独抽离并丰富双卡，不同模组的测试
+ * @TODO 可和下载联合测试流量统计，但不够稳定
  */
 public class TestTrafficManagerActivity {
 

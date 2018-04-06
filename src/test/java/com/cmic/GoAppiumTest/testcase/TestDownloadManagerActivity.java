@@ -23,6 +23,13 @@ import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
+/**
+ * 测试下载管理页面
+ * 
+ * @author kiwi
+ * @风险 不同下载的页面可能启动页的不同
+ * @TODO 添加不同的其他的测试，如锁屏选中，增加对下载任务的压力，检查稳定性
+ */
 public class TestDownloadManagerActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;
@@ -99,5 +106,45 @@ public class TestDownloadManagerActivity {
 		WaitUtil.forceWait(3);
 		Assert.assertEquals(updateTabTip.isSelected(), true);
 		Assert.assertEquals(downloadTabTip.isSelected(), false);
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkRamdomEnterDetail() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkUpdateOne() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkUpdateAll() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkUpdate2Baseline() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkDownloadPauseAndResumeOne() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkDownloadPauseAndResumeAll() {
+
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkDeleteDownloadTask() {
+
+	}
+
+	@Tips(description = "取消下载但保存文件", riskPoint = "缺乏稳定性较高的检验方法,先保留")
+	public void checkDeleteTaskAndKeepTheFile() {
+
 	}
 }
