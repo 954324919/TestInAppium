@@ -2,6 +2,8 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -13,10 +15,14 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -63,7 +69,7 @@ public class TestSearchResultActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test(enabled = false)
+	@Test
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -74,38 +80,122 @@ public class TestSearchResultActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkSild2OtherTab() {
-
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "滑动切换页面", riskPoint = "UI变动")
+	public void checkSild2OtherTab() throws InterruptedException {
+		AndroidElement e = mDriver.findElementByAndroidUIAutomator(
+				"new UiSelector().className(\"android.widget.TextView\").textContains(\"全部\")");
+		assertEquals(e.isSelected(), true);
+		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
+		WaitUtil.forceWait(3);
+		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
+		WaitUtil.forceWait(3);
+		assertEquals(e.isSelected(), false);
+		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
+		WaitUtil.forceWait(3);
+		assertEquals(e.isSelected(), false);
+		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
+		WaitUtil.forceWait(3);
+		AndroidElement e1 = mDriver.findElementByAndroidUIAutomator(
+				"new UiSelector().className(\"android.widget.TextView\").textContains(\"全部\")");
+		assertEquals(e1.isSelected(), true);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkClick2OtherTab() {
+	@Tips(description = "测试点击切换", riskPoint = "页面变动|网络变动")
+	public void checkClick2OtherTab() throws InterruptedException {
+		AndroidElement eAll = mDriver.findElementByAndroidUIAutomator(
+				"new UiSelector().className(\"android.widget.TextView\").textContains(\"全部\")");
+		AndroidElement eSoftware = mDriver.findElementByAndroidUIAutomator(
+				"new UiSelector().className(\"android.widget.TextView\").textContains(\"软件\")");
+		AndroidElement eGame = mDriver.findElementByAndroidUIAutomator(
+				"new UiSelector().className(\"android.widget.TextView\").textContains(\"游戏\")");
+		assertEquals(eAll.isSelected(), true);
+		eSoftware.click();// 点击切换到SoftWartTab
+		WaitUtil.implicitlyWait(5);
+		List<AndroidElement> eListSoft = mDriver.findElements(By.id("com.cmic.mmnes:id/item_layout"));
+		assertEquals(eListSoft.size() > 0, true);
+		assertEquals(eAll.isSelected(), false);
 
+		eGame.click();
+		WaitUtil.implicitlyWait(5);
+		List<AndroidElement> eListGame = mDriver.findElements(By.id("com.cmic.mmnes:id/item_layout"));
+		assertEquals(eListGame.size() > 0, true);
+		assertEquals(eAll.isSelected(), false);
+
+		eAll.click();
+		WaitUtil.implicitlyWait(5);
+		List<AndroidElement> eListAll = mDriver.findElements(By.id("com.cmic.mmnes:id/item_layout"));
+		assertEquals(eListAll.size() > 0, true);
+		assertEquals(eAll.isSelected(), true);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkRandomClick2Detail() {
-
+	public void checkRandomClick2Detail() throws InterruptedException {
+		List<AndroidElement> eListItem = mDriver.findElements(By.id("com.cmic.mmnes:id/item_layout"));
+		eListItem.get(RandomUtil.getRandomNum(eListItem.size() - 1));
+		WaitUtil.forceWait(3);
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
+		PageRouteUtil.pressBack();
+		WaitUtil.forceWait(2);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkRandomClick2Download() {
-
+	public void checkRandomClick2Download() throws InterruptedException {
+		String statusBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"下载\").resourceId(\"com.cmic.mmnes:id/status_btn\")";
+		List<AndroidElement> eListStatusBtn = mDriver.findElementsByAndroidUIAutomator(statusBtnUiSelector);
+		assertEquals(eListStatusBtn.size() > 0, true);
+		//
+		AndroidElement targetElement = eListStatusBtn.get(RandomUtil.getRandomNum(eListStatusBtn.size() - 1));
+		assertEquals(targetElement.getText(), "下载");
+		targetElement.click();
+		// TODO 网速判断
+		// 开始下载
+		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_down_goon")).click();
+		WaitUtil.forceWait(2);
+		assertEquals(targetElement.getText(), "暂停");
+		// 暂停下载
+		targetElement.click();
+		WaitUtil.forceWait(1);
+		assertEquals(targetElement.getText(), "继续");
+		// TODO 不稳定待日后完善
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkDownloadButtonUpdate() {
-
+	public void checkDownloadButtonOpenStatus() {
+		String statusBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"打开\").resourceId(\"com.cmic.mmnes:id/status_btn\")";
+		List<AndroidElement> eListStatusBtn = mDriver.findElementsByAndroidUIAutomator(statusBtnUiSelector);
+		int statusOpenBtnNum = eListStatusBtn.size();
+		if (statusOpenBtnNum > 0) {
+			eListStatusBtn.get(RandomUtil.getRandomNum(statusOpenBtnNum) - 1).click();
+			String newPackageName = ContextUtil.getPackageName();
+			assertEquals(newPackageName != App.PACKAGE_NAME, true);
+			// TODO 不稳定
+			AppUtil.softResetApp();
+		}
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkSearch2Baseline() {
-
+		WaitUtil.implicitlyWait(5);
+		AndroidElement eItem = mDriver.findElement(By.id("com.cmic.mmnes:id/item_layout"));
+		ScrollUtil.scrollToBase();
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkErrorInput4EmptyPage() {
+	public void checkErrorInput4EmptyPage() throws InterruptedException {
+		String randomString = RandomUtil.getRandomString(10);
+		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
+		searchEt.click();
+		searchEt.clear();
+		searchEt.sendKeys(randomString);
+		WaitUtil.implicitlyWait(2);
+		mDriver.findElement(By.id("com.cmic.mmnes:id/search_icon_layout")).click();
+		WaitUtil.forceWait(2);
 
+		// 查找
+		boolean isPresent = ElementUtil.isElementExistByXpath(
+				"new UiSelector().className(\"android.widget.TextView\").textContains(\"建议你 \")");
+		assertEquals(isPresent, true);
 	}
 }
