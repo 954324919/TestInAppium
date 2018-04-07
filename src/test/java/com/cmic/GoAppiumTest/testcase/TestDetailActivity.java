@@ -78,7 +78,7 @@ public class TestDetailActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test(enabled=false)
+	@Test()
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -87,7 +87,7 @@ public class TestDetailActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkActionBarSearch() throws InterruptedException {
 		mDriver.findElement(By.id("com.cmic.mmnes:id/search_iv")).click();
 		// 是否进入SearchActivity页面
@@ -98,7 +98,7 @@ public class TestDetailActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkTheImageScrollView() throws InterruptedException {
 		ElementUtil.swipeControl(By.id("com.cmic.mmnes:id/horizontal_scroll_view"), Heading.LEFT);
 		WaitUtil.forceWait(2);
@@ -107,7 +107,7 @@ public class TestDetailActivity {
 		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkImageBrower() throws InterruptedException {
 		List<AndroidElement> imageList = mDriver.findElements(By.id("com.cmic.mmnes:id/recycledImageView"));
 		if (imageList.size() > 0) {
@@ -117,7 +117,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "checkImageBrower" },enabled=false)
+	@Test(dependsOnMethods = { "checkImageBrower" })
 	@Tips(description = "检查ImageBrowerActivity进行操作")
 	public void opearaInImageBrower() {
 		// TODO 一次尝试
@@ -137,7 +137,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查体验免安装", riskPoint = "可能不存在")
 	public void checkWithoutInstall() throws InterruptedException {
 		if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/videoImgLayout"))) {
@@ -150,7 +150,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查应用简介", riskPoint = "点击控件可能不在界面之内")
 	public void checkBriefIntroduction() {
 		ScrollUtil.scrollToBase();
@@ -165,7 +165,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查福利Item", riskPoint = "可能不存在")
 	public void checkAdInDetail() throws InterruptedException {
 		if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/detail_benefit_layout"))) {
@@ -177,7 +177,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查其他人正在装")
 	public void checkOtherInstall() throws InterruptedException {
 		String otherInstallItemUiSelector = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/app_name\")";
@@ -194,7 +194,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击其他人正在安装的下载按钮")
 	public void checkDownloadInOtherInstall() throws InterruptedException {
 		String statusBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"下载\").resourceId(\"com.cmic.mmnes:id/status_btn\")";
@@ -217,7 +217,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查权限")
 	public void checkPermission() throws InterruptedException {
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/quanxian"));
@@ -233,7 +233,7 @@ public class TestDetailActivity {
 
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试举报")
 	public void checkTipOff() throws InterruptedException {
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/jubao"));
@@ -242,7 +242,7 @@ public class TestDetailActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.AppReportActivity");
 	}
 
-	@Test(dependsOnMethods = { "checkTipOff" }, enabled = false)
+	@Test(dependsOnMethods = { "checkTipOff" })
 	@Tips(description = "测试举报页面", riskPoint = "造成脏数据|遍历深度浅")
 	public void checkPostTipOffReport() {
 		// TODO
@@ -275,13 +275,7 @@ public class TestDetailActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
 	}
 
-	private void qiuckToastCheck() {
-		mDriver.findElement(By.id("com.cmic.mmnes:id/submit_button")).click();
-		String reportPostErrorToast = "请完成所有的必填项内容后天再提交";
-		Assert.assertEquals(ElementUtil.isTargetToast(reportPostErrorToast), true);
-	}
-
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试下载|不同网络状态和Notice级别可能存在影响")
 	public void checkBottomDownload() throws InterruptedException {
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/install_btn"));
@@ -299,11 +293,16 @@ public class TestDetailActivity {
 		assertEquals(e.getText().contains("继续"), true);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试下载计数")
 	public void checkRightTopNumTip() {
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/update_point_iv"));
 		assertEquals(e.getText().equals(""), true);
 	}
 
+	private void qiuckToastCheck() {
+		mDriver.findElement(By.id("com.cmic.mmnes:id/submit_button")).click();
+		String reportPostErrorToast = "请完成所有的必填项内容后天再提交";
+		Assert.assertEquals(ElementUtil.isTargetToast(reportPostErrorToast), true);
+	}
 }

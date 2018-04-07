@@ -186,6 +186,27 @@
 					<include name="checkErrorInput4EmptyPage" />
 				</methods>
 			</class>
+			
+			<!-- 必备应用的应用详情页DetailActivity测试 -->
+		<class name="com.cmic.GoAppiumTest.testcase.TestDetailActivity">
+			<methods>
+				<include name="initCheck" />
+				<include name="checkActionBarSearch" />
+				<include name="checkTheImageScrollView" />  <!-- 100 MileStone -->
+				<include name="checkImageBrower" />
+				<include name="opearaInImageBrower" />
+				<include name="checkWithoutInstall" />
+				<include name="checkBriefIntroduction" />
+				<include name="checkAdInDetail" />
+				<include name="checkOtherInstall" />
+				<include name="checkDownloadInOtherInstall" />
+				<include name="checkPermission" />
+				<include name="checkTipOff" />
+				<include name="checkPostTipOffReport" />
+				<include name="checkBottomDownload" />
+				<include name="checkRightTopNumTip" />
+			</methods>
+		</class>
 		</classes>
 	</test>
 </suite>
