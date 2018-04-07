@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -13,6 +14,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.RandomUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -82,6 +84,22 @@ public class ScreenUtil {
 		DriverManger.getDriver().tap(1, x, y, 100);
 	}
 
+	public static void singleRandomTap() {
+		int randomX = RandomUtil.getRandomNum(getDeviceWidth());
+		int randomY = RandomUtil.getRandomNum(getDeviceHeight());
+		singleTap(randomX, randomY);
+	}
+
+	public static void doubleTap(int x, int y) {
+		DriverManger.getDriver().tap(2, x, y, 100);
+	}
+
+	public static void doubleRandomTap() {
+		int randomX = RandomUtil.getRandomNum(getDeviceWidth());
+		int randomY = RandomUtil.getRandomNum(getDeviceHeight());
+		doubleTap(randomX, randomY);
+	}
+
 	public static int dp2Px(int dp) {
 		getScreenDpi();
 		return (int) (dp * (DPI / 160.0));
@@ -98,5 +116,9 @@ public class ScreenUtil {
 
 	public static int getActionBarHeight() {
 		return dp2Px(App.TITLE_BAR_HEIGHT_DP);
+	}
+	
+	public static void zoom(AndroidElement el){
+		DriverManger.getDriver().zoom(el);
 	}
 }

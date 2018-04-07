@@ -197,10 +197,12 @@
 					<include name="checkActionBarSearch" />
 					<include name="checkTheImageScrollView" />  <!-- 100 MileStone -->
 					<include name="checkImageBrower" />
+					<include name="opearaInImageBrower" />
 					<include name="checkWithoutInstall" />
 					<include name="checkBriefIntroduction" />
 					<include name="checkAdInDetail" />
 					<include name="checkOtherInstall" />
+					<include name="checkDownloadInOtherInstall" />
 					<include name="checkPermission" />
 					<include name="checkTipOff" />
 					<include name="checkPostTipOffReport" />

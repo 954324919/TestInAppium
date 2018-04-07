@@ -68,14 +68,7 @@ public class ScrollUtil {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		int width = driver.manage().window().getSize().width;
 		int height = driver.manage().window().getSize().height;
-		String str1;
-		String str2;
-		do {
-			str1 = driver.getPageSource();
-			driver.swipe(width / 2, height * 3 / 4, width / 2, height / 4, 500);
-			WaitUtil.implicitlyWait(1);
-			str2 = driver.getPageSource();
-		} while (!str1.equals(str2));
+	 
 	}
 
 	public static void scrollToTargetWidget(AndroidDriver<AndroidElement> driver, By by) {

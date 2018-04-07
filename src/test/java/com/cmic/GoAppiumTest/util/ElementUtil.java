@@ -71,7 +71,6 @@ public class ElementUtil {
 		// 计算中间点坐标
 		int centreX = (endX + startX) / 2;
 		int centreY = (endY + startY) / 2;
-
 		switch (heading) {
 		// 向上滑动
 		case UP:
@@ -80,6 +79,12 @@ public class ElementUtil {
 		// 向下滑动
 		case DOWN:
 			driver.swipe(centreX, endY - 1, centreX, startY + 1, 1500);
+			break;
+		case LEFT:
+			driver.swipe(endX - 1, centreY, startX + 1, centreY, 1500);
+			break;
+		case RIGHT:
+			driver.swipe(startX + 1, centreY, endX - 1, centreY, 1500);
 			break;
 		default:
 			break;
@@ -131,7 +136,7 @@ public class ElementUtil {
 			final WebDriverWait wait = new WebDriverWait(DriverManger.getDriver(), 3);
 			Assert.assertNotNull(wait.until(ExpectedConditions
 					.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + targetToast + "')]"))));
-			System.out.println("找到了toast "+targetToast);
+			System.out.println("找到了toast " + targetToast);
 			return true;
 		} catch (Exception e) {
 			return false;
