@@ -120,9 +120,9 @@
 					<include name="checkSlide2OtherTab" />
 					<include name="checkClick2OtherTab" />
 					<include name="checkRamdomEnterDetail" />
+					<include name="checkUpdate2Baseline" />
 					<include name="checkUpdateOne" />
 					<include name="checkUpdateAll" />
-					<include name="checkUpdate2Baseline" />
 					<include name="checkDownloadPauseAndResumeOne" />
 					<include name="checkDownloadPauseAndResumeAll" />
 					<include name="checkDeleteDownloadTask" />
@@ -214,4 +214,3 @@
 		</classes>
 	</test>
 </suite>
-<!-- <classes> </classes> -->
