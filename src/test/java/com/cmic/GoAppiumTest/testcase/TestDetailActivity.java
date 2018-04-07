@@ -78,7 +78,7 @@ public class TestDetailActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(enabled=false)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -117,7 +117,7 @@ public class TestDetailActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "checkImageBrower" })
+	@Test(dependsOnMethods = { "checkImageBrower" },enabled=false)
 	@Tips(description = "检查ImageBrowerActivity进行操作")
 	public void opearaInImageBrower() {
 		// TODO 一次尝试
@@ -194,6 +194,7 @@ public class TestDetailActivity {
 		}
 	}
 
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "点击其他人正在安装的下载按钮")
 	public void checkDownloadInOtherInstall() throws InterruptedException {
 		String statusBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"下载\").resourceId(\"com.cmic.mmnes:id/status_btn\")";

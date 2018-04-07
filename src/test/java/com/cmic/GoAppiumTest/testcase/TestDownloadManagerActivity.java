@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -54,6 +55,7 @@ public class TestDownloadManagerActivity {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
 		// TODO 在没有卸载软件时，可能会报错
+		// PageRedirect.redirect2DownloadManagerActivity();
 		WaitUtil.implicitlyWait(2);// 等待1S
 		AndroidElement managerRly = mDriver.findElement(By.id("com.cmic.mmnes:id/managerview"));
 		managerRly.click();
@@ -95,10 +97,10 @@ public class TestDownloadManagerActivity {
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkClick2OtherTab() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
 		WaitUtil.implicitlyWait(3);
 		AndroidElement downloadTabTip = mDriver.findElementByAndroidUIAutomator(
 				"new UiSelector().className(\"android.widget.TextView\").textContains(\"下载\")");
+		LogUtil.printCurrentMethodName();
 		AndroidElement updateTabTip = mDriver.findElementByAndroidUIAutomator(
 				"new UiSelector().className(\"android.widget.TextView\").textContains(\"更新\")");
 		downloadTabTip.click();
@@ -112,14 +114,22 @@ public class TestDownloadManagerActivity {
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	public void checkUpdate2Baseline() {
+		LogUtil.printCurrentMethodName();
+		ScrollUtil.scrollToBase();
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "点击更新的Item", riskPoint = "页面不显示")
 	public void checkRamdomEnterDetail() throws InterruptedException {
 		switchUpdate();
+		LogUtil.printCurrentMethodName();
 		WaitUtil.implicitlyWait(3);
 		List<AndroidElement> eList = mDriver.findElements(By.className("android.widget.RelativeLayout"));
 		if (eList.size() > 0) {
 			int minItemSize = Math.min(eList.size(), 5);
-			eList.get(RandomUtil.getRandomNum(minItemSize)).click();
+			int randomIndex = RandomUtil.getRandomNum(minItemSize);
+			eList.get(randomIndex).click();
 			WaitUtil.forceWait(3);
 			assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
 			WaitUtil.implicitlyWait(3);
@@ -128,28 +138,15 @@ public class TestDownloadManagerActivity {
 		}
 	}
 
-	public void switchUpdate() throws InterruptedException {
-		AndroidElement eCurrentTab = mDriver.findElementByAndroidUIAutomator(
-				"new UiSelector().className(\"android.widget.TextView\").textContains(\"更新\")");
-		if (!eCurrentTab.isSelected()) {
-			eCurrentTab.click();
-			WaitUtil.forceWait(2);
-		}
-	}
-
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkUpdate2Baseline() {
-		ScrollUtil.scrollToBase();
-	}
-
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkUpdateOne() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
 		String updateBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"更新\").resourceId(\"com.cmic.mmnes:id/status_btn\")";
 		List<AndroidElement> eList = mDriver.findElementsByAndroidUIAutomator(updateBtnUiSelector);
 		if (eList.size() > 0) {
 			int minItemSize = Math.min(eList.size(), 5);
 			AndroidElement targetElement = eList.get(RandomUtil.getRandomNum(minItemSize));
-			assertEquals(targetElement.getText(), "下载");
+			assertEquals(targetElement.getText(), "更新");
 			targetElement.click();
 			WaitUtil.forceWait(2);
 			// TODO 网速判断
@@ -165,9 +162,11 @@ public class TestDownloadManagerActivity {
 		}
 	}
 
+	// TODO 过于耗费流量暂时关闭
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "点击全部下载|马上切换到下载页关闭")
 	public void checkUpdateAll() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/updateall_tx"));
 		e.click();
 		WaitUtil.forceWait(1);
@@ -177,6 +176,7 @@ public class TestDownloadManagerActivity {
 	@Tips(description = "切换到下载页面")
 	public void checkDownloadPauseAndResumeAll() throws InterruptedException {
 		// 切换到下载页面
+		LogUtil.printCurrentMethodName();
 		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/function_tv"));
 		e.click();
@@ -185,6 +185,7 @@ public class TestDownloadManagerActivity {
 
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkDownloadPauseAndResumeOne() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/status_btn"));
 		if (eList.size() > 0) {
 			int minItemSize = Math.min(eList.size(), 5);
@@ -204,17 +205,26 @@ public class TestDownloadManagerActivity {
 		}
 	}
 
+	// @Test(dependsOnMethods = { "checkDownloadPauseAndResumeAll" })
 	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void checkDeleteDownloadTask() {
+		LogUtil.printCurrentMethodName();
+
+		// TODO 暂时加入
+		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
+
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/delete_btn"));
 		if (eList.size() > 0) {
 			int minItemSize = Math.min(eList.size(), 5);
 			WaitUtil.implicitlyWait(3);
-			String temp = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name")).get(minItemSize).getText();
-			AndroidElement targetElement = eList.get(RandomUtil.getRandomNum(minItemSize));
+			int randomIndex = RandomUtil.getRandomNum(minItemSize);
+			String temp = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name")).get(randomIndex).getText();
+			AndroidElement targetElement = eList.get(randomIndex);
 			// 点击删除
 			targetElement.click();
-			//
+			// 点击确认
+			WaitUtil.implicitlyWait(3);
+			mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
 			WaitUtil.implicitlyWait(3);
 			String deleteUiSelect = "new UiSelector().className(\"android.widget.TextView\").textContains(\"" + temp
 					+ "\").resourceId(\"com.cmic.mmnes:id/app_name\")";
@@ -222,8 +232,21 @@ public class TestDownloadManagerActivity {
 		}
 	}
 
+	// @Test(dependsOnMethods = { "checkDownloadPauseAndResumeAll" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	@Tips(description = "取消下载但保存文件", riskPoint = "缺乏稳定性较高的检验方法,先保留")
 	public void checkDeleteTaskAndKeepTheFile() {
 		// TODO 业务逻辑不清楚，不写用例
+		LogUtil.printCurrentMethodName();
+	}
+
+	@Tips(description = "普通方法")
+	private void switchUpdate() throws InterruptedException {
+		AndroidElement eCurrentTab = mDriver.findElementByAndroidUIAutomator(
+				"new UiSelector().className(\"android.widget.TextView\").textContains(\"更新\")");
+		if (!eCurrentTab.isSelected()) {
+			eCurrentTab.click();
+			WaitUtil.forceWait(2);
+		}
 	}
 }

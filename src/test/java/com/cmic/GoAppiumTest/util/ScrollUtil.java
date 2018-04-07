@@ -3,12 +3,9 @@ package com.cmic.GoAppiumTest.util;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebDriver;
 
-import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
@@ -68,7 +65,14 @@ public class ScrollUtil {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		int width = driver.manage().window().getSize().width;
 		int height = driver.manage().window().getSize().height;
-	 
+		String str1;
+		String str2;
+		do {
+			str1 = driver.getPageSource();
+			driver.swipe(width / 2, height * 3 / 4, width / 2, height / 4, 500);
+			WaitUtil.implicitlyWait(1);
+			str2 = driver.getPageSource();
+		} while (!str1.equals(str2));
 	}
 
 	public static void scrollToTargetWidget(AndroidDriver<AndroidElement> driver, By by) {
