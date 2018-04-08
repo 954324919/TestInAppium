@@ -78,7 +78,12 @@
 			<version>4.0</version>
 			<scope>test</scope>
 		</dependency>
-
+		<!-- poi-ooxml提供microsoft office新版本支持,eg .xlsx Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>3.17</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -91,7 +96,6 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -122,5 +126,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

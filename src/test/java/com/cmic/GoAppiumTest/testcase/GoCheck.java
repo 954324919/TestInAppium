@@ -28,7 +28,6 @@ import io.appium.java_client.android.AndroidKeyCode;
 public class GoCheck {
 
 	private AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
-	private AndroidDriver<AndroidElement> mDriver = DriverManger.getDriver();
 
 	@Test
 	public void test() throws InterruptedException {
@@ -78,13 +77,13 @@ public class GoCheck {
 		LogUtil.printCurrentMethodName();
 		Random random = new Random();
 		//TODO 模拟一个数字
-		int randomIndex = random.nextInt(mDriver.findElementsByClassName("android.widget.LinearLayout").size());
+		int randomIndex = random.nextInt(driver.findElementsByClassName("android.widget.LinearLayout").size());
 		String hotKeyItemXPath = "//android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout[" + randomIndex + "]";
-		AndroidElement hotkeyItem = mDriver.findElement(By.xpath(hotKeyItemXPath));
+		AndroidElement hotkeyItem = driver.findElement(By.xpath(hotKeyItemXPath));
 		String hotKeyInnerTvXpath = "//android.widget.FrameLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout["
 				+ randomIndex + "]/android.widget.TextView[1]";
 		System.out.println(hotKeyInnerTvXpath);
-		AndroidElement hotKeyInnerTv = mDriver.findElement(By.xpath(hotKeyInnerTvXpath));
+		AndroidElement hotKeyInnerTv = driver.findElement(By.xpath(hotKeyInnerTvXpath));
 //		System.out.println(searchBeforePerform = hotKeyInnerTv.getText());
 		// TODO 必要时截图
 		hotkeyItem.click();
