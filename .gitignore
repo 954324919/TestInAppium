@@ -29,7 +29,6 @@ buildNumber.properties
 .mvn/timing.properties
 
 # 安装包地址
-src/test/java/apps/
 
 
 # 忽略重点

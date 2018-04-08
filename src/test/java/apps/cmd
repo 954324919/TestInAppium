@@ -1,0 +1,5 @@
+#安装   adb install /f/WorkSpace4Mars/GoAppiumTest/src/test/java/apps/mmnes150.apk
+#卸载   adb unintall com.cmic.mmnes
+#adb截图  adb pull /sdcard/screenshot.png d:/screenshot.png
+
+	

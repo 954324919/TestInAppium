@@ -1,2 +1,6 @@
 # GoAppiumTest
-# 不懂就学，争取做好！
+# TODO
+#0408 
+* Excel数据实现参数驱动
+* PageObject了解
+* 可配置驱动testNg.xml
