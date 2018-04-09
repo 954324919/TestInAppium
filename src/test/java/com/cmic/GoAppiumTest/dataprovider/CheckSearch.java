@@ -61,7 +61,7 @@ public class CheckSearch {
 		System.out.println("数据驱动用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -75,7 +75,7 @@ public class CheckSearch {
 		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, dataProvider = "searchMetadata")
+	@Test(dependsOnMethods = { "initCheck" }, dataProvider = "searchMetadata", enabled = false)
 	public void searchDataProvider(String searchKeyWord, String searchResult1, String searchResult2) {
 		// 点击搜索栏输入
 		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
@@ -88,7 +88,7 @@ public class CheckSearch {
 		// 判断搜索的结果是否包含期望的关键字
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
 		List<String> textList = new ArrayList<String>();
-		for(AndroidElement e:eList){
+		for (AndroidElement e : eList) {
 			textList.add(e.getText());
 		}
 		Assert.assertTrue(textList.contains(searchResult1));
