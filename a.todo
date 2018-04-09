@@ -1,0 +1,21 @@
+TODO:
+   0408:
+   ✔ Excel数据实现参数驱动 @done (18-04-09 14:16)
+   ☐ PageObject了解 @low
+   ☐ 可配置驱动testNg.xml @high
+   0409:
+   ☐ Log4j配置 @low
+   ☐ 参数关键字 @low 
+   ☐ 失败重运行 @high
+   ☐ 重构加入全测试基类 @critical
+   ☐ 打一个Tag @low
+   ☐ 推动一个本地分支 @low
+   ☐ 其他测试报告框架 @high
+   ☐ 并发 @critical
+   ☐ PageObject引入 @critical
+   ☐ 梳理全部用例确保一次运行 @critical
+   ☐ 监听器 @high
+ 
+
+
+
