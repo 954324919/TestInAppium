@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -70,10 +71,8 @@ public class CheckSearch {
 	}
 
 	@DataProvider(name = "searchMetadata")
-	public static Object[][] data() {
-		return new Object[][] { { "飞信", "和飞信", "企业飞信" }, //
-				{ "MM", "MM应用商场", "MM资讯" }, //
-				{ "和", "和包支付", "和生活" } };//
+	public static Object[][] data() throws Exception {
+		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, dataProvider = "searchMetadata")

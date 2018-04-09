@@ -31,7 +31,6 @@ public class SearchTestEntity {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return searchKeyword+"狗屎"+expectResult1+expectResult2;
+		return searchKeyword+" "+expectResult1+" "+expectResult2;
 	}
 }
