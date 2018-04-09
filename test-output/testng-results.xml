@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="4" passed="4">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Suite" duration-ms="56786" started-at="2018-04-09T07:08:11Z" finished-at="2018-04-09T07:09:08Z">
+    <groups>
+    </groups>
+    <test name="Test4Init" duration-ms="18" started-at="2018-04-09T07:08:11Z" finished-at="2018-04-09T07:08:11Z">
+    </test> <!-- Test4Init -->
+    <test name="Test4Regular" duration-ms="4" started-at="2018-04-09T07:08:11Z" finished-at="2018-04-09T07:08:11Z">
+    </test> <!-- Test4Regular -->
+    <test name="Test4DataProvider" duration-ms="56697" started-at="2018-04-09T07:08:11Z" finished-at="2018-04-09T07:09:08Z">
+      <class name="com.cmic.GoAppiumTest.dataprovider.CheckSearch">
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="beforeClass" is-config="true" duration-ms="29278" started-at="2018-04-09T15:08:11Z" finished-at="2018-04-09T15:08:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeClass -->
+        <test-method status="PASS" signature="tipBeforeTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipBeforeTestCase" is-config="true" duration-ms="3" started-at="2018-04-09T15:08:41Z" finished-at="2018-04-09T15:08:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipBeforeTestCase -->
+        <test-method status="PASS" signature="initCheck()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="initCheck" duration-ms="139" started-at="2018-04-09T15:08:41Z" finished-at="2018-04-09T15:08:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initCheck -->
+        <test-method status="PASS" signature="tipAfterTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipAfterTestCase" is-config="true" duration-ms="0" started-at="2018-04-09T15:08:41Z" finished-at="2018-04-09T15:08:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipAfterTestCase -->
+        <test-method status="PASS" signature="tipBeforeTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipBeforeTestCase" is-config="true" duration-ms="0" started-at="2018-04-09T15:08:42Z" finished-at="2018-04-09T15:08:42Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipBeforeTestCase -->
+        <test-method status="PASS" signature="searchDataProvider(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="searchDataProvider" duration-ms="9867" started-at="2018-04-09T15:08:42Z" data-provider="searchMetadata" depends-on-methods="com.cmic.GoAppiumTest.dataprovider.CheckSearch.initCheck" finished-at="2018-04-09T15:08:51Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[飞信]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[和飞信]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[企业飞信]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- searchDataProvider -->
+        <test-method status="PASS" signature="tipAfterTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipAfterTestCase" is-config="true" duration-ms="0" started-at="2018-04-09T15:08:51Z" finished-at="2018-04-09T15:08:51Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipAfterTestCase -->
+        <test-method status="PASS" signature="searchDataProvider(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="searchDataProvider" duration-ms="8310" started-at="2018-04-09T15:08:51Z" data-provider="searchMetadata" depends-on-methods="com.cmic.GoAppiumTest.dataprovider.CheckSearch.initCheck" finished-at="2018-04-09T15:09:00Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[MM]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[MM应用商场]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[MM资讯]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- searchDataProvider -->
+        <test-method status="PASS" signature="tipBeforeTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipBeforeTestCase" is-config="true" duration-ms="0" started-at="2018-04-09T15:08:51Z" finished-at="2018-04-09T15:08:51Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipBeforeTestCase -->
+        <test-method status="PASS" signature="tipAfterTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipAfterTestCase" is-config="true" duration-ms="1" started-at="2018-04-09T15:09:00Z" finished-at="2018-04-09T15:09:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipAfterTestCase -->
+        <test-method status="PASS" signature="tipBeforeTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipBeforeTestCase" is-config="true" duration-ms="0" started-at="2018-04-09T15:09:00Z" finished-at="2018-04-09T15:09:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipBeforeTestCase -->
+        <test-method status="PASS" signature="searchDataProvider(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="searchDataProvider" duration-ms="8330" started-at="2018-04-09T15:09:00Z" data-provider="searchMetadata" depends-on-methods="com.cmic.GoAppiumTest.dataprovider.CheckSearch.initCheck" finished-at="2018-04-09T15:09:08Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[和]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[和生活]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[和包支付]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- searchDataProvider -->
+        <test-method status="PASS" signature="tipAfterTestCase()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="tipAfterTestCase" is-config="true" duration-ms="0" started-at="2018-04-09T15:09:08Z" finished-at="2018-04-09T15:09:08Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tipAfterTestCase -->
+        <test-method status="PASS" signature="afterClass()[pri:0, instance:com.cmic.GoAppiumTest.dataprovider.CheckSearch@13a5fe33]" name="afterClass" is-config="true" duration-ms="1" started-at="2018-04-09T15:09:08Z" finished-at="2018-04-09T15:09:08Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterClass -->
+      </class> <!-- com.cmic.GoAppiumTest.dataprovider.CheckSearch -->
+    </test> <!-- Test4DataProvider -->
+  </suite> <!-- Suite -->
+</testng-results>
