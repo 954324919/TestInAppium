@@ -24,7 +24,8 @@ public class DriverManger {
 	@SuppressWarnings("rawtypes")
 	public DriverManger() {
 		// TODO Auto-generated constructor stub
-		File appDir = new File("F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps");
+//		File appDir = new File("F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps");
+		File appDir = new File("D:/EclipseWorkspace/GoAppium/GoAppiumTest/src/test/java/apps");
 		File app = new File(appDir, "mmnes150.apk");
 		// File app = new File(appDir, "ContactManager.apk");
 

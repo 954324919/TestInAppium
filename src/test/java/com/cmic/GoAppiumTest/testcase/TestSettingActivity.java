@@ -48,28 +48,30 @@ public class TestSettingActivity {
 		mDriver = DriverManger.getDriver();
 		// TODO 在没有卸载软件时，可能会报错
 		PageRedirect.redirect2SettingActivity();
-		System.out.println("测试用例集[" + mTag + "]开始");
+		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
-		System.out.println("测试用例集[" + mTag + "]结束");
+		System.err.println("测试用例集[" + mTag + "]结束");
+		AppUtil.unInstall(App.PACKAGE_NAME);
 	}
 
-	@Test(enabled = false)
+	@Test
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
+		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SettingActivity");
 		ScreenUtil.screenShot("进入必备应用设置中心界面");
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查自更新设置的影响")
 	public void checkAutoUpdate() throws InterruptedException {
+		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
 		AndroidElement updateSetting = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_zero_layout"));
 		updateSetting.click();
 		// TODO 检查影响，0404暂不实现
@@ -79,7 +81,7 @@ public class TestSettingActivity {
 		WaitUtil.forceWait(1);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipShow() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -105,7 +107,7 @@ public class TestSettingActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipCloseInOtherWay() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -134,7 +136,7 @@ public class TestSettingActivity {
 		assertEquals(notifyLlyIsPresent, false);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查下载提示的影响")
 	public void setRangeByEditText() {
 		showDialog();
@@ -159,7 +161,7 @@ public class TestSettingActivity {
 		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void setRangeBySeekbar() throws InterruptedException {
 		showDialog();
 		LogUtil.printCurrentMethodName();

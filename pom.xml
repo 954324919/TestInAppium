@@ -127,7 +127,8 @@
 					<parallel>methods</parallel>
 					<threadCount>20</threadCount>
 					<suiteXmlFiles>
-						<suiteXmlFile>F:\WorkSpace4Mars\GoAppiumTest\src\test\java\testng.xml</suiteXmlFile>
+					<!-- <suiteXmlFile>F:\WorkSpace4Mars\GoAppiumTest\src\test\java\testng.xml</suiteXmlFile> -->
+						<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\src\test\java\testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 					<properties>
 						<property>

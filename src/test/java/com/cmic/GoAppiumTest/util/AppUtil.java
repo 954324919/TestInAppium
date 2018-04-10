@@ -89,7 +89,6 @@ public class AppUtil {
 	public static void handleInfoSwitch2Native() {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		Set<String> contextNames = driver.getContextHandles();
-		System.out.println(contextNames.size());
 		for (String contextName : contextNames) {
 			// 用于返回被测app是NATIVE_APP还是WEBVIEW，如果两者都有就是混合型App
 			if (!contextName.contains("WEBVIEW")) {

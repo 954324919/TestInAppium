@@ -19,6 +19,7 @@ import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.NetworkUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
@@ -49,42 +50,46 @@ public class TestRequisiteActivity {
 	}
 
 	@BeforeClass
-	public void beforeClass() {
+	public void beforeClass() throws InterruptedException {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
 		// TODO 在没有卸载软件时，可能会报错
-		WaitUtil.implicitlyWait(3);// 等待1S
+		PageRedirect.redirect2RequestiteActivity();
+		WaitUtil.forceWait(3);
 		System.out.println("测试用例集[" + mTag + "]开始");
 	}
 
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
-		// AdbManager.excuteAdbShell("adb uninstall com.cmic.mmnes");
 	}
 
-	@Test(enabled = false)
+	@Test
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
+		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.RequisiteActivity");
 		ScreenUtil.screenShot("进入装机必备界面");
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkAllSelect() {
+		WaitUtil.implicitlyWait(5);
+		LogUtil.printCurrentMethodName();
 		AndroidElement element = mDriver.findElement(By.xpath("//android.widget.CheckBox[@text=' 全选']"));
 		element.click();
 		ScreenUtil.screenShot("点击全选CheckBox");
 		WaitUtil.implicitlyWait(2);
 		element.click();
 		ScreenUtil.screenShot("点击全选CheckBox恢复");
-		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkOneSelect() {
+		WaitUtil.implicitlyWait(5);
+		LogUtil.printCurrentMethodName();
 		AndroidElement element = mDriver.findElement(By.xpath(
 				"//android.support.v7.widget.RecyclerView[@resource-id='com.cmic.mmnes:id/rv_app']/android.widget.RelativeLayout[1]"));
 		// 点击复选框所属的LinearLayout
@@ -97,35 +102,38 @@ public class TestRequisiteActivity {
 		ScreenUtil.screenShot("点击复选框恢复");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkBackForward() {// 一旦回退，只能回到首页
+		LogUtil.printCurrentMethodName();
 		PageRouteUtil.pressBack();
 		assertEquals(ContextUtil.getCurrentActivity(), ".Launcher");
 		WaitUtil.implicitlyWait(1);// 等待1S
 		AppUtil.launchApp();
 		WaitUtil.implicitlyWait(2);// 等待1S
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
-		WaitUtil.implicitlyWait(1);// 等待1S
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkEnterMain() {// 进入首页
+	@Test(dependsOnMethods = { "initCheck" })
+	public void checkEnterMain() throws InterruptedException {// 进入首页
 		PageRedirect.redirect2RequestiteActivity(); // 此为清除缓存的行为，开启全部测试的时候必须开启
 		// com.cmic.mmnes:id/tv_main
+		WaitUtil.implicitlyWait(2);// 等待1S
+		LogUtil.printCurrentMethodName();
 		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
 		mainButton.click();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.forceWait(2);// 等待1S
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void checkOneGoDownload() {// 进入下载中心
+	@Test(dependsOnMethods = { "initCheck" })
+	public void checkOneGoDownload() throws InterruptedException {// 进入下载中心
 		PageRedirect.redirect2RequestiteActivity();
 		// com.cmic.mmnes:id/tv_main
+		WaitUtil.implicitlyWait(5);// 等待1S
+		LogUtil.printCurrentMethodName();
 		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_load"));
 		mainButton.click();
-		WaitUtil.implicitlyWait(3);// 等待1S
+		WaitUtil.forceWait(3);// 等待1S
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
-		WaitUtil.implicitlyWait(1);// 等待1S
 	}
 }

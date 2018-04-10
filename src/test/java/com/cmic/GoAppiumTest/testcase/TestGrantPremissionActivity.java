@@ -66,7 +66,6 @@ public class TestGrantPremissionActivity {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
-		AppUtil.unInstall(App.PACKAGE_NAME);
 	}
 
 	@Test
