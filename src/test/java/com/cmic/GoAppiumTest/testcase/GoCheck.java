@@ -7,11 +7,14 @@ import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -31,7 +34,14 @@ import io.appium.java_client.android.AndroidKeyCode;
 public class GoCheck {
 
 	private AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+	private AndroidDriver<AndroidElement> mDriver = DriverManger.getDriver();
 
+	@Tips(description="意义:卸载应用")
+	@AfterClass
+	public void afterClass() {
+		AppUtil.unInstall(App.PACKAGE_NAME);
+	}
+	
 	@Test
 	public void test() throws InterruptedException {
 		AndroidElement e1 = driver.findElementByXPath("//android.widget.Button[@content-desc=\"Add Contact\"]");
@@ -110,7 +120,7 @@ public class GoCheck {
 			// 开始下载
 			WaitUtil.implicitlyWait(5);
 			if(ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/mm_down_goon"))){
-				mDriver.findElement(By.id("com.cmic.mmnes:id/mm_down_goon")).click();
+//				mDriver.findElement(By.id("com.cmic.mmnes:id/mm_down_goon")).click();
 				WaitUtil.forceWait(2);
 				assertEquals(targetElement.getText(), "暂停");
 			}
