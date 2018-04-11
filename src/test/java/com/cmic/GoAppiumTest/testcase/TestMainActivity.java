@@ -49,7 +49,6 @@ public class TestMainActivity {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
 		// TODO 在没有卸载软件时，可能会报错
-		WaitUtil.implicitlyWait(2);// 等待1S
 		PageRedirect.redirect2MainActivity();
 		System.err.println("测试用例集[" + mTag + "]开始");
 	}
@@ -127,11 +126,19 @@ public class TestMainActivity {
 			// TODO 截图
 		} else {
 			wellSelectItemTv.click();
-			AppUtil.handleInfoSwitch2Native();
+
+			// TODO 新增不稳定
+			PageRouteUtil.pressBack();
+			if (ContextUtil.getCurrentActivity().equals(".activity.FavorActivity")) {//
+				AppUtil.handleInfoSwitch2Native();
+				WaitUtil.implicitlyWait(2);
+				mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
+				System.out.println(ContextUtil.getCurrentActivity());
+			} else {
+				System.out.println(ContextUtil.getCurrentActivity());
+			}
 			// RiskPoint 不一定进来就是BS页面,当前是这个情况，用Back返回
 			// TODO 截图
-			// WaitUtil.forceWait(1000); //Sleep有找不到控件的风险
-			mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
 		}
 	}
 
@@ -188,11 +195,18 @@ public class TestMainActivity {
 			// TODO 截图
 		} else {
 			greatGameTv.click();
-			AppUtil.handleInfoSwitch2Native();
+			// TODO 新增不稳定
+			PageRouteUtil.pressBack();
+			if (ContextUtil.getCurrentActivity().equals(".activity.FavorActivity")) {//
+				AppUtil.handleInfoSwitch2Native();
+				WaitUtil.implicitlyWait(2);
+				mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
+				System.out.println(ContextUtil.getCurrentActivity());
+			} else {
+				System.out.println(ContextUtil.getCurrentActivity());
+			}
 			// RiskPoint 不一定进来就是BS页面,当前是这个情况，用Back返回
 			// TODO 截图
-			// WaitUtil.forceWait(1000); //Sleep有找不到控件的风险
-			mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
 		}
 	}
 

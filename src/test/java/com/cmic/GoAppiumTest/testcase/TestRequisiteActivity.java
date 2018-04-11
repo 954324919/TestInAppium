@@ -134,6 +134,9 @@ public class TestRequisiteActivity {
 		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_load"));
 		mainButton.click();
 		WaitUtil.forceWait(3);// 等待1S
+		if(!ContextUtil.getCurrentActivity().equals(".activity.ManagerCenterActivity")) {//不够稳定
+			WaitUtil.forceWait(3);
+		}
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
 	}
 }
