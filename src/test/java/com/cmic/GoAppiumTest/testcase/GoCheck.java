@@ -2,9 +2,11 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.DriverManger;
@@ -12,6 +14,7 @@ import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
+import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.NetworkUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
@@ -90,5 +93,31 @@ public class GoCheck {
 		WaitUtil.forceWait(2);
 		// TODO 风险不一定退出
 		PageRouteUtil.pressBack();
+	}
+	
+	@Test(dependsOnMethods = { "initCheck" },expectedExceptions = StaleElementReferenceException.class)
+	@Tips(description = "意义：expectedExceptions", riskPoint = "可能进入安装状态")
+	public void checkDownloadPauseAndResumeOne() throws InterruptedException {
+		WaitUtil.implicitlyWait(5);
+		LogUtil.printCurrentMethodName();
+		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/status_btn"));
+		if (eList.size() > 0) {
+			int minItemSize = Math.min(eList.size(), 5);
+			int randomIndex = RandomUtil.getRandomNum(minItemSize);
+			AndroidElement targetElement = eList.get(randomIndex);
+			targetElement.click();//开始下载
+			// TODO 网速判断
+			// 开始下载
+			WaitUtil.implicitlyWait(5);
+			if(ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/mm_down_goon"))){
+				mDriver.findElement(By.id("com.cmic.mmnes:id/mm_down_goon")).click();
+				WaitUtil.forceWait(2);
+				assertEquals(targetElement.getText(), "暂停");
+			}
+			targetElement.click();	// 暂停下载
+			WaitUtil.forceWait(1);
+			assertEquals(targetElement.getText(), "继续");
+			// TODO 不稳定待日后完善
+		}
 	}
 }

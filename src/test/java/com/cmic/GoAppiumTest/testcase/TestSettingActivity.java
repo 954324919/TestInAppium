@@ -43,7 +43,7 @@ public class TestSettingActivity {
 
 	@BeforeClass
 	@Tips(description = "假设已经入ManagerAct&&未跳转到其他页面")
-	public void beforeClass() throws InterruptedException {
+	public void beforeClass() throws Exception {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
 		// TODO 在没有卸载软件时，可能会报错

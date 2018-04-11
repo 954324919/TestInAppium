@@ -15,26 +15,14 @@
 					<include name="initCheck" />
 					<include name="checkSlide2OtherTab" />
 					<include name="checkClick2OtherTab" />
-					<include name="checkUpdate2Baseline" />
 					<include name="checkRamdomEnterDetail" />
+					<include name="checkUpdate2Baseline" />
 					<include name="checkUpdateOne" />
 					<include name="checkUpdateAll" />
-					<include name="checkDownloadPauseAndResumeOne" />
 					<include name="checkDownloadPauseAndResumeAll" />
+					<include name="checkDownloadPauseAndResumeOne" />
 					<include name="checkDeleteDownloadTask" />
 					<include name="checkDeleteTaskAndKeepTheFile" />
-
-				</methods>
-			</class>
-			<!-- 必备应用的设置管理测试 -->
-			<class name="com.cmic.GoAppiumTest.testcase.TestSettingActivity">
-				<methods>
-					<include name="initCheck" />
-					<include name="checkAutoUpdate" />
-					<include name="downloadTipShow" />
-					<include name="downloadTipCloseInOtherWay" />
-					<include name="setRangeByEditText" />
-					<include name="setRangeBySeekbar" />
 				</methods>
 			</class>
 

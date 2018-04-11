@@ -102,6 +102,18 @@ public class ElementUtil {
 		}
 	}
 
+	@Tips(description = "比isElementPresent更加稳健判断的方法，需要增加额外等待时间")
+	public static boolean isElementPresentSafe(By by) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		try {
+			WaitUtil.implicitlyWait(5);// 添加等待
+			driver.findElement(by);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
 	@Tips(description = "与isElementAccessable共同页面验证存在控件")
 	public static boolean isElementPresent(String uiSelector) {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
