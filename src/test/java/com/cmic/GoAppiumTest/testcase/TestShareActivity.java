@@ -13,6 +13,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -53,7 +54,7 @@ public class TestShareActivity {
 		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -92,7 +93,7 @@ public class TestShareActivity {
 	@Test(dependsOnMethods = { "initCheck" })
 	public void shareByLink() throws InterruptedException {
 		goShare();
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 		AndroidElement shareByLinkLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_copy"));
 		shareByLinkLly.click();
@@ -105,15 +106,15 @@ public class TestShareActivity {
 	public void shareByMore() throws InterruptedException {
 		goShare();
 		LogUtil.printCurrentMethodName();
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(5);
 		AndroidElement shareByMoreLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_share"));
 		shareByMoreLly.click();
 		// 抓取Toast
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(5);
 		AndroidElement shareByMessageLly = mDriver.findElement(By.id("com.cmic.mmnes:id/item_layout"));
 		shareByMessageLly.click();
 		//
-		WaitUtil.forceWait(2);
+		WaitUtil.forceWait(5);
 		String targetPackageName = ContextUtil.getPackageName();
 		assertEquals(targetPackageName != App.PACKAGE_NAME, true);
 		ScreenUtil.screenShot("短信分享");

@@ -61,7 +61,7 @@ public class TestRequisiteActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -110,8 +110,7 @@ public class TestRequisiteActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 
-
-	@Test(dependsOnMethods = { "initCheck" },retryAnalyzer=FailRetry.class)
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	public void checkOneGoDownload() throws InterruptedException {// 进入下载中心
 		PageRedirect.redirect2RequestiteActivity();
 		// com.cmic.mmnes:id/tv_main
@@ -120,17 +119,17 @@ public class TestRequisiteActivity {
 		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_load"));
 		mainButton.click();
 		WaitUtil.forceWait(3);// 等待1S
-		if(!ContextUtil.getCurrentActivity().equals(".activity.ManagerCenterActivity")) {//不够稳定
+		if (!ContextUtil.getCurrentActivity().equals(".activity.ManagerCenterActivity")) {// 不够稳定
 			WaitUtil.forceWait(3);
 		}
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
 	}
-	
-	@Test(dependsOnMethods = { "initCheck" },retryAnalyzer=FailRetry.class)
+
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	public void checkEnterMain() throws InterruptedException {// 进入首页
 		PageRedirect.redirect2RequestiteActivity(); // 此为清除缓存的行为，开启全部测试的时候必须开启
 		// com.cmic.mmnes:id/tv_main
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);// 等待1S
 		LogUtil.printCurrentMethodName();
 		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
 		mainButton.click();

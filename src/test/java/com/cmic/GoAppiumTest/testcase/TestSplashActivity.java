@@ -17,6 +17,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -31,8 +32,8 @@ import io.appium.java_client.android.AndroidElement;
 
 /**
  * @描述 默认初次进入既是SplashActivity，不是则跳过后续测试
- * @时机 1、初次进入首页 2、进入首页 而没有点击不再提示
- * TODO 构建基类移除，还要加入卸载AppiumSetting和UnLock两个内置APP,防止版本不同造成错误
+ * @时机 1、初次进入首页 2、进入首页 而没有点击不再提示 TODO
+ *     构建基类移除，还要加入卸载AppiumSetting和UnLock两个内置APP,防止版本不同造成错误
  * @author kiwi
  */
 public class TestSplashActivity {
@@ -64,7 +65,7 @@ public class TestSplashActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws Exception {// 0
 		// 确认为SplashActivity
 		System.err.println("进行[" + mTag + "]用例集的初始化检验，失败则跳过该用例集的所有测试");

@@ -15,6 +15,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -56,7 +57,7 @@ public class TestSettingActivity {
 		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面

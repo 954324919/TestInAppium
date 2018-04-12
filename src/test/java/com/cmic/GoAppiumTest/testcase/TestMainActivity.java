@@ -16,6 +16,7 @@ import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
@@ -68,10 +69,10 @@ public class TestMainActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "测试点击跳转其他Tab(软件-游戏)", //
 			riskPoint = "UI变动")
-	public void checkClick2OtherTab() {//
+	public void checkClick2OtherTab() throws InterruptedException {//
 		// 全路径xpath获取游戏Tab
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
@@ -79,10 +80,11 @@ public class TestMainActivity {
 				+ ".childSelector(new UiSelector().textContains(\"游戏\"))";
 		AndroidElement topGameTab = mDriver.findElementByAndroidUIAutomator(gameUiSelector);
 		topGameTab.click();
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.forceWait(3);
 		// // 全路径xpath获取软件Tab
 		String softwareUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/pagerSlide\")"
 				+ ".childSelector(new UiSelector().textContains(\"软件\"))";
+		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		AndroidElement topSoftwareTab = mDriver.findElementByAndroidUIAutomator(softwareUiSelector);
 		topSoftwareTab.click();
 		WaitUtil.implicitlyWait(2);
@@ -93,13 +95,18 @@ public class TestMainActivity {
 	@Tips(description = "测试滑动跳转其他Tab(软件-游戏)", //
 			riskPoint = "UI变动")
 	public void testSlip2OtherTab() throws InterruptedException {
+		String gameUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/pagerSlide\")"
+				+ ".childSelector(new UiSelector().textContains(\"游戏\"))";
 		LogUtil.printCurrentMethodName();
 		WaitUtil.forceWait(4);
 		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
 		WaitUtil.forceWait(4);
+		assertEquals(mDriver.findElementByAndroidUIAutomator(gameUiSelector).isSelected(), true);
 		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
 		WaitUtil.forceWait(4);
+		assertEquals(mDriver.findElementByAndroidUIAutomator(gameUiSelector).isSelected(), false);
 		// TODO 必要时截图
+		// 最好增加验证
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
@@ -160,8 +167,13 @@ public class TestMainActivity {
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(riskPoint = "非全Xpath,UI变动的风险，依赖于scrollBottom", description = "点击换一批")
 	public void refreshSoftBatch() throws InterruptedException {// 点击换一批(\"\")
-		WaitUtil.implicitlyWait(5);
+		if (ContextUtil.getCurrentActivity().equals(".activity.MainActivity")) {
+			ScrollUtil.scrollToBase();
+		} else {
+			System.err.println("当前页面不是目标页面");
+		}
 		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(5);
 		String gameUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"换一批\")";
 		AndroidElement topGameTab = mDriver.findElementByAndroidUIAutomator(gameUiSelector);
 		topGameTab.click();
@@ -175,7 +187,7 @@ public class TestMainActivity {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		String greatGameUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"品牌游戏\").resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\")";
 		AndroidElement greatGameTv = mDriver.findElementByAndroidUIAutomator(greatGameUiSelector);
 		if (AppUtil.isInstall(App.MM_PACKAGE_NAME)) {
@@ -189,7 +201,7 @@ public class TestMainActivity {
 			PageRouteUtil.pressBack();
 			if (ContextUtil.getCurrentActivity().equals(".activity.FavorActivity")) {//
 				AppUtil.handleInfoSwitch2Native();
-				WaitUtil.implicitlyWait(2);
+				WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 				mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
 				System.out.println(ContextUtil.getCurrentActivity());
 			} else {
@@ -229,6 +241,11 @@ public class TestMainActivity {
 	@Test(dependsOnMethods = { "moreGame" })
 	@Tips(riskPoint = "非全Xpath,UI变动的风险，依赖于scrollBottom", description = "点击换一批")
 	public void refreshGameBatch() throws InterruptedException {// 点击换一批(\"\")
+		if (ContextUtil.getCurrentActivity().equals(".activity.MainActivity")) {
+			ScrollUtil.scrollToBase();
+		} else {
+			System.err.println("当前页面不是目标页面");
+		}
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 		String gameUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\").textContains(\"换一批\")";

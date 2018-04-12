@@ -15,6 +15,7 @@ import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
@@ -68,7 +69,7 @@ public class TestGrantPremissionActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws InterruptedException {// 1
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(".permission.ui.GrantPermissionsActivity", ContextUtil.getCurrentActivity());
@@ -195,13 +196,14 @@ public class TestGrantPremissionActivity {
 			triggerTime = "在第一次测试时关闭Spalsh的工信部弹窗不再提示进入首页之后")
 	public void testBack4SplashNoCancelTip() throws InterruptedException {// 测试Splash跳过工信部弹窗
 		LogUtil.printCurrentMethodName();
-		//TODO 存在Bug需要修复
-		String packageName = ContextUtil.getPackageName(); 
+		// TODO 存在Bug需要修复
+		String packageName = ContextUtil.getPackageName();
 		AppUtil.killApp(packageName);
 		AppUtil.runInBackground4AWhile();
 		WaitUtil.forceWait(3);
-		//TODO 等待修复
-//		Assert.assertEquals(ContextUtil.getCurrentActivity(), ".activity.SplashActivity");
+		// TODO 等待修复
+		// Assert.assertEquals(ContextUtil.getCurrentActivity(),
+		// ".activity.SplashActivity");
 		WaitUtil.implicitlyWait(1);
 	}
 

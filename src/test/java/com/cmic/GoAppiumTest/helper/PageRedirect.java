@@ -34,7 +34,7 @@ public class PageRedirect {
 	 */
 	public static void redirect2RequestPermissionActivity() {
 		redirect2SplashActivity();
-		WaitUtil.implicitlyWait(3);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		// 点击同意并使用
 		AndroidElement element = driver.findElement(By.id("com.cmic.mmnes:id/tv_ok"));
 		element.click();
@@ -45,7 +45,7 @@ public class PageRedirect {
 	 */
 	public static void redirect2RequestiteActivity() {
 		redirect2RequestPermissionActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement buttonAllow = driver
 				.findElement(By.id("com.android.packageinstaller:id/permission_allow_button"));
 		for (int i = 0; i < 4; i++) {
@@ -59,7 +59,7 @@ public class PageRedirect {
 	 */
 	public static void redirect2MainActivity() {
 		redirect2RequestiteActivity();
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(5);
 		AndroidElement mainButton = driver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
 		mainButton.click();
 		// 等待1S
@@ -72,7 +72,7 @@ public class PageRedirect {
 	 */
 	public static void redirect2DownloadManagerActivity() throws InterruptedException {
 		redirect2MainActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/managerview"));
 		managerRly.click();
 		WaitUtil.forceWait(2);
@@ -85,7 +85,7 @@ public class PageRedirect {
 	 */
 	public static void redirect2SettingActivity() throws InterruptedException {
 		redirect2DownloadManagerActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement settingRly = driver.findElement(By.id("com.cmic.mmnes:id/setting_iv"));
 		settingRly.click();
 		WaitUtil.forceWait(2);
@@ -93,7 +93,7 @@ public class PageRedirect {
 
 	public static void redirect2SearchActivity() throws InterruptedException {
 		redirect2MainActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement searchLayout = driver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
 		searchLayout.click();
 		WaitUtil.forceWait(2);

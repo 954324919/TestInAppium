@@ -47,6 +47,47 @@ public class ElementUtil {
 
 	/**
 	 * 控件内上下滑动
+	 * @param e  控件
+	 * @param heading 方向
+	 */
+	public static void swipeControl(AndroidElement e, Heading heading) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		// 获取控件开始位置的坐标轴
+		Point start = e.getLocation();
+		int startX = start.x;
+		int startY = start.y;
+		// 获取控件宽高
+		Dimension q = e.getSize();
+		int x = q.getWidth();
+		int y = q.getHeight();
+		// 计算出控件结束坐标
+		int endX = x + startX;
+		int endY = y + startY;
+		// 计算中间点坐标
+		int centreX = (endX + startX) / 2;
+		int centreY = (endY + startY) / 2;
+		switch (heading) {
+		// 向上滑动
+		case UP:
+			driver.swipe(centreX, startY + 1, centreX, endY - 1, 1500);
+			break;
+		// 向下滑动
+		case DOWN:
+			driver.swipe(centreX, endY - 1, centreX, startY + 1, 1500);
+			break;
+		case LEFT:
+			driver.swipe(endX - 1, centreY, startX + 1, centreY, 1500);
+			break;
+		case RIGHT:
+			driver.swipe(startX + 1, centreY, endX - 1, centreY, 1500);
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * 控件内上下滑动
 	 *
 	 * @param step
 	 *            测试步骤

@@ -16,6 +16,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -69,7 +70,7 @@ public class TestSearchActivity {
 		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -77,36 +78,6 @@ public class TestSearchActivity {
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
 		ScreenUtil.screenShot("进入必备应用搜索界面");
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
-	@Tips(description = "点击搜索ActionBar的后退")
-	public void checkBack() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
-		AndroidElement backIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_back_layout"));
-		backIv.click();
-		WaitUtil.forceWait(2);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
-		// 获取瞬时滚动热词用于checkWordFromOutside测试
-		String rollHotKeyWordUiSelector = "new UiSelector().className(\"android.widget.LinearLayout\").resourceId(\"com.cmic.mmnes:id/search_layout\")"
-				+ ".childSelector(new UiSelector().className(\"android.widget.TextView\"))";
-		AndroidElement rollHotKeyWordTv = mDriver.findElementByAndroidUIAutomator(rollHotKeyWordUiSelector);
-		rollHotKeyInMainAct = rollHotKeyWordTv.getText();
-		// 再次点击返回SearchActivity
-		WaitUtil.implicitlyWait(3);
-		AndroidElement searchLayout = mDriver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
-		searchLayout.click();
-		WaitUtil.forceWait(2);
-	}
-
-	@Test(dependsOnMethods = { "checkBack" })
-	@Tips(description = "被传入的热词")
-	public void checkWordFromOutside() {//
-		WaitUtil.implicitlyWait(5);
-		LogUtil.printCurrentMethodName();
-		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
-		// TODO 必要时截图
-		assertEquals(searchEt.getText(), rollHotKeyInMainAct);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
@@ -170,5 +141,37 @@ public class TestSearchActivity {
 			AndroidElement clearIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_clear_iv"));
 			clearIv.click();
 		}
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "点击搜索ActionBar的后退")
+	public void checkBack() throws InterruptedException {
+		LogUtil.printCurrentMethodName();
+		AndroidElement backIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_back_layout"));
+		backIv.click();
+		WaitUtil.forceWait(2);
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+		// 获取瞬时滚动热词用于checkWordFromOutside测试
+		String rollHotKeyWordUiSelector = "new UiSelector().className(\"android.widget.LinearLayout\").resourceId(\"com.cmic.mmnes:id/search_layout\")"
+				+ ".childSelector(new UiSelector().className(\"android.widget.TextView\"))";
+		AndroidElement rollHotKeyWordTv = mDriver.findElementByAndroidUIAutomator(rollHotKeyWordUiSelector);
+		rollHotKeyInMainAct = rollHotKeyWordTv.getText();
+		System.err.println("外界热词为：" + rollHotKeyInMainAct);
+		// 再次点击返回SearchActivity
+		WaitUtil.implicitlyWait(3);
+		AndroidElement searchLayout = mDriver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
+		searchLayout.click();
+		WaitUtil.forceWait(2);
+	}
+
+	@Test(dependsOnMethods = { "checkBack" }, retryAnalyzer = FailRetry.class)
+	@Tips(description = "被传入的热词")
+	public void checkWordFromOutside() {//
+		WaitUtil.implicitlyWait(5);
+		LogUtil.printCurrentMethodName();
+		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
+		// TODO 必要时截图
+		System.err.println("滚动热词为：" + searchEt.getText());
+		assertEquals(searchEt.getText(), rollHotKeyInMainAct);
 	}
 }

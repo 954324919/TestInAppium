@@ -57,7 +57,7 @@ public class TestWebviewADActivity {
 		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// 建议移到和MainyAc一起测试 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
@@ -127,8 +127,18 @@ public class TestWebviewADActivity {
 
 	// TODO 出现新的Activity需要重新进行覆盖
 	@Test(dependsOnMethods = { "checMainGameAdShow" })
-	@Tips(description = "检测主页游戏Tab集团广告内容显示", riskPoint = "必须保障依赖，不然稳定性差")
+	@Tips(description = "检测主页游戏Tab集团广告内容显示", riskPoint = "必须保障依赖，不然稳定性差||可能进入登陆页面")
 	public void checkMainGameAdContent() throws InterruptedException {
+		String curAct1 = ContextUtil.getCurrentActivity();
+		boolean isTargetAct1 = curAct1.equals(".activity.LoginActivity") || curAct1.equals(".activity.FavorActivity");
+		if (isTargetAct1) {// 用于失败重试
+			while (ContextUtil.getCurrentActivity().equals(".activity.MainActivity")) {
+				PageRouteUtil.pressBack();
+				WaitUtil.forceWait(3);
+			}
+		} else {
+			System.out.println("当前页面异常");
+		}
 		WaitUtil.implicitlyWait(10);
 		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
 		LogUtil.printCurrentMethodName();
@@ -136,7 +146,7 @@ public class TestWebviewADActivity {
 		elementList.get(elementList.size() - 1).click();
 
 		// TODO 后期可加入页面逻辑检测
-		WaitUtil.forceWait(3);
+		WaitUtil.forceWait(5);
 		ScreenUtil.screenShot("主页游戏Tab集团广告显示");
 
 		// 可能进入.activity.LoginActivity页面
@@ -144,11 +154,13 @@ public class TestWebviewADActivity {
 		boolean isTargetAct = curAct.equals(".activity.LoginActivity") || curAct.equals(".activity.FavorActivity");
 		assertEquals(isTargetAct, true);
 		if (curAct.equals(".activity.LoginActivity")) {// LoginActivity先退一次
-			PageRouteUtil.pressBack();
+			AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
+			e.click();
+			WaitUtil.forceWait(3);
 		}
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
 		e.click();
-		WaitUtil.forceWait(2);
+		WaitUtil.forceWait(3);
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 }

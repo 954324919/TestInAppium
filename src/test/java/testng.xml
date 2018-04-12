@@ -79,21 +79,20 @@
 					<include name="configChangeOreatation" />
 				</methods>
 			</class>
-			
+
 			<!-- 必备应用的搜索页测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkBack" />
-					<include name="checkWordFromOutside" />
 					<include name="checkGetMore" />
 					<include name="closeTheWordList" />
 					<include name="randomCheckOne" />
 					<include name="clickTheClearSearchRly" />
+					<include name="checkBack" />
+					<include name="checkWordFromOutside" />
 				</methods>
 			</class>
-			
-			
+
 			<!-- 必备应用的流量管家页面测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestTrafficManagerActivity">
 				<methods>
@@ -195,8 +194,8 @@
 					<include name="checkPermission" />
 					<include name="checkTipOff" />
 					<include name="checkPostTipOffReport" />
-					<include name="checkBottomDownload" />
 					<include name="checkRightTopNumTip" />
+					<include name="checkBottomDownload" />
 				</methods>
 			</class>
 		</classes>
