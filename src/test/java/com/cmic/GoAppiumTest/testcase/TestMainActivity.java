@@ -69,16 +69,6 @@ public class TestMainActivity {
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
-	public void testNotification() {
-		WaitUtil.implicitlyWait(2);
-		LogUtil.printCurrentMethodName();
-		DeviceUtil.openNotification();
-		WaitUtil.implicitlyWait(2);
-		DeviceUtil.closeNotification();
-		WaitUtil.implicitlyWait(2);
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试点击跳转其他Tab(软件-游戏)", //
 			riskPoint = "UI变动")
 	public void checkClick2OtherTab() {//

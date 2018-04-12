@@ -16,6 +16,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -82,7 +83,7 @@ public class TestAboutActivity {
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "检查关于应用-更新功能", riskPoint = "0404只能检查是最新版本")
 	public void checkAboutUpdate() throws InterruptedException {//
 		WaitUtil.implicitlyWait(2);
@@ -93,6 +94,7 @@ public class TestAboutActivity {
 		// 如果抓不到就判断是否有软件更新
 		String targetToast = "已经是最新版本";
 		Assert.assertEquals(ElementUtil.isTargetToast(targetToast), true);
+		WaitUtil.forceWait(2);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

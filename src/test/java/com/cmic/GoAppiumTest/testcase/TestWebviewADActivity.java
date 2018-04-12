@@ -15,6 +15,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
@@ -72,7 +73,7 @@ public class TestWebviewADActivity {
 
 	// TODO 可建议分开，方便依赖
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "检查SoftWare底部的集团广告是否存在", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
 	public void checkMainSoftAdShow() throws InterruptedException {
 		String AdClass = "android.support.v4.view.ViewPager";
@@ -89,7 +90,7 @@ public class TestWebviewADActivity {
 		assertEquals(elementList.size() != elementListAfterScroll.size(), true);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "检测主页软件Tab集团广告内容显示", riskPoint = "必须保障依赖，不然稳定性差")
 	public void checkMainSoftAdContent() throws InterruptedException {
 		WaitUtil.implicitlyWait(5);
@@ -101,6 +102,7 @@ public class TestWebviewADActivity {
 		WaitUtil.forceWait(3);
 		ScreenUtil.screenShot("主页软件Tab集团广告显示");
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.FavorActivity");
+		WaitUtil.implicitlyWait(5);
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
 		e.click();
 		WaitUtil.forceWait(2);
@@ -123,7 +125,7 @@ public class TestWebviewADActivity {
 		assertEquals(elementList.size() != elementListAfterScroll.size(), true);
 	}
 
-	//TODO 出现新的Activity需要重新进行覆盖
+	// TODO 出现新的Activity需要重新进行覆盖
 	@Test(dependsOnMethods = { "checMainGameAdShow" })
 	@Tips(description = "检测主页游戏Tab集团广告内容显示", riskPoint = "必须保障依赖，不然稳定性差")
 	public void checkMainGameAdContent() throws InterruptedException {

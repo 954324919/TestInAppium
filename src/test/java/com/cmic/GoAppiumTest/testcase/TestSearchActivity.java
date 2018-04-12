@@ -142,7 +142,6 @@ public class TestSearchActivity {
 		Random random = new Random();
 		// TODO 模拟一个数字
 		List<AndroidElement> list = mDriver.findElementsByClassName("android.widget.LinearLayout");
-		System.out.println(list.size());
 		int randomIndex = 0;
 		if (list.size() > 3) {
 			randomIndex = random.nextInt(list.size() - 3);
@@ -155,7 +154,6 @@ public class TestSearchActivity {
 		if (searchBeforePerform.equals("软件") || searchBeforePerform.equals("游戏") || searchBeforePerform.equals("热门")) {
 			searchBeforePerform = list.get(randomIndex + 1).getText();
 		}
-		System.out.println("点击Item为：" + searchBeforePerform);
 		// TODO 必要时截图
 		hotkeyItem.click();
 		WaitUtil.forceWait(2);

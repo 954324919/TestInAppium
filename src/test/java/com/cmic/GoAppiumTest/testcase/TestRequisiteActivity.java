@@ -12,15 +12,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
-import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
-import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.NetworkUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -113,19 +110,8 @@ public class TestRequisiteActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
-	public void checkEnterMain() throws InterruptedException {// 进入首页
-		PageRedirect.redirect2RequestiteActivity(); // 此为清除缓存的行为，开启全部测试的时候必须开启
-		// com.cmic.mmnes:id/tv_main
-		WaitUtil.implicitlyWait(2);// 等待1S
-		LogUtil.printCurrentMethodName();
-		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
-		mainButton.click();
-		WaitUtil.forceWait(2);// 等待1S
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
-	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" },retryAnalyzer=FailRetry.class)
 	public void checkOneGoDownload() throws InterruptedException {// 进入下载中心
 		PageRedirect.redirect2RequestiteActivity();
 		// com.cmic.mmnes:id/tv_main
@@ -138,5 +124,17 @@ public class TestRequisiteActivity {
 			WaitUtil.forceWait(3);
 		}
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
+	}
+	
+	@Test(dependsOnMethods = { "initCheck" },retryAnalyzer=FailRetry.class)
+	public void checkEnterMain() throws InterruptedException {// 进入首页
+		PageRedirect.redirect2RequestiteActivity(); // 此为清除缓存的行为，开启全部测试的时候必须开启
+		// com.cmic.mmnes:id/tv_main
+		WaitUtil.implicitlyWait(2);// 等待1S
+		LogUtil.printCurrentMethodName();
+		AndroidElement mainButton = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
+		mainButton.click();
+		WaitUtil.forceWait(2);// 等待1S
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 }

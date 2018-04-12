@@ -14,6 +14,7 @@ import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -66,6 +67,16 @@ public class TestMainActivityExtra {
 		ScreenUtil.screenShot("进入必备应用主页界面");
 		WaitUtil.implicitlyWait(2);
 	}
+	
+	@Test(dependsOnMethods = { "initCheck" })
+	public void testNotification() {
+		WaitUtil.implicitlyWait(2);
+		LogUtil.printCurrentMethodName();
+		DeviceUtil.openNotification();
+		WaitUtil.implicitlyWait(2);
+		DeviceUtil.closeNotification();
+		WaitUtil.implicitlyWait(2);
+	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	public void checkNotifyNum() {
@@ -96,5 +107,5 @@ public class TestMainActivityExtra {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 	}
-
+	
 }

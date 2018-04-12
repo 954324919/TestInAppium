@@ -23,9 +23,9 @@ public class PageRedirect {
 	 * 重定向到SplashActivit
 	 */
 	public static void redirect2SplashActivity() {
-//		AppUtil.clearAppData(App.PACKAGE_NAME);// 清除缓存
-//		AppUtil.launchApp();
-		AppUtil.resetApp();
+		AppUtil.clearAppData(App.PACKAGE_NAME);// 清除缓存
+		AppUtil.launchApp();
+//		AppUtil.resetApp();
 		WaitUtil.implicitlyWait(1);
 	}
 
