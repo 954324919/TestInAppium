@@ -97,11 +97,25 @@ public class TestWebviewADActivity {
 		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
 		LogUtil.printCurrentMethodName();
 		// 进入该方法说明了底部的集团广告存在
+		if (elementList.isEmpty()) {
+			System.out.println("判断子项列表为空");
+			ScreenUtil.screenShotForce("判断子项列表为空");
+			return;
+		}
 		elementList.get(elementList.size() - 1).click();
 		// TODO 后期可加入页面逻辑检测
 		WaitUtil.forceWait(3);
 		ScreenUtil.screenShot("主页软件Tab集团广告显示");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.FavorActivity");
+
+		// 可能进入.activity.LoginActivity页面
+		String curAct = ContextUtil.getCurrentActivity();
+		boolean isTargetAct1 = curAct.equals(".activity.LoginActivity") || curAct.equals(".activity.FavorActivity")
+				|| curAct.equals(".activity.DetailActivity");
+		assertEquals(isTargetAct1, true);
+		if (curAct.equals(".activity.LoginActivity")) {// 登陆页要退两次
+			PageRouteUtil.pressBack();
+			WaitUtil.forceWait(2);
+		}
 		WaitUtil.implicitlyWait(5);
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
 		e.click();
@@ -109,7 +123,7 @@ public class TestWebviewADActivity {
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "检查GameTab底部的集团广告是否存在", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
 	public void checMainGameAdShow() throws InterruptedException {
 		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
@@ -154,8 +168,7 @@ public class TestWebviewADActivity {
 		boolean isTargetAct = curAct.equals(".activity.LoginActivity") || curAct.equals(".activity.FavorActivity");
 		assertEquals(isTargetAct, true);
 		if (curAct.equals(".activity.LoginActivity")) {// LoginActivity先退一次
-			AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
-			e.click();
+			PageRouteUtil.pressBack();// 后退时还是不够稳健
 			WaitUtil.forceWait(3);
 		}
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));

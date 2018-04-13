@@ -37,7 +37,31 @@ public class ScreenUtil {
 			return;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("HH時mm分ss秒");
-		String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
+		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
+		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
+
+		// 生成时间戳
+		String timeSuffix = sdf.format(new Date());
+		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
+		if (!(new File(screenDir).isDirectory())) {
+			// 判断是否存在该目录
+			new File(screenDir).mkdir();
+		}
+		// 调用方法捕捉画面
+		File screen = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(screen,
+					new File(screenDir + "/" + (++App.PHONE_COUNT) + "." + msg + "-" + timeSuffix + ".jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void screenShotForce(String msg) {
+		// 時間格式
+		SimpleDateFormat sdf = new SimpleDateFormat("HH時mm分ss秒");
+		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
+		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
 		// 生成时间戳
 		String timeSuffix = sdf.format(new Date());
 		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
@@ -117,8 +141,8 @@ public class ScreenUtil {
 	public static int getActionBarHeight() {
 		return dp2Px(App.TITLE_BAR_HEIGHT_DP);
 	}
-	
-	public static void zoom(AndroidElement el){
+
+	public static void zoom(AndroidElement el) {
 		DriverManger.getDriver().zoom(el);
 	}
 }

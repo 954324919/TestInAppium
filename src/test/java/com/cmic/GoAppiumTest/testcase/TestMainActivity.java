@@ -187,6 +187,13 @@ public class TestMainActivity {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
+		String gameUiSelector = "new UiSelector().resourceId(\"com.cmic.mmnes:id/pagerSlide\")"
+				+ ".childSelector(new UiSelector().textContains(\"游戏\"))";
+		AndroidElement e = mDriver.findElementByAndroidUIAutomator(gameUiSelector);
+		if (!e.isSelected()) {
+			System.err.println("测试点击精品应用出现页面异常");
+			return;
+		}
 		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		String greatGameUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"品牌游戏\").resourceId(\"com.cmic.mmnes:id/recommend_item_appname_tv\")";
 		AndroidElement greatGameTv = mDriver.findElementByAndroidUIAutomator(greatGameUiSelector);

@@ -118,6 +118,7 @@ public class TestSearchActivity {
 			randomIndex = random.nextInt(list.size() - 3);
 		} else {
 			System.err.println("页面显示不全");
+			ScreenUtil.screenShotForce("randomCheckOne页面显示不全");
 			return;
 		}
 		AndroidElement hotkeyItem = list.get(randomIndex);
@@ -146,8 +147,13 @@ public class TestSearchActivity {
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击搜索ActionBar的后退")
 	public void checkBack() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
+		if (!ContextUtil.getCurrentActivity().equals(".activity.SearchActivity")) {
+			System.err.println("checkBack当前不在目标页面无法测试");
+			return;
+		}
+		WaitUtil.implicitlyWait(5);
 		AndroidElement backIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_back_layout"));
+		LogUtil.printCurrentMethodName();
 		backIv.click();
 		WaitUtil.forceWait(2);
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
@@ -156,6 +162,11 @@ public class TestSearchActivity {
 				+ ".childSelector(new UiSelector().className(\"android.widget.TextView\"))";
 		AndroidElement rollHotKeyWordTv = mDriver.findElementByAndroidUIAutomator(rollHotKeyWordUiSelector);
 		rollHotKeyInMainAct = rollHotKeyWordTv.getText();
+		if (rollHotKeyInMainAct == null) {
+			ScreenUtil.screenShotForce("checkBack获取不到滚动热词");
+			WaitUtil.forceWait(1);
+			rollHotKeyInMainAct = rollHotKeyWordTv.getText();
+		}
 		System.err.println("外界热词为：" + rollHotKeyInMainAct);
 		// 再次点击返回SearchActivity
 		WaitUtil.implicitlyWait(3);
@@ -167,11 +178,19 @@ public class TestSearchActivity {
 	@Test(dependsOnMethods = { "checkBack" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "被传入的热词")
 	public void checkWordFromOutside() {//
-		WaitUtil.implicitlyWait(5);
+		if (!ContextUtil.getCurrentActivity().equals(".activity.SearchActivity")) {
+			System.err.println("checkWordFromOutside页面异常");
+			ScreenUtil.screenShotForce("checkWordFromOutside异常截图+i++");
+		}
 		LogUtil.printCurrentMethodName();
-		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
-		// TODO 必要时截图
-		System.err.println("滚动热词为：" + searchEt.getText());
-		assertEquals(searchEt.getText(), rollHotKeyInMainAct);
+		try {
+			WaitUtil.implicitlyWait(10);
+			AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
+			// TODO 必要时截图
+			System.err.println("滚动热词为：" + searchEt.getText());
+			assertEquals(searchEt.getText(), rollHotKeyInMainAct);
+		} catch (Exception e) {
+			ScreenUtil.screenShotForce("checkWordFromOutside失败时截图");
+		}
 	}
 }
