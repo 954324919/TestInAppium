@@ -151,7 +151,7 @@ public class TestWebviewADActivity {
 				WaitUtil.forceWait(3);
 			}
 		} else {
-			System.out.println("当前页面异常");
+			// 显示正常
 		}
 		WaitUtil.implicitlyWait(10);
 		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
