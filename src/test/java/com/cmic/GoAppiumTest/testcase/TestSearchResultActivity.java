@@ -15,6 +15,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -55,33 +56,35 @@ public class TestSearchResultActivity {
 		mDriver = DriverManger.getDriver();
 		// TODO 在没有卸载软件时，可能会报错
 		PageRedirect.redirect2SearchActivity();
+		WaitUtil.implicitlyWait(5);
 		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
 		searchEt.click();
 		searchEt.clear();
 		searchEt.sendKeys("和飞信");
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(5);
 		mDriver.findElement(By.id("com.cmic.mmnes:id/search_icon_layout")).click();
 		WaitUtil.forceWait(2);
-		System.out.println("测试用例集[" + mTag + "]开始");
+		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
 	@AfterClass
 	public void afterClass() throws InterruptedException {// 执行一些初始化操作
-		System.out.println("测试用例集[" + mTag + "]结束");
+		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test(enabled=false)
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
+		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
-		boolean isPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/search_count_tv"));
+		boolean isPresent = ElementUtil.isElementPresentSafe(By.id("com.cmic.mmnes:id/search_count_tv"));
 		assertEquals(isPresent, true);
 		ScreenUtil.screenShot("进入必备搜索结果界面");
 		WaitUtil.implicitlyWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "滑动切换页面", riskPoint = "UI变动")
 	public void checkSild2OtherTab() throws InterruptedException {
 		AndroidElement e = mDriver.findElementByAndroidUIAutomator(
@@ -103,7 +106,7 @@ public class TestSearchResultActivity {
 		assertEquals(e1.isSelected(), true);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "测试点击切换", riskPoint = "页面变动|网络变动")
 	public void checkClick2OtherTab() throws InterruptedException {
 		AndroidElement eAll = mDriver.findElementByAndroidUIAutomator(
@@ -133,47 +136,65 @@ public class TestSearchResultActivity {
 		assertEquals(eAll.isSelected(), true);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkRandomClick2Detail() throws InterruptedException {
+		WaitUtil.implicitlyWait(5);
 		List<AndroidElement> eListItem = mDriver.findElements(By.id("com.cmic.mmnes:id/item_layout"));
 		LogUtil.printCurrentMethodName();
+		if (eListItem.isEmpty()) {
+			System.err.println("列表为空");
+			return;
+		}
 		eListItem.get(RandomUtil.getRandomNum(eListItem.size() - 1)).click();
-		;
-		WaitUtil.forceWait(3);
+		WaitUtil.forceWait(2);
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
 		PageRouteUtil.pressBack();
 		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "检查随机下载", riskPoint = "下载状态实际难以预测，当前findView不够稳定")
 	public void checkRandomClick2Download() throws InterruptedException {
+		// String statusBtnUiSelector = "new
+		// UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\").textContains(\"下载\")";
 		String statusBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\")";
-		LogUtil.printCurrentMethodName();
+		WaitUtil.implicitlyWait(5);
 		List<AndroidElement> eListStatusBtn = mDriver.findElementsByAndroidUIAutomator(statusBtnUiSelector);
+		LogUtil.printCurrentMethodName();
 		assertEquals(eListStatusBtn.size() > 0, true);
-		//
 		int randomInder = RandomUtil.getRandomNum(eListStatusBtn.size() - 1);
 		AndroidElement targetElement = eListStatusBtn.get(randomInder);
+		// TODO 暂时取巧不够稳定
+		if (targetElement.getText().equals("打开")) {
+			System.err.println("已经是打开的状态");
+			return;
+		}
 		assertEquals(targetElement.getText(), "下载");
-		targetElement.click();
 		// TODO 网速判断
 		// 开始下载
-		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_down_goon")).click();
-		WaitUtil.forceWait(2);
-		// 重新获取，Session断裂
-		String temp = mDriver.findElementsByAndroidUIAutomator(statusBtnUiSelector).get(randomInder).getText();
-		assertEquals(targetElement.getText(), "暂停");
-		// 暂停下载
+
 		targetElement.click();
+		// TODO 新增
 		WaitUtil.forceWait(1);
-		assertEquals(targetElement.getText(), "继续");
-		// TODO 不稳定待日后完善
+		targetElement.click();// TODO 新增，马上点击停止
+		WaitUtil.forceWait(0.5);
+		if (!targetElement.getText().contains("继续")) {
+			if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/mm_down_goon"))) {
+				mDriver.findElement(By.id("com.cmic.mmnes:id/mm_down_goon")).click();
+				WaitUtil.forceWait(1);
+				targetElement.click();
+				WaitUtil.forceWait(0.5);
+			}
+		}
+		// 如果实在移动网络的情况下
+		// 开始下载
+		assertEquals(targetElement.getText().contains("继续"), true);
 	}
 
 	// TODO 及其不稳定，暂不考虑放开
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkDownloadButtonOpenStatus() {
-		String statusBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").textContains(\"打开\").resourceId(\"com.cmic.mmnes:id/status_btn\")";
+		String statusBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\").textContains(\"打开\")";
 		LogUtil.printCurrentMethodName();
 		List<AndroidElement> eListStatusBtn = mDriver.findElementsByAndroidUIAutomator(statusBtnUiSelector);
 		int statusOpenBtnNum = eListStatusBtn.size();
@@ -186,19 +207,22 @@ public class TestSearchResultActivity {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	public void checkSearch2Baseline() {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
-		AndroidElement eItem = mDriver.findElement(By.id("com.cmic.mmnes:id/item_layout"));
+		mDriver.findElement(By.id("com.cmic.mmnes:id/item_layout"));
 		ScrollUtil.scrollToBase();
 	}
 
-	@Test(dependsOnMethods = { "initCheck" },enabled=false)
+	@Test(dependsOnMethods = { "initCheck" })
+	@Tips(description = "检查没有搜索内容时的情况", riskPoint = "搜索关键词可能存在搜索结果")
 	public void checkErrorInput4EmptyPage() throws InterruptedException {
-		String randomString = RandomUtil.getRandomString(10);
-		LogUtil.printCurrentMethodName();
+		// String randomString = RandomUtil.getRandomString(10);
+		String randomString = "assssss";
+		WaitUtil.implicitlyWait(5);
 		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
+		LogUtil.printCurrentMethodName();
 		searchEt.click();
 		searchEt.clear();
 		searchEt.sendKeys(randomString);

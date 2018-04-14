@@ -1,4 +1,4 @@
-#总结部分
+# 总结部分
 1.ResetApp Reset只是简单关闭App，然后再Launcher应用
 2.注解所有@Test用例，加入Enable可关闭所有测试并不被TestNG识别
 3.使用preserve-order可控制Class粒度级别的测试用例集顺序进行
@@ -14,10 +14,12 @@
 	(3)控件的值System.out.println("[Button Add Contact]Text: "+el.getText());
 8.抛出异常仍然会继续进行，只不过会导致严重的界面NoSuchException
 9.
+```java
 // 跳到软件-榜单的分界面
 //		driver.findElementByAndroidUIAutomator("new UiSelector().resourceId(\"com.aspire.mm:id/hscrollid\")"
 //				+ ".childSelector(new UiSelector().resourceId(\"android:id/tabs\")"
 //				+ ".childSelector(new UiSelector().index(3)))").click();
+```
 10.thread.sleep() 是线程休眠若干秒，JAVA去实现。等待的时间需要预估的比较准确，
 但实际上这是很难做到。而且系统一直再等待，预估的长了，时间就白白的浪费了，预估短了，不起作用。
 implicitlyWait() 不是休眠，是设置超时时间，是每个driver自己去实现的
@@ -39,20 +41,20 @@ Excel的每一页都将被解析成一个Sheet对象；
 每一个单元格都是一个Cell对象。
 18.参数构建目标testng(https://www.cnblogs.com/imlvbu/p/7169918.html)
 
-#TODO部分
+# TODO部分
 1.在0329/仍然不能使用关闭initCheck来关闭初始检验异常后跳过其他不能进行的测试用例，仅用Enable注解管理
 
-#其他有意义的部分
-#adb指令(http://www.mamicode.com/info-detail-2218552.html)
+# 其他有意义的部分
+# adb指令(http://www.mamicode.com/info-detail-2218552.html)
 1.adb shell pm list package -f #查看包名
 2.adb shell dumpsys window |findstr mCurrent 抓取当前Activity
 3.adb shell pm clear <packagename> 清空缓存
 
 
-#改进部分
+# 改进部分
 1.在运行之前要先检查程序，比如用例有没有加入xml管理、应用是不是应删除，避免浪费重启时间
 
-#异常
+# 异常
 1.不可直接跳转
 org.openqa.selenium.WebDriverException: 
 An unknown server-side error occurred while processing the command. 

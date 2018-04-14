@@ -26,6 +26,7 @@ public class AppUtil {
 	public static void softResetApp() {
 		DriverManger.getDriver().closeApp();
 		try {
+			WaitUtil.implicitlyWait(5);
 			AndroidElement remoteAppWidget = DriverManger.getDriver()
 					.findElement(By.xpath("//android.widget.TextView[@text='必备应用' and @content-desc='必备应用']"));
 			remoteAppWidget.click();
@@ -33,8 +34,8 @@ public class AppUtil {
 			Assert.assertEquals(true, false);
 		}
 	}
-	
-	@Tips(description="后台运行")
+
+	@Tips(description = "后台运行")
 	public static void runInBackground4AWhile() {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		driver.pressKeyCode(AndroidKeyCode.HOME);
@@ -46,7 +47,7 @@ public class AppUtil {
 		} catch (NoSuchElementException e) {
 			Assert.assertEquals(true, false);
 		}
-	} 
+	}
 
 	// 关闭应用，其实就是按home键把应用置于后台
 	public static void closeApp() {
@@ -60,6 +61,10 @@ public class AppUtil {
 
 	public static void killApp() {
 		DriverManger.getDriver().close();
+	}
+
+	public static void unInstall(String packageName) {
+		AdbManager.excuteAdbShell("adb uninstall " + packageName);
 	}
 
 	/**
@@ -84,7 +89,6 @@ public class AppUtil {
 	public static void handleInfoSwitch2Native() {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		Set<String> contextNames = driver.getContextHandles();
-		System.out.println(contextNames.size());
 		for (String contextName : contextNames) {
 			// 用于返回被测app是NATIVE_APP还是WEBVIEW，如果两者都有就是混合型App
 			if (!contextName.contains("WEBVIEW")) {

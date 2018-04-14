@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -54,24 +55,25 @@ public class TestSearchActivityExtra {
 	public void beforeClass() {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
-		System.out.println("测试用例集[" + mTag + "]开始");
+		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
-		System.out.println("测试用例集[" + mTag + "]结束");
+		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test(enabled = false)
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws InterruptedException {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
+		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		WaitUtil.forceWait(2);
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
 		ScreenUtil.screenShot("进入必备应用搜索界面-无搜索历史");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "热搜联想")
 	public void checkSearchRalation() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -84,7 +86,7 @@ public class TestSearchActivityExtra {
 		ScreenUtil.screenShot("联想搜索后...");
 	}
 
-	@Test(dependsOnMethods = { "checkSearchRalation" }, timeOut = 15000, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" }, timeOut = 15000)
 	@Tips(description = "点击下载", //
 			riskPoint = "由于自动补全控件无法定位，当前预期先使用坐标定位，待解决。不抛出异常，只做正向验证//" + "待补充Robotium白盒测试")
 	public void checkClickDownload() {
@@ -94,7 +96,7 @@ public class TestSearchActivityExtra {
 		// 0402当前只能使用这种效果较差的方法
 	}
 
-	@Test(dependsOnMethods = { "checkSearchRalation" }, enabled = false)
+	@Test(dependsOnMethods = { "checkSearchRalation" })
 	@Tips(description = "点击直达的联想条目", riskPoint = "联想结果不确定，不一定能点中")
 	public void checkClick2DetailByDirectItem() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
@@ -117,9 +119,10 @@ public class TestSearchActivityExtra {
 		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "checkClickDownload" }, enabled = false)
+	@Test(dependsOnMethods = { "checkClickDownload" })
 	@Tips(description = "点击简单的联想条目", riskPoint = "联想结果不确定，不一定能点中")
 	public void checkClick2SearchResultByEasyItem() throws InterruptedException {
+		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 		// 0.前置操作,显示搜索联想
 		AndroidElement et = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
@@ -147,17 +150,17 @@ public class TestSearchActivityExtra {
 		} else {// 没有点中
 
 		}
-		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" }, enabled = false)
+	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" })
 	public void checkSearchHistory() {
 		LogUtil.printCurrentMethodName();
 		ScreenUtil.screenShot("搜索历史生成");
 	}
 
-	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" }, enabled = false)
+	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" })
 	public void checkEnterDetailFromHistory() throws InterruptedException {
+		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 		if (searchHistoryItem == null) {
 			AndroidElement et = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
@@ -175,7 +178,7 @@ public class TestSearchActivityExtra {
 		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" }, enabled = false)
+	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" })
 	public void checkClearHistory() {
 		LogUtil.printCurrentMethodName();
 		ScreenUtil.screenShot("点击清除历史前");

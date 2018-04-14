@@ -6,6 +6,7 @@
 	<!-- 一个完整的测试类 -->
 	<!-- 一个测试集 -->
 	<!-- 测试用例 -->
+
 	<test name="Test4Init" preserve-order="true">
 		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
 		<classes>
@@ -41,8 +42,8 @@
 					<include name="checkAllSelect" />
 					<include name="checkOneSelect" />
 					<include name="checkBackForward" />
-					<include name="checkOneGoDownload" /><!-- 20 MileStone -->
-					<include name="checkEnterMain" />
+					<include name="checkOneGoDownload" />
+					<include name="checkEnterMain" /><!-- 20 MileStone -->
 				</methods>
 			</class>
 		</classes>
@@ -54,7 +55,6 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="testNotification" />
 					<include name="checkClick2OtherTab" />
 					<include name="testSlip2OtherTab" />
 					<include name="testWellSelect" />
@@ -71,6 +71,7 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivityExtra">
 				<methods>
 					<include name="initCheck" />
+					<include name="testNotification" />
 					<include name="checkNotifyNum" />
 					<include name="checkSearchKeyWordCycle" />
 					<include name="zoomAndShrink" />
@@ -78,31 +79,20 @@
 					<include name="configChangeOreatation" />
 				</methods>
 			</class>
+
 			<!-- 必备应用的搜索页测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkBack" />
-					<include name="checkWordFromOutside" />
 					<include name="checkGetMore" />
 					<include name="closeTheWordList" />
 					<include name="randomCheckOne" />
 					<include name="clickTheClearSearchRly" />
+					<include name="checkBack" />
+					<include name="checkWordFromOutside" />
 				</methods>
 			</class>
-			<!-- 必备应用的搜索页-联想测试 -->
-			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivityExtra">
-				<methods>
-					<include name="initCheck" />
-					<include name="checkSearchRalation" />
-					<include name="checkClickDownload" />
-					<include name="checkClick2DetailByDirectItem" />  <!-- 50 MileStone -->
-					<include name="checkClick2SearchResultByEasyItem" />
-					<include name="checkSearchHistory" />
-					<include name="checkEnterDetailFromHistory" />
-					<include name="checkClearHistory" />
-				</methods>
-			</class>
+
 			<!-- 必备应用的流量管家页面测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestTrafficManagerActivity">
 				<methods>
@@ -119,17 +109,17 @@
 					<include name="initCheck" />
 					<include name="checkSlide2OtherTab" />
 					<include name="checkClick2OtherTab" />
-					<include name="checkUpdate2Baseline" />
 					<include name="checkRamdomEnterDetail" />
+					<include name="checkUpdate2Baseline" />
 					<include name="checkUpdateOne" />
-					<include name="checkUpdateAll" />
-					<include name="checkDownloadPauseAndResumeOne" />
+					<include name="checkUpdateAll" /> <!-- 50 MileStone -->
 					<include name="checkDownloadPauseAndResumeAll" />
+					<include name="checkDownloadPauseAndResumeOne" />
 					<include name="checkDeleteDownloadTask" />
 					<include name="checkDeleteTaskAndKeepTheFile" />
-
 				</methods>
 			</class>
+
 			<!-- 必备应用的设置管理测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestSettingActivity">
 				<methods>
@@ -161,6 +151,7 @@
 					<include name="shareByMore" />
 				</methods>
 			</class>
+
 
 			<!-- 必备应用的主页集团广告与FavorActivity测试 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestWebviewADActivity">
@@ -203,8 +194,8 @@
 					<include name="checkPermission" />
 					<include name="checkTipOff" />
 					<include name="checkPostTipOffReport" />
-					<include name="checkBottomDownload" />
 					<include name="checkRightTopNumTip" />
+					<include name="checkBottomDownload" />
 				</methods>
 			</class>
 		</classes>

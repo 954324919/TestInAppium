@@ -43,6 +43,11 @@ public class App {
 	// 用于存储截图的目录
 	public static final String TEST_SNAP_DIR = "xx";
 
-	public static final String SEARCH_DATA_PROVIDER = "F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps/provider/search_data.xlsx";
+	// public static final String SEARCH_DATA_PROVIDER =
+	// "F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps/provider/search_data.xlsx";
+	public static final String SEARCH_DATA_PROVIDER = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/src/test/java/apps/provider/search_data.xlsx";
 	public static final String SEARCH_SHEET_NAME = "searchkeyword";
+
+	public static final int WAIT_TIME_IMPLICITLY = 20;
+	public static final int WAIT_TIME_FORCE = 5;
 }

@@ -25,6 +25,7 @@ public class PageRedirect {
 	public static void redirect2SplashActivity() {
 		AppUtil.clearAppData(App.PACKAGE_NAME);// 清除缓存
 		AppUtil.launchApp();
+//		AppUtil.resetApp();
 		WaitUtil.implicitlyWait(1);
 	}
 
@@ -33,10 +34,10 @@ public class PageRedirect {
 	 */
 	public static void redirect2RequestPermissionActivity() {
 		redirect2SplashActivity();
+		WaitUtil.implicitlyWait(5);// 等待1S
 		// 点击同意并使用
 		AndroidElement element = driver.findElement(By.id("com.cmic.mmnes:id/tv_ok"));
 		element.click();
-		WaitUtil.implicitlyWait(1);// 等待1S
 	}
 
 	/**
@@ -44,32 +45,34 @@ public class PageRedirect {
 	 */
 	public static void redirect2RequestiteActivity() {
 		redirect2RequestPermissionActivity();
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement buttonAllow = driver
 				.findElement(By.id("com.android.packageinstaller:id/permission_allow_button"));
 		for (int i = 0; i < 4; i++) {
 			buttonAllow.click();
 			WaitUtil.implicitlyWait(1);// 等待1S
 		}
-		WaitUtil.implicitlyWait(2);// 等待1S
 	}
 
 	/**
 	 * 重定向到MainActivity
 	 */
 	public static void redirect2MainActivity() {
-        redirect2RequestiteActivity();
-        AndroidElement mainButton = driver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
+		redirect2RequestiteActivity();
+		WaitUtil.implicitlyWait(5);
+		AndroidElement mainButton = driver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
 		mainButton.click();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		// 等待1S
 	}
 
 	/**
 	 * 重定向到DownloadManagerActivity
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
 	public static void redirect2DownloadManagerActivity() throws InterruptedException {
 		redirect2MainActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/managerview"));
 		managerRly.click();
 		WaitUtil.forceWait(2);
@@ -77,24 +80,25 @@ public class PageRedirect {
 
 	/**
 	 * 重定向到SettingActivity
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
 	public static void redirect2SettingActivity() throws InterruptedException {
 		redirect2DownloadManagerActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement settingRly = driver.findElement(By.id("com.cmic.mmnes:id/setting_iv"));
 		settingRly.click();
 		WaitUtil.forceWait(2);
 	}
-	
-	public static void redirect2SearchActivity() throws InterruptedException{
+
+	public static void redirect2SearchActivity() throws InterruptedException {
 		redirect2MainActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
+		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement searchLayout = driver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
 		searchLayout.click();
 		WaitUtil.forceWait(2);
 	}
-	
+
 	@SuppressWarnings("unused")
 	private enum TargetActivity {
 		SPLASH_ACTIVITY, // 闪屏页面
