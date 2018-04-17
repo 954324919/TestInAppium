@@ -47,8 +47,11 @@ public class ElementUtil {
 
 	/**
 	 * 控件内上下滑动
-	 * @param e  控件
-	 * @param heading 方向
+	 * 
+	 * @param e
+	 *            控件
+	 * @param heading
+	 *            方向
 	 */
 	public static void swipeControl(AndroidElement e, Heading heading) {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
@@ -148,6 +151,30 @@ public class ElementUtil {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 		try {
 			WaitUtil.implicitlyWait(5);// 添加等待
+			driver.findElement(by);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	@Tips(description = "隐士等待判断控件是否再超时前出现", triggerTime = "超时暂定15秒")
+	public static boolean wait4ElementWithoutOverTime(String uiSelector) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		try {
+			WaitUtil.implicitlyWait(15);// 添加等待
+			driver.findElementByAndroidUIAutomator(uiSelector);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	@Tips(description = "隐士等待判断控件是否再超时前出现", triggerTime = "超时暂定15秒")
+	public static boolean wait4ElementWithoutOverTime(By by) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		try {
+			WaitUtil.implicitlyWait(15);// 添加等待
 			driver.findElement(by);
 			return true;
 		} catch (NoSuchElementException e) {

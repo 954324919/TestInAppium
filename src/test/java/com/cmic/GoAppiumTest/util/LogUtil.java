@@ -6,12 +6,6 @@ import org.slf4j.LoggerFactory;
 
 public class LogUtil {
 
-//	static {
-//		String customizedPath = "log/log4j.xml";
-//		PropertyConfigurator.configure(getResource(customizedPath));
-//		logger = LogManager.getLogger(Log4jOneTest.class);
-//	}
-
 	public static String getExecutingMethodName() {
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 		StackTraceElement e = stackTrace[2];

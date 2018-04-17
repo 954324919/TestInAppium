@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite" parallel="false">
+	<!-- 一个测试套束 -->
+	<!-- 一个完整的测试功能 -->
+	<!-- 一个完整的测试类 -->
+	<!-- 一个测试集 -->
+	<!-- 测试用例 -->
+	<test name="Test4Init" preserve-order="true">
+		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
+		<classes>
+			<!-- 测试工信部弹窗 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
+				<methods>
+					<include name="initCheck" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+
+	<test name="Test4PythonAnalyze" preserve-order="true">
+		<classes>
+			<class
+				name="com.cmic.GoAppiumTest.script.analyzecase.Test4PerformanceAnalyze">
+				<methods>
+					<include name="initCheck" />
+					<include name="passSplashAct" />
+					<include name="passPermissionGrantAct" />
+					<include name="passRequestPageAct" />
+					<include name="passMainAct" />
+					<include name="passTrafficManagerAct" />
+					<include name="passSearchAct" />
+					<include name="passDownloadManagerAct" />
+					<include name="passDetailAct" />
+					<include name="goWebviewPage" />
+					<include name="goDownload" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
+<!-- <include name="permissionGrant"/> <include name="requestPage"/> <include 
+	name="mainActivity"/> <include name="goTrafficManagerActivity"/> <include 
+	name="searchActivity"/> <include name="downloadManagerActivity"/> <include 
+	name="detailActivity"/> <include name="goWebviewPage"/> <include name="goDownload"/> -->

@@ -28,7 +28,8 @@ public class ScrollUtil {
 			break;
 		case DOWN:
 			int startY = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight();
-			driver.swipe(width / 2, startY, width / 2, ((height - startY)-(height - startY) / 100 * precentRate), SCROLL_TIME);
+			driver.swipe(width / 2, startY, width / 2, ((height - startY) - (height - startY) / 100 * precentRate),
+					SCROLL_TIME);
 			break;
 		case LEFT:
 			driver.swipe(width, height / 2, (width - width / 100 * precentRate), height / 2, SCROLL_TIME);
@@ -73,6 +74,22 @@ public class ScrollUtil {
 			WaitUtil.implicitlyWait(1);
 			str2 = driver.getPageSource();
 		} while (!str1.equals(str2));
+	}
+
+	public static void scrollToBaseTimeoutQuit(int timeoutSeconds) {
+		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
+		int width = driver.manage().window().getSize().width;
+		int height = driver.manage().window().getSize().height;
+		String str1;
+		String str2;
+		int totalTime = 0;
+		do {
+			str1 = driver.getPageSource();
+			driver.swipe(width / 2, height * 3 / 4, width / 2, height / 4, 500);
+			WaitUtil.implicitlyWait(1);
+			str2 = driver.getPageSource();
+			totalTime += 500;
+		} while (!str1.equals(str2) && totalTime < (timeoutSeconds * 1000));
 	}
 
 	public static void scrollToTargetWidget(AndroidDriver<AndroidElement> driver, By by) {

@@ -13,26 +13,24 @@ PATH = lambda p: os.path.abspath(p)
 #打开待测应用，运行脚本，默认times为20次（可自己手动修改次数），获取该应用cpu、memory占用率的曲线图，图表保存至chart目录下
 
 #top次数
-times = 10
+times = 50
 
 #设备当前运行应用的包名
 pkg_name = utils.get_current_package_name()
+chartPath = 'D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/chart'
 
 #获取cpu、mem占用
 def top():
     cpu = []
     mem = []
+    # -i时间间隙
+    top_info = utils.shell("top -d %s -n %s | %s %s$" %(5,str(times), utils.find_util, pkg_name)).stdout.readlines()
 
-    top_info = utils.shell("top -n %s | %s %s$" %(str(times), utils.find_util, pkg_name)).stdout.readlines()
-
+    print top_info
     for info in top_info:
-        #temp_list = del_space(info)
-        print info
         temp_list = info.split()
         cpu.append(temp_list[4])
-        print temp_list[4]
         mem.append(temp_list[8])
-        print temp_list[8]
 
     return (cpu, mem)
 
@@ -86,16 +84,15 @@ def line_chart():
     layer.addDataSet(cpu_data, 0xff0000, "CPU(%)")
     layer.addDataSet(mem_data, 0x008800, "Memory(M)")
     
-    
-    os.chdir("../../../../../../../target") #由于本项目路径的特俗性             
-    mPath=PATH("%s/chart" %os.getcwd())                              
-    if not os.path.isdir(mPath):                                     
-        os.makedirs(mPath)                                           
+    # os.chdir("../../../../../../../target") #由于本项目路径的特俗性             
+    # mPath=PATH("%s/chart" %os.getcwd())                              
+    if not os.path.isdir(chartPath):                                     
+        os.makedirs(chartPath)                                           
     
     #图片保存至脚本当前目录的chart目录下
-    c.makeChart(PATH("%s/%s.png" %(mPath, utils.timestamp())))
+    c.makeChart(PATH("%s/%s.png" %(chartPath, utils.timestamp())))
 
 if __name__ == "__main__":
-    print "Starting get top information..."
     line_chart()
+    print 'Analyze Chart Draw Finish..'
     

@@ -53,10 +53,4 @@ public class App {
 	public static final int WAIT_TIME_IMPLICITLY = 20;
 	public static final int WAIT_TIME_FORCE = 5;
 
-	public static void main(String[] args) {
-		com.cmic.GoAppiumTest.LogUtil.d("Shit");
-		com.cmic.GoAppiumTest.LogUtil.i("{}狗屎", "吃");
-		com.cmic.GoAppiumTest.LogUtil.e("{}狗屎", "吃");
-		com.cmic.GoAppiumTest.LogUtil.w("shit");
-	}
 }
