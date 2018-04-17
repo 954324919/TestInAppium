@@ -1,5 +1,6 @@
 # Compiled class file
 *.class
+*.pyc
 
 # Log file
 *.log
@@ -10,6 +11,7 @@
 bin/
 tmp/
 .project
+.pydevproject
 .classpath
 .loadpath
 
@@ -27,6 +29,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+
 
 # 安装包地址
 
