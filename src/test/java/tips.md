@@ -67,6 +67,10 @@ Original error: 'Command 'E\:\\AndroidStudioSDKUpdate\\platform-tools\\adb.exe -
 Encountered internal error running command:  {"jsonwp":{"sessionId":"6a6db355-f675-4a4c-ba0b-a5d87ac5e4b2","status":13,
 "value":"Swipe did not complete successfully"}}
 	
+# Monkey提高可用性
+adb shell settings put global policy_control immersive.full=* 关闭手机的状态栏
+adb shell settings put global policy_control null             开启手机状态栏
+
 	
 # testNg 范例
 ```xml
@@ -216,4 +220,8 @@ Encountered internal error running command:  {"jsonwp":{"sessionId":"6a6db355-f6
 
 
 # log4j详细教程：http://www.codeceo.com/article/log4j-usage.html
+
+#
+
+
 	

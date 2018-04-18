@@ -135,7 +135,8 @@
 					<threadCount>20</threadCount>
 					<suiteXmlFiles>
 						<!-- <suiteXmlFile>F:\WorkSpace4Mars\GoAppiumTest\src\test\java\testng.xml</suiteXmlFile> -->
-						<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng4pythonscript.xml</suiteXmlFile>
+						<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng4grid.xml</suiteXmlFile>
+						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng.xml</suiteXmlFile>-->
 					</suiteXmlFiles>
 					<properties>
 						<property>

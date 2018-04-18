@@ -13,10 +13,10 @@ PATH = lambda p: os.path.abspath(p)
 #打开待测应用，运行脚本，默认times为20次（可自己手动修改次数），获取该应用cpu、memory占用率的曲线图，图表保存至chart目录下
 
 #top次数
-times = 40
+times = 10
 
 #设备当前运行应用的包名
-pkg_name = utils.get_current_package_name()
+pkg_name = 'com.cmic.mmnes'
 chartPath = 'D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/chart'
 
 #获取cpu、mem占用

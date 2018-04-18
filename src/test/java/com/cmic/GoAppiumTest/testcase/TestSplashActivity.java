@@ -10,10 +10,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -31,6 +33,7 @@ import io.appium.java_client.android.AndroidElement;
  *     构建基类移除，还要加入卸载AppiumSetting和UnLock两个内置APP,防止版本不同造成错误
  * @author kiwi
  */
+@Listeners(FailSnapshotListener.class)
 public class TestSplashActivity {
 
 	private String mTag;
@@ -58,6 +61,7 @@ public class TestSplashActivity {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
+		AppUtil.unInstall(App.PACKAGE_NAME);
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -102,6 +106,7 @@ public class TestSplashActivity {
 		mDriver.findElement(By.className("android.widget.ScrollView"));
 		By by = By.className("android.widget.ScrollView");
 		ElementUtil.swipeControl(by, com.cmic.GoAppiumTest.helper.Heading.DOWN);
+		throw new RuntimeException("世界和平");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
