@@ -1,4 +1,4 @@
-package com.cmic.GoAppiumTest.script.analyzecase;
+package com.cmic.GoAppiumTest.script;
 
 import static org.testng.Assert.assertEquals;
 
@@ -11,11 +11,13 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.RandomUtil;
@@ -34,6 +36,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 //TODO 由于当前的局限性，对这个测试用例暂且预估一个合理时间，确认进行Top指令的次数
+@Listeners(FailSnapshotListener.class)
 public class Test4PerformanceAnalyze {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;
@@ -72,7 +75,7 @@ public class Test4PerformanceAnalyze {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// initPythonScript();
+				initPythonScript();
 			}
 		}).start();
 	}
@@ -81,7 +84,7 @@ public class Test4PerformanceAnalyze {
 	void initPythonScript() {// 2
 		// TODO 当前暂且用PY脚本，后期可改为Java
 		String result = AdbManager.excuteAdbShellGetResult(
-				"python D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\get_cpu_mem_info.py");
+				"python D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\py\\get_cpu_mem_info.py");
 		System.err.println(result);
 	}
 
@@ -120,7 +123,7 @@ public class Test4PerformanceAnalyze {
 		mainButton.click();
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "通过主页页面")
 	public void passMainAct() throws InterruptedException {
 		// 测试是不是在主页
@@ -277,24 +280,16 @@ public class Test4PerformanceAnalyze {
 	public void goWebviewPage() throws InterruptedException {
 		// 进入H5
 		LogUtil.printCurrentMethodName();
-		if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/videoImgLayout"))) {
-			AndroidElement eWithoutInstall = mDriver.findElement(By.id("com.cmic.mmnes:id/videoImgLayout"));
-			eWithoutInstall.click();
-			WaitUtil.forceWait(4);
+		ScrollUtil.scrollToBase();
+		if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/detail_benefit_layout"))) {
+			System.err.println("进入福利的详情H5");
+			mDriver.findElement(By.id("com.cmic.mmnes:id/detail_benefit_layout")).click();
+			WaitUtil.forceWait(6);// 等待时间加长，防止未加载
 			assertEquals(ContextUtil.getCurrentActivity(), ".activity.FavorActivity");
 			mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
 			WaitUtil.forceWait(2);
 		} else {
-			ScrollUtil.scrollToBase();
-			if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/detail_benefit_layout"))) {
-				mDriver.findElement(By.id("com.cmic.mmnes:id/detail_benefit_layout")).click();
-				WaitUtil.forceWait(4);// 等待时间加长，防止未加载
-				assertEquals(ContextUtil.getCurrentActivity(), ".activity.FavorActivity");
-				mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
-				WaitUtil.forceWait(2);
-			} else {
-				System.err.println("DetailActivity不存在免安装和广播");
-			}
+			System.err.println("DetailActivity不存在免安装和广播");
 		}
 		// 优先选择免安装进入，其次选择福利的H5
 		// 滑动
@@ -320,11 +315,18 @@ public class Test4PerformanceAnalyze {
 				WaitUtil.forceWait(0.5);
 			}
 		}
+		WaitUtil.forceWait(5);
+		// 回退
+	}
+
+	@Test(dependsOnMethods = { "initCheck" })
+	public void extraAnalyze() {
+		PageRedirect.redirect2MainActivity();
 	}
 
 	private void goToDetailAct() {
 		Random randomIndex = new Random();// 主页显示16个Item
-		int index = 1 + randomIndex.nextInt(14);
+		int index = 1 + randomIndex.nextInt(10);// 保证稳定性
 		// 定位点击
 		WaitUtil.implicitlyWait(10);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));

@@ -13,7 +13,7 @@ PATH = lambda p: os.path.abspath(p)
 #打开待测应用，运行脚本，默认times为20次（可自己手动修改次数），获取该应用cpu、memory占用率的曲线图，图表保存至chart目录下
 
 #top次数
-times = 50
+times = 40
 
 #设备当前运行应用的包名
 pkg_name = utils.get_current_package_name()
@@ -24,9 +24,8 @@ def top():
     cpu = []
     mem = []
     # -i时间间隙
-    top_info = utils.shell("top -d %s -n %s | %s %s$" %(5,str(times), utils.find_util, pkg_name)).stdout.readlines()
+    top_info = utils.shell("top -n %s | %s %s$" %(str(times), utils.find_util, pkg_name)).stdout.readlines()
 
-    print top_info
     for info in top_info:
         temp_list = info.split()
         cpu.append(temp_list[4])

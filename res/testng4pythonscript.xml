@@ -21,7 +21,7 @@
 	<test name="Test4PythonAnalyze" preserve-order="true">
 		<classes>
 			<class
-				name="com.cmic.GoAppiumTest.script.analyzecase.Test4PerformanceAnalyze">
+				name="com.cmic.GoAppiumTest.script.Test4PerformanceAnalyze">
 				<methods>
 					<include name="initCheck" />
 					<include name="passSplashAct" />
@@ -34,6 +34,7 @@
 					<include name="passDetailAct" />
 					<include name="goWebviewPage" />
 					<include name="goDownload" />
+					<include name="extraAnalyze" />
 				</methods>
 			</class>
 		</classes>
