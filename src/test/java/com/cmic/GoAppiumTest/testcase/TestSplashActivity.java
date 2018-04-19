@@ -4,18 +4,25 @@ package com.cmic.GoAppiumTest.testcase;
  * @时机 工信部弹窗在第一次启动（同意之后不影响权限）
  */
 
+import java.util.NoSuchElementException;
+
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.aventstack.extentreports.ExtentReporter;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -33,7 +40,7 @@ import io.appium.java_client.android.AndroidElement;
  *     构建基类移除，还要加入卸载AppiumSetting和UnLock两个内置APP,防止版本不同造成错误
  * @author kiwi
  */
-@Listeners(FailSnapshotListener.class)
+@Listeners(ExtentReportListener.class)
 public class TestSplashActivity {
 
 	private String mTag;
@@ -63,7 +70,8 @@ public class TestSplashActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	@Test(retryAnalyzer = FailRetry.class)
+	// @Test(retryAnalyzer = FailRetry.class)
+	@Test
 	public void initCheck() throws Exception {// 0
 		// 确认为SplashActivity
 		System.err.println("进行[" + mTag + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
@@ -115,5 +123,24 @@ public class TestSplashActivity {
 		LogUtil.printCurrentMethodName();
 		AndroidElement element = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_ok"));
 		element.click();
+	}
+
+	// TODO 无意义仅为了测试,可删除
+	@Tips(description = "为了测试，模拟抛出一个预期的NoSuchEx")
+	@Test(dependsOnMethods = { "initCheck" })
+	public void check4ExceptException() {
+		throw new NoSuchElementException("世界和平");
+	}
+
+	// TODO 无意义仅为了测试,可删除
+	@Tips(description = "为了测试，模拟进行一次数据驱动")
+	@Test(dependsOnMethods = { "initCheck" })
+	public void check4DataProvider(String searchKeyWord, String searchResult1, String searchResult2) {
+		System.err.println(searchKeyWord + "=>" + searchResult1 + " + " + searchResult2);
+	}
+
+	@DataProvider(name = "searchMetadata")
+	public static Object[][] data() throws Exception {
+		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
 	}
 }

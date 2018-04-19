@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.Heading;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
@@ -41,7 +42,7 @@ import io.appium.java_client.android.AndroidElement;
  * @author kiwi
  *
  */
-@Listeners(FailSnapshotListener.class)
+@Listeners(ExtentReportListener.class)
 public class TestDetailActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;

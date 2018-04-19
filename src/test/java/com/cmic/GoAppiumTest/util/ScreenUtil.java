@@ -62,7 +62,7 @@ public class ScreenUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
 		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
 		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
-		
+
 		// 生成时间戳
 		String timeSuffix = sdf.format(new Date());
 		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
@@ -83,6 +83,40 @@ public class ScreenUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static String screenShotForceReturnPath(String msg) {
+		// 時間格式
+		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
+		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
+		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
+
+		// 生成时间戳
+		String timeSuffix = sdf.format(new Date());
+		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
+		if (!(new File(screenDir).isDirectory())) {
+			// 判断是否存在该目录
+			new File(screenDir).mkdir();
+		}
+		// 调用方法捕捉画面
+		File file = null;
+		try {
+			file = new File(screenDir + File.separator + (++App.PHONE_COUNT) + "-" + msg + "-" + timeSuffix + ".jpg");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		File screen = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(screen, file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (file != null) {
+			return file.getAbsolutePath();
+		} else {
+			return "";
+		}
+
 	}
 
 	public static void lockScreen() {

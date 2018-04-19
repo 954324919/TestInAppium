@@ -40,6 +40,7 @@ public class App {
 
 	// 默认用户目录为当前工作目录
 	public static final File USER_DIR = new File(System.getProperty("user.dir"));
+	public static final File CLASSPATHROOT = USER_DIR;
 	// 用于存储测试结果（截图、log等）的目录
 	public static final String TEST_REPORT_DIR = "xx";
 	// 用于存储截图的目录

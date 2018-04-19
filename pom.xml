@@ -59,18 +59,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-		<!-- 使用ReportNG生成报告 添加依赖，在pom.xml文件中添加下列依赖关系： -->
 		<dependency>
-			<groupId>org.uncommons</groupId>
-			<artifactId>reportng</artifactId>
-			<version>1.1.4</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.testng</groupId>
-					<artifactId>testng</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>3.1.5</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject</groupId>
@@ -124,21 +117,16 @@
 					<parallel>methods</parallel>
 					<threadCount>20</threadCount>
 					<suiteXmlFiles>
-						<!-- <suiteXmlFile>F:\WorkSpace4Mars\GoAppiumTest\src\test\java\testng\testng.xml</suiteXmlFile> -->
-						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng.xml</suiteXmlFile> -->
+					<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng.xml</suiteXmlFile> 
 						<!-- -->
-						<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng4grid.xml</suiteXmlFile>
+						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng4grid.xml</suiteXmlFile> -->
+						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng4test.xml</suiteXmlFile> -->
 					</suiteXmlFiles>
 					<argLine>-Dfile.encoding=UTF-8</argLine>
 					<properties>
 						<property>
 							<name>usedefaultlisteners</name>
 							<value>false</value>
-						</property>
-						<property>
-							<name>listener</name>
-							<value>org.uncommons.reportng.HTMLReporter,
-								org.uncommons.reportng.JUnitXMLReporter</value>
 						</property>
 						<property>
 							<name>dataproviderthreadcount</name>
@@ -151,3 +139,11 @@
 		</plugins>
 	</build>
 </project>
+
+
+<!-- 使用ReportNG生成报告 添加依赖，在pom.xml文件中添加下列依赖关系： <dependency> <groupId>org.uncommons</groupId> 
+	<artifactId>reportng</artifactId> <version>1.1.4</version> <scope>test</scope> 
+	<exclusions> <exclusion> <groupId>org.testng</groupId> <artifactId>testng</artifactId> 
+	</exclusion> </exclusions> </dependency> -->
+
+<!-- 使用ExtentRepor进行报表，在pom.xml中添加如下依赖关系 -->

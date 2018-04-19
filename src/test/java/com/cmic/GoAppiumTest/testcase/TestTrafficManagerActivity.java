@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
@@ -30,7 +31,7 @@ import io.appium.java_client.android.AndroidElement;
  * @TODO 后期可单独抽离并丰富双卡，不同模组的测试
  * @TODO 可和下载联合测试流量统计，但不够稳定
  */
-@Listeners(FailSnapshotListener.class)
+@Listeners(ExtentReportListener.class)
 public class TestTrafficManagerActivity {
 
 	private String mTag;

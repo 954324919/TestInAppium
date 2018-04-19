@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
@@ -33,7 +34,7 @@ import io.appium.java_client.android.AndroidElement;
  * @其他 未完成无网络的状态确认
  * @author kiwi
  */
-@Listeners(FailSnapshotListener.class)
+@Listeners(ExtentReportListener.class)
 public class TestRequisiteActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;

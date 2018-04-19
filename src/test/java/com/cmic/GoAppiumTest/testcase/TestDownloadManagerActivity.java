@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
@@ -40,7 +41,7 @@ import io.appium.java_client.android.AndroidElement;
  * @风险 不同下载的页面可能启动页的不同
  * @TODO 添加不同的其他的测试，如锁屏选中，增加对下载任务的压力，检查稳定性
  */
-@Listeners(FailSnapshotListener.class)
+@Listeners(ExtentReportListener.class)
 public class TestDownloadManagerActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;
