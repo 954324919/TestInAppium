@@ -1,6 +1,5 @@
 package com.cmic.GoAppiumTest.util;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

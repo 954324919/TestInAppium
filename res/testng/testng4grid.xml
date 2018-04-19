@@ -13,10 +13,6 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkNoNotify" />
-					<include name="checkDenyProcotol" />
-					<include name="checkScrollProcotol" />
-					<include name="checkComfirmProcotol" />
 				</methods>
 			</class>
 		</classes>

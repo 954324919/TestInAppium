@@ -67,6 +67,7 @@ public class TestSplashActivity {
 	public void initCheck() throws Exception {// 0
 		// 确认为SplashActivity
 		System.err.println("进行[" + mTag + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
+		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
 		String currentActivityName = ContextUtil.getCurrentActivity();
 		// TODO 先试探错误的情况
 		Assert.assertEquals(currentActivityName, ".activity.SplashActivity");
