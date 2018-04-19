@@ -61,7 +61,6 @@ public class TestSplashActivity {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		System.out.println("测试用例集[" + mTag + "]结束");
-		AppUtil.unInstall(App.PACKAGE_NAME);
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -106,7 +105,6 @@ public class TestSplashActivity {
 		mDriver.findElement(By.className("android.widget.ScrollView"));
 		By by = By.className("android.widget.ScrollView");
 		ElementUtil.swipeControl(by, com.cmic.GoAppiumTest.helper.Heading.DOWN);
-		throw new RuntimeException("世界和平");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

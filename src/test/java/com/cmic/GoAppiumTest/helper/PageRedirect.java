@@ -59,7 +59,7 @@ public class PageRedirect {
 	 */
 	public static void redirect2MainActivity() {
 		redirect2RequestiteActivity();
-		WaitUtil.implicitlyWait(5);
+		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		AndroidElement mainButton = driver.findElement(By.id("com.cmic.mmnes:id/tv_main"));
 		mainButton.click();
 		// 等待1S

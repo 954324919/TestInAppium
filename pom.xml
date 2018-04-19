@@ -135,9 +135,11 @@
 					<threadCount>20</threadCount>
 					<suiteXmlFiles>
 						<!-- <suiteXmlFile>F:\WorkSpace4Mars\GoAppiumTest\src\test\java\testng.xml</suiteXmlFile> -->
-						<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng4grid.xml</suiteXmlFile>
-						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng.xml</suiteXmlFile>-->
+						<!--<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng4grid.xml</suiteXmlFile> -->
+						<!-- -->
+						<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
+					<argLine>-Dfile.encoding=UTF-8</argLine>
 					<properties>
 						<property>
 							<name>usedefaultlisteners</name>

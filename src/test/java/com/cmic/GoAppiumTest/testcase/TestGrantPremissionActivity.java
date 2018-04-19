@@ -8,11 +8,13 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
@@ -35,6 +37,7 @@ import io.appium.java_client.android.AndroidElement;
  *     考虑拆分所有耦合为单独的一个Test,Eg：DenyPermission以及之后的操作
  * @author ikiwi
  */
+@Listeners(FailSnapshotListener.class)
 public class TestGrantPremissionActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;

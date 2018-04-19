@@ -71,7 +71,6 @@ public class ScreenUtil {
 			new File(screenDir).mkdir();
 		}
 		// 调用方法捕捉画面
-		System.err.println("各个	");
 		File file = null;
 		try {
 			file = new File(screenDir + File.separator + (++App.PHONE_COUNT) + "-" + msg + "-" + timeSuffix + ".jpg");

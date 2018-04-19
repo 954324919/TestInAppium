@@ -11,10 +11,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
@@ -38,6 +40,7 @@ import io.appium.java_client.android.AndroidElement;
  * @风险 不同下载的页面可能启动页的不同
  * @TODO 添加不同的其他的测试，如锁屏选中，增加对下载任务的压力，检查稳定性
  */
+@Listeners(FailSnapshotListener.class)
 public class TestDownloadManagerActivity {
 	private String mTag;
 	private AndroidDriver<AndroidElement> mDriver;
@@ -219,10 +222,11 @@ public class TestDownloadManagerActivity {
 		LogUtil.printCurrentMethodName();
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/status_btn"));
 		if (eList.size() > 0) {
-			int minItemSize = Math.min(eList.size(), 5);
+			int minItemSize = Math.min(eList.size(), 4);
 			int randomIndex = RandomUtil.getRandomNum(minItemSize);
 			AndroidElement targetElement = eList.get(randomIndex);
 			targetElement.click();// 开始下载
+			System.err.println(targetElement.getText());
 			// TODO 网速判断
 			// 开始下载
 			WaitUtil.implicitlyWait(5);
@@ -231,6 +235,10 @@ public class TestDownloadManagerActivity {
 				WaitUtil.forceWait(1);
 				assertEquals(targetElement.getText(), "暂停");
 			}
+			// TODO 必要时保证切换时Appium不会产生org.openqa.selenium.StaleElementReferenceException
+			eList.clear();
+			eList = mDriver.findElements(By.id("com.cmic.mmnes:id/status_btn"));
+			targetElement = eList.get(randomIndex);
 			targetElement.click(); // 暂停下载
 			WaitUtil.implicitlyWait(2);
 			eList.clear();
