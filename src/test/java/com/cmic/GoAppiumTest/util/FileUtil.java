@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
 
@@ -13,7 +14,7 @@ public class FileUtil {
 
 	public static void pushFile(String path, String fileName) {
 		// 上传文件
-		File file = new File(path + "/" + fileName);
+		File file = new File(path + File.separator + fileName);
 		String content = null;
 		try {
 			content = FileUtils.readFileToString(file);
@@ -104,6 +105,52 @@ public class FileUtil {
 		File tempFile = new File(path + File.separator + name);
 		if (!fileIsExist(tempFile)) {
 			tempFile.createNewFile();
+		}
+	}
+
+	/**
+	 * 文件路径变换提升兼容性
+	 * 
+	 * @param filePath绝对路径
+	 * @return
+	 */
+	@Tips(riskPoint = "推荐使用标准的Linux路径")
+	public static String filePathTransform(String fullPath) {
+		String OSName = System.getProperties().getProperty("os.name"); // 操作系统名称
+		if (OSName.contains("Linux")) {// Linux类的操作系统
+			return fullPath.replaceAll("\\", File.separator);
+		} else {// 使用Win
+			// 直接使用ReplaceAll发生问题，故采用此方法替代
+			String[] fileNode = fullPath.split("/");
+			StringBuilder sb = new StringBuilder();
+			for (String node : fileNode) {
+				sb.append(node).append(File.separator);
+			}
+			return sb.toString().substring(0, sb.toString().length() - 1);
+		}
+	}
+
+	/**
+	 * 文件路径变换提升兼容性
+	 * 
+	 * @param relativePath
+	 *            相对路径
+	 * @return
+	 */
+	@Tips(riskPoint = "提供兼容性的适配，但推荐使用标准的Linux相对路径")
+	public static String filePathTransformRelative(String relativePath) {
+		String OSName = System.getProperties().getProperty("os.name"); // 操作系统名称
+		if (OSName.contains("Linux")) {// Linux类的操作系统
+			return App.CLASSPATH + relativePath.replaceAll("\\", File.separator);
+		} else {// 使用Win
+			// 直接使用ReplaceAll发生问题，故采用此方法替代
+			String[] fileNode = relativePath.split("/");
+			StringBuilder sb = new StringBuilder();
+			sb.append(App.CLASSPATH);
+			for (String node : fileNode) {
+				sb.append(node).append(File.separator);
+			}
+			return sb.toString().substring(0, sb.toString().length() - 1);
 		}
 	}
 }

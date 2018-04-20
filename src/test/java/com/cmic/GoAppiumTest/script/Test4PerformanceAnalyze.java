@@ -26,6 +26,7 @@ import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
@@ -83,8 +84,9 @@ public class Test4PerformanceAnalyze {
 	@Tips(description = "启动Python测试脚本")
 	void initPythonScript() {// 2
 		// TODO 当前暂且用PY脚本，后期可改为Java
-		String result = AdbManager.excuteAdbShellGetResult(
-				"python D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\py\\get_cpu_mem_info.py");
+		String scriptPath = FileUtil.filePathTransformRelative(
+				"\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\py\\get_cpu_mem_info.py");
+		String result = AdbManager.excuteAdbShellGetResult("python " + scriptPath);
 		System.err.println(result);
 	}
 
@@ -322,6 +324,15 @@ public class Test4PerformanceAnalyze {
 	@Test(dependsOnMethods = { "initCheck" })
 	public void extraAnalyze() {
 		PageRedirect.redirect2MainActivity();
+	}
+
+	@Tips(description = "引入仅为了测试，无意义")
+	@Test(enabled = false)
+	public void launchAnalyzeScript() {
+		String scriptPath = FileUtil.filePathTransformRelative(
+				"\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\py\\get_cpu_mem_info.py");
+		String result = AdbManager.excuteAdbShellGetResult("python " + scriptPath);
+		System.err.println(result);
 	}
 
 	private void goToDetailAct() {

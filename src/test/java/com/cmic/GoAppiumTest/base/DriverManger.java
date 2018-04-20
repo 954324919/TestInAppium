@@ -8,17 +8,21 @@ import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.util.FileUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
+
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class DriverManger {
 
-	//TODO 后期可移动至BaseTest
-	static {
-		String configFile = "D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\res\\log4j\\log4j.properties";
-		PropertyConfigurator.configure(configFile);
+	// TODO 后期可移动至BaseTest
+	static {// 最先执行
+		String log4jConfigFilePath = FileUtil.filePathTransformRelative("/res/log4j/log4j.properties");
+		PropertyConfigurator.configure(log4jConfigFilePath);
 	}
-	
+
 	private static AndroidDriver<AndroidElement> driver = null;
 
 	public static AndroidDriver<AndroidElement> getDriver() {
@@ -28,13 +32,9 @@ public class DriverManger {
 		return driver;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public DriverManger() {
-		// TODO Auto-generated constructor stub
-//		File appDir = new File("F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps");
-		File appDir = new File("D:/EclipseWorkspace/GoAppium/GoAppiumTest/src/test/java/apps");
+		String appDir = FileUtil.filePathTransformRelative("/res/apps");
 		File app = new File(appDir, "mmnes150.apk");
-		// File app = new File(appDir, "ContactManager.apk");
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
@@ -69,7 +69,7 @@ public class DriverManger {
 		// 调用uiautomator2,获取toast
 		capabilities.setCapability("automationName", "uiautomator2");
 		try {
-			driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+			driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			driver = null;

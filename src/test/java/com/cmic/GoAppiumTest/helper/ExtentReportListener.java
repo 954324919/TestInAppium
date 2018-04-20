@@ -11,12 +11,12 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.ExtentManager;
+import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 
 public class ExtentReportListener implements ITestListener {
 
-	private static final String REPORT_PATH = App.CLASSPATHROOT + File.separator
-			+ "extent-output";
+	private static final String REPORT_PATH = FileUtil.filePathTransformRelative("/target/extent-output");
 	private static ExtentReports extent = ExtentManager.getInstance(REPORT_PATH);
 	private static ThreadLocal<ExtentTest> testLocal = new ThreadLocal<>();
 

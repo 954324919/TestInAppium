@@ -38,8 +38,7 @@ public class ScreenUtil {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("HH時mm分ss秒");
 		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
-		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
-
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
 		// 生成时间戳
 		String timeSuffix = sdf.format(new Date());
 		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
@@ -51,7 +50,7 @@ public class ScreenUtil {
 		File screen = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
 		try {
 			FileUtils.copyFile(screen,
-					new File(screenDir + "/" + (++App.PHONE_COUNT) + "." + msg + "-" + timeSuffix + ".jpg"));
+					new File(screenDir + File.separator + (++App.PHONE_COUNT) + "." + msg + "-" + timeSuffix + ".jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +60,9 @@ public class ScreenUtil {
 		// 時間格式
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
 		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
-		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
+		// String screenDir =
+		// "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
 
 		// 生成时间戳
 		String timeSuffix = sdf.format(new Date());
@@ -89,7 +90,7 @@ public class ScreenUtil {
 		// 時間格式
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
 		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
-		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
 
 		// 生成时间戳
 		String timeSuffix = sdf.format(new Date());

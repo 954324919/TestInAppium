@@ -18,10 +18,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.FileUtil;
 
 public class ExcelUtil {
 
-	private static final String filePath = "F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps/dataprovider/search_data.xls";
+	private static final String filePath1 = FileUtil.filePathTransformRelative("/res/dataprovider/search_data.xlsx");
 
 	/**
 	 * 

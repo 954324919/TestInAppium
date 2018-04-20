@@ -27,6 +27,7 @@ import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -70,8 +71,7 @@ public class TestSplashActivity {
 		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
-	// @Test(retryAnalyzer = FailRetry.class)
-	@Test
+	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws Exception {// 0
 		// 确认为SplashActivity
 		System.err.println("进行[" + mTag + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
@@ -125,22 +125,28 @@ public class TestSplashActivity {
 		element.click();
 	}
 
+	@Test
+	@Tips(description = "为了测试，模拟进行一个正常的用例")
+	public void check4Usual() {
+		// dian
+	}
+
 	// TODO 无意义仅为了测试,可删除
 	@Tips(description = "为了测试，模拟抛出一个预期的NoSuchEx")
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test
 	public void check4ExceptException() {
 		throw new NoSuchElementException("世界和平");
 	}
 
 	// TODO 无意义仅为了测试,可删除
 	@Tips(description = "为了测试，模拟进行一次数据驱动")
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dataProvider = "searchMetadata")
 	public void check4DataProvider(String searchKeyWord, String searchResult1, String searchResult2) {
 		System.err.println(searchKeyWord + "=>" + searchResult1 + " + " + searchResult2);
 	}
 
 	@DataProvider(name = "searchMetadata")
 	public static Object[][] data() throws Exception {
-		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
+		return ExcelUtil.readExcel(FileUtil.filePathTransformRelative(App.SEARCH_DATA_PROVIDER), App.SEARCH_SHEET_NAME);
 	}
 }

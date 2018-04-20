@@ -7,17 +7,26 @@ import string
 
 import utils
 from pychartdir import *
+import time
+from nt import times
 
 PATH = lambda p: os.path.abspath(p)
 
 #打开待测应用，运行脚本，默认times为20次（可自己手动修改次数），获取该应用cpu、memory占用率的曲线图，图表保存至chart目录下
 
 #top次数
+# times = 5
 times = 40
 
 #设备当前运行应用的包名
 pkg_name = 'com.cmic.mmnes'
-chartPath = 'D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/chart'
+
+#当前文件的路径
+pwd = os.getcwd()
+#当前文件的父路径
+targetDir = os.path.abspath(os.path.join(os.getcwd(), "../../../../../../../../"))
+#实际路径
+chartPath = targetDir+os.path.sep+'target'+os.path.sep+'chart'
 
 #获取cpu、mem占用
 def top():

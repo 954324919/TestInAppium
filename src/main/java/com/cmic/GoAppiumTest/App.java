@@ -2,7 +2,7 @@ package com.cmic.GoAppiumTest;
 
 import java.io.File;
 
-import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.helper.Tips;
 
 /**
  * @描述 全局配置参数
@@ -35,20 +35,21 @@ public class App {
 	// 搜索联想
 	public static final int RELATION_DIRECTION_ITEM_HEIGHT_DP = 85;
 	public static final int RELATION_NORMAL_ITEM_HEIGHT_DP = 28;
-	//
+	// 
 	public static final int MARGIN_LEFT_OR_RIGHT_DP = 15;// 有14和16的版本
 
 	// 默认用户目录为当前工作目录
-	public static final File USER_DIR = new File(System.getProperty("user.dir"));
+	@Tips(description = "由于TestNg的特殊性，USER_DIR获取的是:classPath/target", riskPoint = "可能导致歧义")
+	public static final File USER_DIR = new File(System.getProperty("user.dir")).getParentFile();
 	public static final File CLASSPATHROOT = USER_DIR;
+	public static final String CLASSPATH = CLASSPATHROOT.getAbsolutePath();
+
 	// 用于存储测试结果（截图、log等）的目录
 	public static final String TEST_REPORT_DIR = "xx";
 	// 用于存储截图的目录
 	public static final String TEST_SNAP_DIR = "xx";
 
-	// public static final String SEARCH_DATA_PROVIDER =
-	// "F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps/provider/search_data.xlsx";
-	public static final String SEARCH_DATA_PROVIDER = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/src/test/java/apps/provider/search_data.xlsx";
+	public static final String SEARCH_DATA_PROVIDER = "/res/dataprovider/search_data.xlsx";
 	public static final String SEARCH_SHEET_NAME = "searchkeyword";
 
 	public static final int WAIT_TIME_IMPLICITLY = 20;

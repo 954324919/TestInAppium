@@ -117,10 +117,10 @@
 					<parallel>methods</parallel>
 					<threadCount>20</threadCount>
 					<suiteXmlFiles>
-					<suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng.xml</suiteXmlFile> 
-						<!-- -->
+						<suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile>
+						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng4grid.xml</suiteXmlFile> -->
-						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng4test.xml</suiteXmlFile> -->
+						<!-- -->
 					</suiteXmlFiles>
 					<argLine>-Dfile.encoding=UTF-8</argLine>
 					<properties>
@@ -139,11 +139,3 @@
 		</plugins>
 	</build>
 </project>
-
-
-<!-- 使用ReportNG生成报告 添加依赖，在pom.xml文件中添加下列依赖关系： <dependency> <groupId>org.uncommons</groupId> 
-	<artifactId>reportng</artifactId> <version>1.1.4</version> <scope>test</scope> 
-	<exclusions> <exclusion> <groupId>org.testng</groupId> <artifactId>testng</artifactId> 
-	</exclusion> </exclusions> </dependency> -->
-
-<!-- 使用ExtentRepor进行报表，在pom.xml中添加如下依赖关系 -->
