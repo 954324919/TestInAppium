@@ -14,13 +14,6 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
 				<methods>
 					<include name="check4Usual" />
-					<include name="check4DataProvider" />
-					<include name="check4ExceptException" />
-				</methods>
-			</class>
-			<class name="com.cmic.GoAppiumTest.script.Test4PerformanceAnalyze">
-				<methods>
-					<include name="launchAnalyzeScript" />
 				</methods>
 			</class>
 		</classes>

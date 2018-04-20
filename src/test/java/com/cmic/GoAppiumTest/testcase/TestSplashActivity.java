@@ -128,7 +128,6 @@ public class TestSplashActivity {
 	@Test
 	@Tips(description = "为了测试，模拟进行一个正常的用例")
 	public void check4Usual() {
-		// dian
 	}
 
 	// TODO 无意义仅为了测试,可删除
