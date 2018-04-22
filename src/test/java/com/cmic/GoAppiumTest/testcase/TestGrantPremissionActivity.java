@@ -41,6 +41,7 @@ import io.appium.java_client.android.AndroidElement;
  */
 @Listeners(ExtentReportListener.class)
 public class TestGrantPremissionActivity extends BaseTest {
+
 	@BeforeClass
 	public void beforeClass() {
 		mTag = getClass().getSimpleName();

@@ -46,7 +46,7 @@ import io.appium.java_client.android.AndroidElement;
 public class TestSplashActivity extends BaseTest {
 
 	@BeforeClass
-	public void beforeClass() throws InterruptedException {
+	public void beforeClass() {
 		mTag = getClass().getSimpleName();
 		System.out.println("测试用例集[" + mTag + "]开始");
 		// 屏幕截图

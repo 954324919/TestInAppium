@@ -6,7 +6,6 @@
 	<!-- 一个完整的测试类 -->
 	<!-- 一个测试集 -->
 	<!-- 测试用例 -->
-
 	<test name="Test4Init" preserve-order="true">
 		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
 		<classes>
@@ -14,6 +13,13 @@
 			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
 				<methods>
 					<include name="check4Usual" />
+				</methods>
+			</class>
+			<!-- 测试工信部弹窗 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestGrantPremissionActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="test4Test" />
 				</methods>
 			</class>
 		</classes>

@@ -85,6 +85,11 @@ public class AppUtil {
 	public static void killApp(String packageName) {
 		AdbManager.excuteAdbShell("adb shell am force-stop " + packageName);
 	}
+	
+	public static boolean isInstallWithoutDriver(String packageName) {
+		String result = AdbManager.excuteAdbShellGetResultGrep("adb shell pm list packages", "com.cmic.mmnes");
+		return !(result.isEmpty());
+	}
 
 	public static void handleInfoSwitch2Native() {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();

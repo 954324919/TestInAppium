@@ -1,5 +1,7 @@
 package com.cmic.GoAppiumTest.base;
 
+import java.util.Properties;
+
 import org.apache.log4j.PropertyConfigurator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -11,6 +13,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.FileUtil;
+import com.cmic.GoAppiumTest.util.PropertiesUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -19,11 +22,16 @@ public class BaseTest {
 	protected String mTag;
 	protected static AndroidDriver<AndroidElement> mDriver;
 
+	private static Properties capaConfig;
 	static {// 最先执行
 		// Log4j
 		String log4jConfigFilePath = FileUtil.filePathTransformRelative("/res/log4j/log4j.properties");
 		PropertyConfigurator.configure(log4jConfigFilePath);
 
+		capaConfig = PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
+		if (capaConfig == null) {
+			throw new RuntimeException("不存在目标的配置文件");
+		}
 	}
 
 	@BeforeMethod
@@ -45,12 +53,12 @@ public class BaseTest {
 
 	@BeforeSuite
 	public void beforeSuit() {
-		mDriver = DriverManger.getDriver();
 		// TODO 补充适配
-		String packageName = App.PACKAGE_NAME;
-		if (AppUtil.isInstall(packageName)) {
-			mDriver.resetApp();
+		String packageName = capaConfig.getProperty("APP_PACKAGE_NAME");
+		if (AppUtil.isInstallWithoutDriver(packageName)) {
+			AppUtil.unInstall(packageName);
 		}
+		mDriver = DriverManger.getDriver();
 	}
 
 	@AfterSuite
