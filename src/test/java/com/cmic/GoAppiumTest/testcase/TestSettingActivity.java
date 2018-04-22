@@ -104,11 +104,7 @@ public class TestSettingActivity {
 		WaitUtil.implicitlyWait(2);
 		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
 		notifyLly.click();
-		try {
-			WaitUtil.forceWait(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		WaitUtil.forceWait(1);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

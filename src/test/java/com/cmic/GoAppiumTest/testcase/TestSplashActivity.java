@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 
 import com.aventstack.extentreports.ExtentReporter;
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
@@ -42,33 +43,14 @@ import io.appium.java_client.android.AndroidElement;
  * @author kiwi
  */
 @Listeners(ExtentReportListener.class)
-public class TestSplashActivity {
-
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
-
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
+public class TestSplashActivity extends BaseTest {
 
 	@BeforeClass
 	public void beforeClass() throws InterruptedException {
 		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
 		System.out.println("测试用例集[" + mTag + "]开始");
 		// 屏幕截图
 		ScreenUtil.screenShot("进入SplashActivity");
-	}
-
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -128,6 +110,10 @@ public class TestSplashActivity {
 	@Test
 	@Tips(description = "为了测试，模拟进行一个正常的用例")
 	public void check4Usual() {
+		WaitUtil.implicitlyWait(5);
+		LogUtil.printCurrentMethodName();
+		AndroidElement element = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_ok"));
+		element.click();
 	}
 
 	// TODO 无意义仅为了测试,可删除

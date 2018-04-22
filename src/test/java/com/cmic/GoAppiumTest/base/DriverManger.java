@@ -19,14 +19,10 @@ import io.appium.java_client.android.AndroidElement;
 
 public class DriverManger {
 
-	// TODO 后期可移动至BaseTest
-	static {// 最先执行
-		String log4jConfigFilePath = FileUtil.filePathTransformRelative("/res/log4j/log4j.properties");
-		PropertyConfigurator.configure(log4jConfigFilePath);
-	}
-
 	private static AndroidDriver<AndroidElement> driver = null;
 
+	private Properties capaConfig;
+	
 	public static AndroidDriver<AndroidElement> getDriver() {
 		if (driver == null) {
 			new DriverManger();
@@ -40,18 +36,18 @@ public class DriverManger {
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-		// 读取配置文件
-		Properties p = PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
-		if (p == null) {
+		// 读取设备配置文件
+		capaConfig = PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
+		if (capaConfig == null) {
 			throw new RuntimeException("不存在目标的配置文件");
 		}
 		// 配置区域
-		capabilities.setCapability("platformName", p.getProperty("PLATFORM_TYPE"));// hock2Appium
-		capabilities.setCapability("udid", p.getProperty("UDID"));
-		capabilities.setCapability("deviceName", p.getProperty("DEVICE_NAME"));
-		capabilities.setCapability("platformVersion", p.getProperty("PLATFORM_VERSION"));
-		capabilities.setCapability("appPackage", p.getProperty("APP_PACKAGE_NAME"));
-		capabilities.setCapability("appActivity", p.getProperty("APP_LAUNCHER_ACTIVITY"));
+		capabilities.setCapability("platformName", capaConfig.getProperty("PLATFORM_TYPE"));// hock2Appium
+		capabilities.setCapability("udid", capaConfig.getProperty("UDID"));
+		capabilities.setCapability("deviceName", capaConfig.getProperty("DEVICE_NAME"));
+		capabilities.setCapability("platformVersion", capaConfig.getProperty("PLATFORM_VERSION"));
+		capabilities.setCapability("appPackage", capaConfig.getProperty("APP_PACKAGE_NAME"));
+		capabilities.setCapability("appActivity", capaConfig.getProperty("APP_LAUNCHER_ACTIVITY"));
 		// 键盘配置区域
 		capabilities.setCapability("unicodeKeyboard", true);
 		capabilities.setCapability("resetKeyboard", true);
@@ -73,5 +69,9 @@ public class DriverManger {
 		if (driver != null) {
 			driver.quit();
 		}
+	}
+	
+	public Properties getBaseCapabilities() {
+		return capaConfig;
 	}
 }

@@ -86,11 +86,7 @@ public class TestShareActivity {
 		WaitUtil.implicitlyWait(2);
 		AndroidElement shareLly = mDriver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
 		shareLly.click();
-		try {
-			WaitUtil.forceWait(3);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		WaitUtil.forceWait(3);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

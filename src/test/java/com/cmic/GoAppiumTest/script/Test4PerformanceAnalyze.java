@@ -344,11 +344,7 @@ public class Test4PerformanceAnalyze {
 		AndroidElement e = eList.get(index);
 		WaitUtil.implicitlyWait(2);
 		e.click();
-		try {
-			WaitUtil.forceWait(2);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		WaitUtil.forceWait(2);
 	}
 
 	private void goToDeatilByOtherInstall() {
