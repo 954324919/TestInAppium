@@ -51,8 +51,8 @@
 
 	<test name="Test4Regular" preserve-order="true">
 		<classes>
-			<!-- 必备应用的首页 -->
-			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivity">
+			<!-- 必备应用的首页软件Tab -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivity4SoftTab">
 				<methods>
 					<include name="initCheck" />
 					<include name="checkClick2OtherTab" />
@@ -61,6 +61,12 @@
 					<include name="scroll2SoftWareBottom" />
 					<include name="moreSoftware" />
 					<include name="refreshSoftBatch" />
+				</methods>
+			</class>
+			<!-- 必备应用的首页游戏Tab -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivity4GameTab">
+				<methods>
+					<include name="initCheck" />
 					<include name="checkGreatGame" />
 					<include name="check2GameBottom" />
 					<include name="moreGame" />
