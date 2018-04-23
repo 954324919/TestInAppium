@@ -3,6 +3,7 @@ package com.cmic.GoAppiumTest.testcase;
 import static org.testng.Assert.assertEquals;
 
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -15,6 +16,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
@@ -26,6 +28,7 @@ import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.RandomUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -42,39 +45,22 @@ import io.appium.java_client.android.AndroidElement;
  * @TODO 添加不同的其他的测试，如锁屏选中，增加对下载任务的压力，检查稳定性
  */
 @Listeners(ExtentReportListener.class)
-public class TestDownloadManagerActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class TestDownloadManagerActivity extends BaseTest {
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@BeforeClass
-	@Tips(description = "假设已经入MainAct&&未跳转到其他页面")
-	public void beforeClass() throws InterruptedException {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
+	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "假设已经入首页且显示正常，开始准备跳转到下载管理页")
+	@Override
+	public void setUpBeforeClass() {
 		// PageRedirect.redirect2DownloadManagerActivity();
 		PageRedirect.redirect2MainActivity();
 		WaitUtil.implicitlyWait(2);// 等待1S
 		AndroidElement managerRly = mDriver.findElement(By.id("com.cmic.mmnes:id/managerview"));
 		managerRly.click();
 		WaitUtil.forceWait(2);
-		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
+	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
+	@Override
+	public void tearDownAfterClass() {
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -84,7 +70,11 @@ public class TestDownloadManagerActivity {
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
 		ScreenUtil.screenShot("进入必备应用管理中心界面");
-		WaitUtil.implicitlyWait(2);
+		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
+		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
+		if (eList.size() <= 0) {
+			throw new RuntimeException("下载更新界面没有可更新的应用");
+		}
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
@@ -33,34 +34,19 @@ import io.appium.java_client.android.AndroidElement;
  * @风险 0403发现AutoCompleteTextView无法定位，考虑使用坐标定位，及其不稳定
  * @author kiwi
  */
-public class TestSearchActivityExtra {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class TestSearchActivityExtra extends BaseTest {
 
 	private String searchHistoryItem;
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
+	@Tips(description = "搜索联想功能测试", triggerTime = "假设已经在SearchAct", riskPoint = "耦合度暂不考虑，从MainTest完成进入")
+	@Override
+	public void setUpBeforeClass() {
+
 	}
 
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
+	@Override
+	public void tearDownAfterClass() {
 
-	@BeforeClass
-	@Tips(description = "假设已经在MainAct", riskPoint = "耦合度暂不考虑，从MainTest完成进入")
-	public void beforeClass() {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		System.err.println("测试用例集[" + mTag + "]开始");
-	}
-
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)

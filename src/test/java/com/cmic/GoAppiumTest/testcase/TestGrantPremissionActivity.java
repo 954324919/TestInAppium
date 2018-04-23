@@ -42,17 +42,21 @@ import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestGrantPremissionActivity extends BaseTest {
 
-	@BeforeClass
-	public void beforeClass() {
-		mTag = getClass().getSimpleName();
-		// TODO 在没有卸载软件时，可能会报错
+	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "从Splash页面，准备跳转")
+	@Override
+	public void setUpBeforeClass() {
 		if (ContextUtil.getCurrentActivity().equals(".permission.ui.GrantPermissionsActivity")) {
 
 		} else if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_ok"))) {
 			WaitUtil.implicitlyWait(5);
 			mDriver.findElement(By.id("com.cmic.mmnes:id/tv_ok")).click();
 		}
-		System.out.println("测试用例集[" + mTag + "]开始");
+	}
+
+	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
+	@Override
+	public void tearDownAfterClass() {
+
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)

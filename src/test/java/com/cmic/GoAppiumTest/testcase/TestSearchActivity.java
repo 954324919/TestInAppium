@@ -14,6 +14,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
@@ -38,40 +39,29 @@ import io.appium.java_client.android.AndroidElement;
  *
  */
 @Listeners(ExtentReportListener.class)
-public class TestSearchActivity {
-
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class TestSearchActivity extends BaseTest {
 
 	private int originItemCount;
 	private int currentItemCount;
 	private String rollHotKeyInMainAct;// 滚动热词
 	private String searchBeforePerform;
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@BeforeClass
 	@Tips(description = "假设已经在MainAct", riskPoint = "耦合度暂不考虑，从MainTest完成进入")
-	public void beforeClass() throws InterruptedException {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		PageRedirect.redirect2SearchActivity();
+	@Override
+	public void setUpBeforeClass() {
+		try {
+			PageRedirect.redirect2SearchActivity();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		WaitUtil.implicitlyWait(2);
-		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
+	@Override
+	public void tearDownAfterClass() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)

@@ -6,6 +6,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
@@ -14,11 +15,12 @@ import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.PropertiesUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
-public class BaseTest {
+public abstract class BaseTest {
 	protected String mTag;
 	protected static AndroidDriver<AndroidElement> mDriver;
 
@@ -34,6 +36,25 @@ public class BaseTest {
 		}
 	}
 
+	@BeforeClass
+	public void beforeClass() {
+		mTag = getClass().getSimpleName();
+		System.out.println("测试用例集[" + mTag + "]开始");
+		// 屏幕截图
+		setUpBeforeClass();
+		ScreenUtil.screenShot("进入" + mTag);
+	}
+
+	public abstract void setUpBeforeClass();
+
+	public abstract void tearDownAfterClass();
+
+	@AfterClass
+	public void afterClass() {// 执行一些初始化操作
+		tearDownAfterClass();
+		System.out.println("测试用例集[" + mTag + "]结束");
+	}
+
 	@BeforeMethod
 	public void tipBeforeTestCase() {
 		// 点击同意并使用
@@ -43,12 +64,6 @@ public class BaseTest {
 	@AfterMethod
 	public void tipAfterTestCase() {
 		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@Tips(description = "每个Classes的闭包xml中执行的测试用例，目前没有什么特殊性，暂且放入Base")
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.out.println("测试用例集[" + mTag + "]结束");
 	}
 
 	@BeforeSuite

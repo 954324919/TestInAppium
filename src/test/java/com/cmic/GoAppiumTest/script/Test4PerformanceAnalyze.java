@@ -16,11 +16,11 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
-import com.cmic.GoAppiumTest.testcase.RandomUtil;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -29,6 +29,7 @@ import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.RandomUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
@@ -38,9 +39,19 @@ import io.appium.java_client.android.AndroidElement;
 
 //TODO 由于当前的局限性，对这个测试用例暂且预估一个合理时间，确认进行Top指令的次数
 @Listeners(FailSnapshotListener.class)
-public class Test4PerformanceAnalyze {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class Test4PerformanceAnalyze extends BaseTest {
+
+	@Override
+	public void setUpBeforeClass() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tearDownAfterClass() {
+		// TODO Auto-generated method stub
+
+	}
 
 	@BeforeMethod
 	public void tipBeforeTestCase() {
@@ -54,16 +65,17 @@ public class Test4PerformanceAnalyze {
 
 	@BeforeClass
 	@Tips(description = "从进入权限管理开始")
-	public void beforeClass() throws InterruptedException {
+	public void beforeClass() {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
 		PageRedirect.redirect2SplashActivity();
+		System.err.println("性能测试集[" + mTag + "]开始");
 	}
 
+	@Tips(description = "")
 	@AfterClass
-	public void afterClass() throws InterruptedException {// 执行一些初始化操作
+	public void afterClass() {// 执行一些初始化操作
 		System.err.println("性能测试集[" + mTag + "]结束");
-		AppUtil.unInstall(App.PACKAGE_NAME);
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -337,7 +349,7 @@ public class Test4PerformanceAnalyze {
 
 	private void goToDetailAct() {
 		Random randomIndex = new Random();// 主页显示16个Item
-		int index = 1 + randomIndex.nextInt(10);// 保证稳定性
+		int index = 1 + randomIndex.nextInt(4);// 保证稳定性
 		// 定位点击
 		WaitUtil.implicitlyWait(10);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));

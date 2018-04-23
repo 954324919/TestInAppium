@@ -117,10 +117,12 @@
 					<parallel>methods</parallel>
 					<threadCount>20</threadCount>
 					<suiteXmlFiles>
-						<suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile>
-						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng.xml</suiteXmlFile> -->
-						<!-- <suiteXmlFile>D:\EclipseWorkspace\GoAppium\GoAppiumTest\res\testng\testng4grid.xml</suiteXmlFile> -->
-						<!-- -->
+						<suiteXmlFile>res\testng\testng4grid.xml</suiteXmlFile>
+
+						<!-- <suiteXmlFile>res\testng\testng4pythonscript.xml</suiteXmlFile> -->
+						<!-- <suiteXmlFile>res\testng\testng.xml</suiteXmlFile> -->
+						<!-- <suiteXmlFile>res\testng\testng.xml</suiteXmlFile> -->
+						<!-- <suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile> -->
 					</suiteXmlFiles>
 					<argLine>-Dfile.encoding=UTF-8</argLine>
 					<properties>

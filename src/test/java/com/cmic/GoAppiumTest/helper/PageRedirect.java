@@ -25,7 +25,7 @@ public class PageRedirect {
 	public static void redirect2SplashActivity() {
 		AppUtil.clearAppData(App.PACKAGE_NAME);// 清除缓存
 		AppUtil.launchApp();
-//		AppUtil.resetApp();
+		// AppUtil.resetApp();
 		WaitUtil.implicitlyWait(1);
 	}
 
@@ -70,7 +70,7 @@ public class PageRedirect {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void redirect2DownloadManagerActivity() throws InterruptedException {
+	public static void redirect2DownloadManagerActivity() {
 		redirect2MainActivity();
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/managerview"));
@@ -83,7 +83,7 @@ public class PageRedirect {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void redirect2SettingActivity() throws InterruptedException {
+	public static void redirect2SettingActivity() {
 		redirect2DownloadManagerActivity();
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement settingRly = driver.findElement(By.id("com.cmic.mmnes:id/setting_iv"));

@@ -1,4 +1,4 @@
-package com.cmic.GoAppiumTest.testcase;
+package com.cmic.GoAppiumTest.util;
 
 import java.util.Random;
 

@@ -11,6 +11,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
@@ -27,34 +28,19 @@ import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+
 @Listeners(ExtentReportListener.class)
-public class TestShareActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class TestShareActivity extends BaseTest {
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
+	@Tips(description = "假设已经在TestShareActivity", riskPoint = "耦合度暂不考虑，从MainTest完成进入")
+	@Override
+	public void setUpBeforeClass() {
+
 	}
 
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
+	@Override
+	public void tearDownAfterClass() {
 
-	@BeforeClass
-	@Tips(description = "假设已经入SettingActvity&&未跳转到其他页面")
-	public void beforeClass() throws InterruptedException {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
-		System.err.println("测试用例集[" + mTag + "]开始");
-	}
-
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)

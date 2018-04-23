@@ -15,6 +15,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
@@ -27,6 +28,7 @@ import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.RandomUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
@@ -43,29 +45,13 @@ import io.appium.java_client.android.AndroidElement;
  *
  */
 @Listeners(ExtentReportListener.class)
-public class TestDetailActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class TestDetailActivity extends BaseTest{
 
 	private String mTempItemName;
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@BeforeClass
-	@Tips(description = "从主页进入,模拟一个随机位置", riskPoint = "主页未显示")
-	public void beforeClass() throws InterruptedException {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
+	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass",triggerTime="假设已经入首页且显示正常，开始准备跳转到详情页")
+	@Override
+	public void setUpBeforeClass() {
 		PageRedirect.redirect2MainActivity();
 		Random randomIndex = new Random();// 主页显示16个Item
 		int index = 1 + randomIndex.nextInt(14);
@@ -76,14 +62,14 @@ public class TestDetailActivity {
 		WaitUtil.implicitlyWait(2);
 		mTempItemName = mDriver.findElements(By.id("com.cmic.mmnes:id/recommend_item_appname_tv")).get(index).getText();
 		e.click();
-		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
-	@AfterClass
-	public void afterClass() throws InterruptedException {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
+	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
+	@Override
+	public void tearDownAfterClass() {
+		//
 	}
-
+	
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动

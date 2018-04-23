@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
@@ -33,35 +34,18 @@ import com.cmic.GoAppiumTest.util.WaitUtil;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
-public class TestMainActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class TestMainActivity extends BaseTest {
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
+
+	@Override
+	public void setUpBeforeClass() {
+		PageRedirect.redirect2MainActivity();		
 	}
 
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
+	@Override
+	public void tearDownAfterClass() {
 	}
-
-	@BeforeClass
-	public void beforeClass() {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
-		PageRedirect.redirect2MainActivity();
-		System.err.println("测试用例集[" + mTag + "]开始");
-	}
-
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
-	}
-
+	
 	@Test
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动

@@ -6,13 +6,195 @@
 	<!-- 一个完整的测试类 -->
 	<!-- 一个测试集 -->
 	<!-- 测试用例 -->
-	<test name="Test4Init" preserve-order="true">
+		<test name="Test4Init" preserve-order="true">
 		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
 		<classes>
 			<!-- 测试工信部弹窗 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
 				<methods>
 					<include name="initCheck" />
+					<include name="checkNoNotify" />
+					<include name="checkDenyProcotol" />
+					<include name="checkScrollProcotol" />
+					<include name="checkComfirmProcotol" />
+				</methods>
+			</class>
+			<!-- 测试权限授权 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestGrantPremissionActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="chekNotNotify" />
+					<include name="denyAllPremission" />
+					<include name="checkShowPermissionRalation" />
+					<include name="checkGetPermissionDetail" />
+					<include name="checkPermissionRefuse" />
+					<include name="checkPermissionRetry" />
+					<include name="allowAllPremission" />
+					<include name="testBack4SplashNoCancelTip" />
+					<include name="testBack4SplashCancelTip" />
+				</methods>
+			</class>
+			<!-- 首页应用推荐 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestRequisiteActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkAllSelect" />
+					<include name="checkOneSelect" />
+					<include name="checkBackForward" />
+					<include name="checkOneGoDownload" />
+					<include name="checkEnterMain" /><!-- 20 MileStone -->
+				</methods>
+			</class>
+		</classes>
+	</test>
+
+	<test name="Test4Regular" preserve-order="true">
+		<classes>
+			<!-- 必备应用的首页 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkClick2OtherTab" />
+					<include name="testSlip2OtherTab" />
+					<include name="testWellSelect" />
+					<include name="scroll2SoftWareBottom" />
+					<include name="moreSoftware" />
+					<include name="refreshSoftBatch" />
+					<include name="checkGreatGame" />
+					<include name="check2GameBottom" />
+					<include name="moreGame" />
+					<include name="refreshGameBatch" />
+				</methods>
+			</class>
+			<!-- 必备应用的首页-更新测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestMainActivityExtra">
+				<methods>
+					<include name="initCheck" />
+					<include name="testNotification" />
+					<include name="checkNotifyNum" />
+					<include name="checkSearchKeyWordCycle" />
+					<include name="zoomAndShrink" />
+					<include name="lockOrNotEffect" />
+					<include name="configChangeOreatation" />
+				</methods>
+			</class>
+
+			<!-- 必备应用的搜索页测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkGetMore" />
+					<include name="closeTheWordList" />
+					<include name="randomCheckOne" />
+					<include name="clickTheClearSearchRly" />
+					<include name="checkBack" />
+					<include name="checkWordFromOutside" />
+				</methods>
+			</class>
+
+			<!-- 必备应用的流量管家页面测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestTrafficManagerActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkTrafficInfo" />
+					<include name="checkSlipToOtherTab" />
+					<include name="checkClick2OtherTab" />
+					<include name="checkDropDown2Refesh" />
+				</methods>
+			</class>
+			<!-- 必备应用的下载管理测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestDownloadManagerActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkSlide2OtherTab" />
+					<include name="checkClick2OtherTab" />
+					<include name="checkRamdomEnterDetail" />
+					<include name="checkUpdate2Baseline" />
+					<include name="checkUpdateOne" />
+					<include name="checkUpdateAll" /> <!-- 50 MileStone -->
+					<include name="checkDownloadPauseAndResumeAll" />
+					<include name="checkDownloadPauseAndResumeOne" />
+					<include name="checkDeleteDownloadTask" />
+					<include name="checkDeleteTaskAndKeepTheFile" />
+				</methods>
+			</class>
+
+			<!-- 必备应用的设置管理测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSettingActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkAutoUpdate" />
+					<include name="downloadTipShow" />
+					<include name="downloadTipCloseInOtherWay" />
+					<include name="setRangeByEditText" />
+					<include name="setRangeBySeekbar" />
+				</methods>
+			</class>
+
+			<!-- 必备应用的关于应用测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestAboutActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkAboutUpdate" />
+					<include name="checkUserProtocol" />
+					<include name="rollAndClose" />
+				</methods>
+			</class>
+
+			<!-- 必备应用的分享应用测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestShareActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="shareTheApp" />
+					<include name="shareByLink" />
+					<include name="shareByMore" />
+				</methods>
+			</class>
+
+
+			<!-- 必备应用的主页集团广告与FavorActivity测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestWebviewADActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkMainSoftAdShow" />
+					<include name="checkMainSoftAdContent" />
+					<include name="checMainGameAdShow" />
+					<include name="checkMainGameAdContent" />
+				</methods>
+			</class>
+
+			<!-- 必备应用的搜索结果SearchActivity#ResultFragment测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchResultActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkSild2OtherTab" />
+					<include name="checkClick2OtherTab" />
+					<include name="checkRandomClick2Detail" />
+					<include name="checkRandomClick2Download" />
+					<include name="checkDownloadButtonUpdate" />
+					<include name="checkSearch2Baseline" />
+					<include name="checkErrorInput4EmptyPage" />
+				</methods>
+			</class>
+
+			<!-- 必备应用的应用详情页DetailActivity测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestDetailActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkActionBarSearch" />
+					<include name="checkTheImageScrollView" />  <!-- 100 MileStone -->
+					<include name="checkImageBrower" />
+					<include name="opearaInImageBrower" />
+					<include name="checkWithoutInstall" />
+					<include name="checkBriefIntroduction" />
+					<include name="checkAdInDetail" />
+					<include name="checkOtherInstall" />
+					<include name="checkDownloadInOtherInstall" />
+					<include name="checkPermission" />
+					<include name="checkTipOff" />
+					<include name="checkPostTipOffReport" />
+					<include name="checkRightTopNumTip" />
+					<include name="checkBottomDownload" />
 				</methods>
 			</class>
 		</classes>

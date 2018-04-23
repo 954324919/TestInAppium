@@ -7,7 +7,6 @@ import com.cmic.GoAppiumTest.helper.Tips;
 /**
  * @描述 全局配置参数
  * @author kiwi
- *
  */
 public class App {
 	public static int CASE_COUNT = 0;
@@ -35,7 +34,6 @@ public class App {
 	// 搜索联想
 	public static final int RELATION_DIRECTION_ITEM_HEIGHT_DP = 85;
 	public static final int RELATION_NORMAL_ITEM_HEIGHT_DP = 28;
-	// 
 	public static final int MARGIN_LEFT_OR_RIGHT_DP = 15;// 有14和16的版本
 
 	// 默认用户目录为当前工作目录

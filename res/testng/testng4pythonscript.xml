@@ -20,8 +20,7 @@
 
 	<test name="Test4PythonAnalyze" preserve-order="true">
 		<classes>
-			<class
-				name="com.cmic.GoAppiumTest.script.Test4PerformanceAnalyze">
+			<class name="com.cmic.GoAppiumTest.script.Test4PerformanceAnalyze">
 				<methods>
 					<include name="initCheck" />
 					<include name="passSplashAct" />
@@ -40,7 +39,4 @@
 		</classes>
 	</test>
 </suite>
-<!-- <include name="permissionGrant"/> <include name="requestPage"/> <include 
-	name="mainActivity"/> <include name="goTrafficManagerActivity"/> <include 
-	name="searchActivity"/> <include name="downloadManagerActivity"/> <include 
-	name="detailActivity"/> <include name="goWebviewPage"/> <include name="goDownload"/> -->
+<!-- -->

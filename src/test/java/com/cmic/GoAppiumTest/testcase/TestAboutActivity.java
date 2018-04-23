@@ -15,6 +15,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
@@ -33,38 +34,19 @@ import com.cmic.GoAppiumTest.util.WaitUtil;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
-public class TestAboutActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class TestAboutActivity extends BaseTest{
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@BeforeClass
-	@Tips(description = "假设已经入Setting&&未跳转到其他页面")
-	public void beforeClass() throws InterruptedException {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
+	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass",triggerTime="假设已经入Setting&&未跳转到其他页面")
+	@Override
+	public void setUpBeforeClass() {
 		WaitUtil.implicitlyWait(2);
 		AndroidElement aboutLly = mDriver.findElement(By.id("com.cmic.mmnes:id/ll_about"));
 		aboutLly.click();
-		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
-	@AfterClass
-	public void afterClass() throws InterruptedException {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
-		// TODO 未来可采取这种形式
-		// 退回SettingActivity
+	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
+	@Override
+	public void tearDownAfterClass() {
 		if (ContextUtil.getCurrentActivity().equals(".activity.AboutActivity")) {
 			PageRouteUtil.pressBack();
 		} else if (ContextUtil.getCurrentActivity().equals(".activity.ProtocalActivity")) {
