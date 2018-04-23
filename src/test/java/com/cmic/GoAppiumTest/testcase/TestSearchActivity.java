@@ -61,7 +61,6 @@ public class TestSearchActivity extends BaseTest {
 	@Override
 	public void tearDownAfterClass() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -84,7 +83,6 @@ public class TestSearchActivity extends BaseTest {
 		WaitUtil.forceWait(2);
 		currentItemCount = mDriver.findElementsByClassName("android.widget.LinearLayout").size();
 		assertEquals(originItemCount < currentItemCount, true);
-
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

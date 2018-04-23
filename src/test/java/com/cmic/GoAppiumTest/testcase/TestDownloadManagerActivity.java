@@ -73,7 +73,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
 		if (eList.size() <= 0) {
-			throw new RuntimeException("下载更新界面没有可更新的应用");
+			throw new AssertionError("不存在可更新的应用或游戏");
 		}
 	}
 

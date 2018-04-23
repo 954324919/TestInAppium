@@ -49,7 +49,6 @@ public class TestWebviewADActivity extends BaseTest {
 	}
 
 	// TODO 可建议分开，方便依赖
-
 	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "检查SoftWare底部的集团广告是否存在", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
 	public void checkMainSoftAdShow() throws InterruptedException {

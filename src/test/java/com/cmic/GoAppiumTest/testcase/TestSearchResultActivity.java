@@ -64,7 +64,6 @@ public class TestSearchResultActivity extends BaseTest {
 
 	@Override
 	public void tearDownAfterClass() {
-		// TODO Auto-generated method stub
 
 	}
 
