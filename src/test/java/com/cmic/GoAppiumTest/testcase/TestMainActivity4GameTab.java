@@ -4,10 +4,12 @@ import static org.testng.Assert.assertEquals;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -26,6 +28,7 @@ import io.appium.java_client.android.AndroidElement;
  * @author cmic
  *
  */
+@Listeners(ExtentReportListener.class)
 public class TestMainActivity4GameTab extends BaseTest {
 
 	@Override

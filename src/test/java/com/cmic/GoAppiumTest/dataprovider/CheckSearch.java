@@ -16,25 +16,21 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
-public class CheckSearch {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class CheckSearch extends BaseTest{
 
 	@BeforeMethod
+	@Tips(description="覆盖了BaseTest的方法")
 	public void tipBeforeTestCase() {
 		// 点击同意并使用
 		System.out.println("数据驱动用例[" + (++App.CASE_COUNT) + "]开始");
@@ -44,10 +40,18 @@ public class CheckSearch {
 	public void tipAfterTestCase() {
 		System.out.println("数据驱动用例[" + (App.CASE_COUNT) + "]结束");
 	}
+	
+	@Override
+	public void setUpBeforeClass() {
+	}
+
+	@Override
+	public void tearDownAfterClass() {
+	}
 
 	@BeforeClass
-	@Tips(description = "跳转进入SearchActivity")
-	public void beforeClass() throws InterruptedException {
+	@Tips(description = "跳转进入SearchActivity，覆盖了BaseTest的方法")
+	public void beforeClass() {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
 		// TODO 在没有卸载软件时，可能会报错
@@ -60,7 +64,7 @@ public class CheckSearch {
 	}
 
 	@AfterClass
-	public void afterClass() throws InterruptedException {// 执行一些初始化操作
+	public void afterClass() {// 执行一些初始化操作
 		System.out.println("数据驱动用例集[" + mTag + "]结束");
 	}
 
