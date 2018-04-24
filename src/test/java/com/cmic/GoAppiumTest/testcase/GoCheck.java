@@ -7,6 +7,10 @@ import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -41,6 +45,9 @@ public class GoCheck {
 	private AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 	private AndroidDriver<AndroidElement> mDriver = DriverManger.getDriver();
 
+	@FindBy
+	private AndroidElement e;
+	
 	@Tips(description = "意义:卸载应用")
 	@AfterClass
 	public void afterClass() {
@@ -52,6 +59,25 @@ public class GoCheck {
 //			AppUtil.unInstall(packageName);
 //		}
 	}
+	
+	 /**
+     * 显示等待，等待Id对应的控件出现time秒，一出现马上返回，time秒不出现也返回
+     */
+//    public AndroidElement waitAuto(final By by, int time) {
+//        try {
+//            return ((Object) new ExpectedCondition(driver, time))
+//                    .until(new ExpectedCondition<AndroidElement>() {
+//						@Override
+//						public AndroidElement apply(WebDriver arg0) {
+//							// TODO Auto-generated method stub
+//							return (AndroidElement) arg0.findElement(by);
+//						}
+//                    });
+	// } catch (TimeoutException e) {
+	// return null;
+	// }
+	// }
+
 
 	@Test
 	public void test() throws InterruptedException {

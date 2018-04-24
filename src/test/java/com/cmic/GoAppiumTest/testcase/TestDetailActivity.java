@@ -36,11 +36,11 @@ import io.appium.java_client.android.AndroidElement;
  *
  */
 @Listeners(ExtentReportListener.class)
-public class TestDetailActivity extends BaseTest{
+public class TestDetailActivity extends BaseTest {
 
 	private String mTempItemName;
 
-	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass",triggerTime="假设已经入首页且显示正常，开始准备跳转到详情页")
+	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "假设已经入首页且显示正常，开始准备跳转到详情页")
 	@Override
 	public void setUpBeforeClass() {
 		PageRedirect.redirect2MainActivity();
@@ -60,7 +60,7 @@ public class TestDetailActivity extends BaseTest{
 	public void tearDownAfterClass() {
 		//
 	}
-	
+
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
@@ -272,7 +272,7 @@ public class TestDetailActivity extends BaseTest{
 		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "测试举报页面", riskPoint = "造成脏数据|遍历深度浅")
 	public void checkPostTipOffReport() throws InterruptedException {
 		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);

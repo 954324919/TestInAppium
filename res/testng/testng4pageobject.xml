@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite" parallel="false">
+	<!-- 一个测试套束 -->
+	<!-- 一个完整的测试功能 -->
+	<!-- 一个完整的测试类 -->
+	<!-- 一个测试集 -->
+	<!-- 测试用例 -->
+	<test name="Test4Init" preserve-order="true">
+		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
+		<classes>
+			<class name="com.cmic.GoAppiumTest.page.testcase.CheckSplashActvity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkNoNotify" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
