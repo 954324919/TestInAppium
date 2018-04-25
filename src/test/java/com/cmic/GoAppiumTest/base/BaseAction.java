@@ -3,7 +3,9 @@ package com.cmic.GoAppiumTest.base;
 import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
 import com.cmic.GoAppiumTest.helper.Heading;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -13,12 +15,18 @@ public class BaseAction {
 
 	protected AndroidDriver<AndroidElement> driver;
 
-	public BaseAction(AndroidDriver driver) {
+	public BaseAction(AndroidDriver<AndroidElement> driver) {
 		this.driver = driver;
 	}
 
 	@Tips(description = "点击按钮")
 	public void go2Click(AndroidElement e) {
+		if (driver == null) {
+			System.err.println("DriverNull");
+		}
+		if (e == null) {
+			System.out.println("eNull");
+		}
 		e.click();
 	}
 
@@ -115,7 +123,7 @@ public class BaseAction {
 
 	@Tips(description = "进行截屏")
 	public void go2SnapScreen(String snapMsg) {
-
+       ScreenUtil.screenShot(snapMsg);
 	}
 
 	@Tips(description = "点击后退键")
@@ -143,12 +151,12 @@ public class BaseAction {
 
 	@Tips(description = "重置应用数据，清除缓存")
 	public void go2AppReset() {
-
+		AppUtil.resetApp();
 	}
 
-	@Tips(description = "软Reset,不清楚缓存")
+	@Tips(description = "软Reset,不清楚缓存", riskPoint = "可能导致PageFactory在页面变动时出现NullPoint")
 	public void go2SoftReset() {
-
+		AppUtil.softResetApp();
 	}
 
 	@Tips(description = "模拟按下安卓手机键")

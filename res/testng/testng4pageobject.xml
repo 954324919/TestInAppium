@@ -9,7 +9,7 @@
 	<test name="Test4Init" preserve-order="true">
 		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
 		<classes>
-			<class name="com.cmic.GoAppiumTest.page.testcase.CheckSplashActvity">
+			<class name="com.cmic.GoAppiumTest.testcase4pageobject.CheckSplashActvity">
 				<methods>
 					<include name="initCheck" />
 					<include name="checkNoNotify" />

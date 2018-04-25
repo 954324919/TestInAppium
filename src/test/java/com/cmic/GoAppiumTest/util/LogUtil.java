@@ -29,6 +29,12 @@ public class LogUtil {
 		System.err.println(e.getMethodName());
 	}
 
+	public static void printCurrentMethodNameInLog4J() {
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		StackTraceElement e = stackTrace[2];
+		w("当前调用方法为:{}", e.getMethodName());
+	}
+
 	public static Logger get(Class<?> clazz) {
 		return LoggerFactory.getLogger(clazz);
 	}
