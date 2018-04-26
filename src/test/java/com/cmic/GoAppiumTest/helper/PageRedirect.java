@@ -79,6 +79,21 @@ public class PageRedirect {
 	}
 
 	/**
+	 * 定位到权限管理的Ralation页面
+	 */
+	public static void redirect2PermissionRalation() {
+		redirect2RequestPermissionActivity();
+		WaitUtil.implicitlyWait(5);
+		AndroidElement buttonAllow = driver
+				.findElement(By.id("com.android.packageinstaller:id/permission_deny_button"));
+		for (int i = 0; i < 4; i++) {
+			buttonAllow.click();
+			WaitUtil.forceWait(1);
+		}
+		WaitUtil.forceWait(2);
+	}
+
+	/**
 	 * 重定向到SettingActivity
 	 * 
 	 * @throws InterruptedException

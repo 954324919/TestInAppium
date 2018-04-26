@@ -18,6 +18,7 @@ public class PageRouteUtil {
 	
 	// 访问目标
 	public static void goTargetActivity() {
+		//TODO 需要修复
 		DriverManger.getDriver().startActivity("com.example.android.contactmanager", "ContactManager");
 	}
 

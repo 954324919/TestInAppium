@@ -17,16 +17,15 @@ import com.cmic.GoAppiumTest.testcase4pageobject.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
-
 @Listeners(FailSnapshotListener.class)
-public class CheckSplashActvity extends BaseTest {
+public class TestSplashActvity extends BaseTest {
 
 	private SplashPage mSpalashPage;
 
 	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "首次进入应用|清楚缓存后进入")
 	@Override
 	public void setUpBeforeClass() {
-		mSpalashPage = new SplashPage(mDriver);
+		mSpalashPage = new SplashPage();
 	}
 
 	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
@@ -40,7 +39,7 @@ public class CheckSplashActvity extends BaseTest {
 		// 确认为SplashActivity
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
 		// TODO 先试探错误的情况
-		Assert.assertEquals(mSpalashPage.getCurrActivity(), "SplashActivity");
+		Assert.assertEquals(getCurrentPageName(), "SplashActivity");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
@@ -60,7 +59,7 @@ public class CheckSplashActvity extends BaseTest {
 		// 点击拒绝协议
 		mSpalashPage.clickRefuceProtocol();
 		// 屏幕截图
-		mSpalashPage.action.go2SnapScreen("点击拒绝协议");
+		mSpalashPage.snapScreen("点击拒绝协议");
 		// 重入应用
 		mSpalashPage.action.go2AppReset();
 	}

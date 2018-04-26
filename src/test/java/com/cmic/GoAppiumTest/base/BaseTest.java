@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeSuite;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.PropertiesUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
@@ -82,4 +83,15 @@ public abstract class BaseTest {
 		// AppUtil.unInstall(App.PACKAGE_NAME);
 		mDriver.quit();
 	}
+
+	@Tips(description = "获取当前应用的Activity名称")
+	public String getCurrentPageName() {
+		return ContextUtil.getCurrentPageActivtiy();
+	}
+
+	@Tips(description = "获取当前应用的Activity名称")
+	public String getCurrentPackageName() {
+		return ContextUtil.getCurrentPageActivtiy();
+	}
+
 }

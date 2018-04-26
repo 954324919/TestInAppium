@@ -1,22 +1,28 @@
 package com.cmic.GoAppiumTest.base;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
 import com.cmic.GoAppiumTest.helper.Heading;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
+import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.KeyboardUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.android.AndroidKeyCode;
 
-public class BaseAction {
+public abstract class BaseAction {
 
-	protected AndroidDriver<AndroidElement> driver;
+	protected static AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 
-	public BaseAction(AndroidDriver<AndroidElement> driver) {
-		this.driver = driver;
+	@Tips(description = "无参数构造方法")
+	public BaseAction() {
+		//
 	}
 
 	@Tips(description = "点击按钮")
@@ -29,6 +35,9 @@ public class BaseAction {
 		}
 		e.click();
 	}
+
+	@Tips(description = "回到当前页面")
+	public abstract void go2SelfPage();
 
 	@Tips(description = "点击坐标或按钮")
 	public void go2Tap() {
@@ -57,22 +66,22 @@ public class BaseAction {
 
 	@Tips(description = "滚动到底部")
 	public void go2Swipe2Bottom() {
-
+		ScrollUtil.scrollToBase();
 	}
 
 	@Tips(description = "Et输入")
-	public void go2Type() {
-
+	public void go2TypeWord(AndroidElement e, String word) {
+		e.sendKeys(word);
 	}
 
 	@Tips(description = "清楚缓存")
 	public void go2ClearData() {
-
+		AppUtil.clearAppData(App.PACKAGE_NAME);
 	}
 
 	@Tips(description = "清除控件Et的输入内容")
-	public void go2Clear() {
-
+	public void go2Clear(AndroidElement e) {
+		e.clear();
 	}
 
 	@Tips(description = "复制Et内容")
@@ -99,8 +108,8 @@ public class BaseAction {
 	 * 发送Adb指令
 	 */
 	@Tips(description = "发送Adb指令")
-	public void go2Command() {
-
+	public void go2Command(String cmd) {
+		AdbManager.excuteAdbShell(cmd);
 	}
 
 	/**
@@ -108,31 +117,22 @@ public class BaseAction {
 	 */
 	@Tips(description = "点击Home键")
 	public void go2HomePage() {
-
+		PageRouteUtil.pressHome();
 	}
 
 	@Tips(description = "卸载软件")
 	public void go2UninstallApp() {
-
-	}
-
-	@Tips(description = "到达目标页面")
-	public void go2TargetPage() {
-
-	}
-
-	@Tips(description = "进行截屏")
-	public void go2SnapScreen(String snapMsg) {
-       ScreenUtil.screenShot(snapMsg);
+		AppUtil.unInstall(App.PACKAGE_NAME);
 	}
 
 	@Tips(description = "点击后退键")
 	public void go2Backforward() {
-
+		PageRouteUtil.pressBack();
 	}
 
 	@Tips(description = "安装app")
 	public void go2InstallApp(String appPath) {
+		go2Command("adb install " + appPath);
 	}
 
 	@Tips(description = "判断是否安装")
@@ -142,11 +142,12 @@ public class BaseAction {
 
 	@Tips(description = "判断是否锁屏")
 	public boolean go2CheckScrennLocked() {
-		return false;
+		return DeviceUtil.getLockStatus();
 	}
 
 	@Tips(description = "打开通知栏界面")
 	public void go2OpenNotifications() {
+		DeviceUtil.openNotification();
 	}
 
 	@Tips(description = "重置应用数据，清除缓存")
@@ -161,6 +162,7 @@ public class BaseAction {
 
 	@Tips(description = "模拟按下安卓手机键")
 	public void go2PressAndroidKey(int androidKeyCode) {
+		driver.pressKeyCode(androidKeyCode);
 	}
 
 	@Tips(description = "获取控件元素的左上角X")
@@ -190,7 +192,8 @@ public class BaseAction {
 
 	@Tips(description = "强制关闭应用")
 	public void go2ForceKillApp() {
-
+		AppUtil.killApp(App.PACKAGE_NAME); // driver.close()
+		// AppUtil.killApp(App.PACKAGE_NAME); #调用adb
 	}
 
 	@Tips(description = "强制休眠")
@@ -201,6 +204,11 @@ public class BaseAction {
 	@Tips(description = "键盘切换")
 	public void go2KeyboardSwitch() {
 
+	}
+
+	@Tips(description = "键盘隐藏")
+	public void go2HideKeyboard() {
+		KeyboardUtil.hideKeyBoard();
 	}
 
 	@Tips(description = "点击Menu")
@@ -223,4 +231,8 @@ public class BaseAction {
 		DriverManger.getDriver().navigate().refresh(); // 刷新
 	}
 
+	@Tips(description = "启动应用")
+	public void goLaunchApp() {
+		driver.launchApp();
+	}
 }

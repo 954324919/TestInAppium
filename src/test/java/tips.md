@@ -41,6 +41,8 @@ Excel的每一页都将被解析成一个Sheet对象；
 每一个单元格都是一个Cell对象。
 18.参数构建目标testng(https://www.cnblogs.com/imlvbu/p/7169918.html)
 19.执行 Selenium WebDriver 测试脚本抛出 StaleElementReferenceException按字面表达的意思大概是，所引用的元素已过时，不再依附于当前页面。通常情况下，这是因为页面进行了刷新或跳转，解决方法是，重新使用 findElement 或 findElements 方法进行元素定位即可
+20,Reset对于PageFactory不够稳定
+
 
 # TODO部分
 1.在0329/仍然不能使用关闭initCheck来关闭初始检验异常后跳过其他不能进行的测试用例，仅用Enable注解管理
