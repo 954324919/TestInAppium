@@ -66,6 +66,12 @@ public class BasePage {
 		WaitUtil.implicitlyWait(2);
 	}
 
+	@Tips(description = "强制进行截屏")
+	public void snapScreenForce(String snapMsg) {
+		ScreenUtil.screenShotForce(snapMsg);
+		WaitUtil.implicitlyWait(2);
+	}
+
 	@Tips(description = "隐士等待")
 	public void implicitlyWait(int implicitlyTime) {
 		WaitUtil.implicitlyWait(implicitlyTime);
@@ -82,7 +88,7 @@ public class BasePage {
 	public int getScreenDpi() {
 		return 0;
 	}
-	
+
 	@Tips(description = "获取当前屏幕宽度")
 	public static int getDeviceWidth() {
 		return driver.manage().window().getSize().width;

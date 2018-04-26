@@ -40,12 +40,7 @@ public class TestSearchActivity extends BaseTest {
 	@Tips(description = "假设已经在MainAct", riskPoint = "耦合度暂不考虑，从MainTest完成进入")
 	@Override
 	public void setUpBeforeClass() {
-		try {
-			PageRedirect.redirect2SearchActivity();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		PageRedirect.redirect2SearchActivity();
 		WaitUtil.implicitlyWait(2);
 	}
 

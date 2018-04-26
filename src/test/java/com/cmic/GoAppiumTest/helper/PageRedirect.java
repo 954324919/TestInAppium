@@ -121,7 +121,7 @@ public class PageRedirect {
 		WaitUtil.forceWait(2);
 	}
 
-	public static void redirect2SearchActivity() throws InterruptedException {
+	public static void redirect2SearchActivity() {
 		redirect2MainActivity();
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement searchLayout = driver.findElement(By.id("com.cmic.mmnes:id/search_layout"));

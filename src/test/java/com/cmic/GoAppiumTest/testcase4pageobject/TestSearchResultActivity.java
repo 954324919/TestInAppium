@@ -1,18 +1,17 @@
-package com.cmic.GoAppiumTest.testcase;
+package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
-import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -27,13 +26,9 @@ import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
 import io.appium.java_client.android.AndroidElement;
 
-/**
- * 当前0405从SearchActivity中进入
- * 
- * @author kiwi
- */
-@Listeners(ExtentReportListener.class)
 public class TestSearchResultActivity extends BaseTest {
+
+	private SearchResultPage mSearchResultPage;
 
 	@Tips(description = "假设已经入SearchActivity的热词界面")
 	@Override
@@ -56,13 +51,12 @@ public class TestSearchResultActivity extends BaseTest {
 
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
-		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
+		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
+		assertEquals(getCurrentPageName(), "SearchActivity");
 		boolean isPresent = ElementUtil.isElementPresentSafe(By.id("com.cmic.mmnes:id/search_count_tv"));
 		assertEquals(isPresent, true);
-		ScreenUtil.screenShot("进入必备搜索结果界面");
+		mSearchResultPage.snapScreen("进入必备搜索结果界面");
 		WaitUtil.implicitlyWait(2);
 	}
 
@@ -129,7 +123,7 @@ public class TestSearchResultActivity extends BaseTest {
 		}
 		eListItem.get(RandomUtil.getRandomNum(eListItem.size() - 1)).click();
 		WaitUtil.forceWait(2);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
+		assertEquals(getCurrentPageName(), "DetailActivity");
 		PageRouteUtil.pressBack();
 		WaitUtil.forceWait(2);
 	}

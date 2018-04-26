@@ -1,0 +1,155 @@
+package com.cmic.GoAppiumTest.testcase4pageobject;
+
+import static org.testng.Assert.assertEquals;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
+import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
+import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
+import com.cmic.GoAppiumTest.util.WaitUtil;
+
+import io.appium.java_client.android.AndroidElement;
+
+@Listeners(ExtentReportListener.class)
+public class TestWebviewADActivity extends BaseTest {
+
+	@Tips(description = "用于增强BeforeClass", triggerTime = "假设已经入Setting&&未跳转到其他页面")
+	@Override
+	public void setUpBeforeClass() {
+		PageRedirect.redirect2MainActivity();
+	}
+
+	@Tips(description = "用于增强AfterClass")
+	@Override
+	public void tearDownAfterClass() {
+
+	}
+
+	@Test(retryAnalyzer = FailRetry.class)
+	public void initCheck() {// 1
+		// 建议移到和MainyAc一起测试 后期需要确定是否为初次安装还是应用启动
+		// 先确认是否进入该页面
+		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+		ScreenUtil.screenShot("进入必备应用主页广告界面");
+		WaitUtil.implicitlyWait(2);
+	}
+
+	// TODO 可建议分开，方便依赖
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
+	@Tips(description = "检查SoftWare底部的集团广告是否存在", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
+	public void checkMainSoftAdShow() throws InterruptedException {
+		String AdClass = "android.support.v4.view.ViewPager";
+		WaitUtil.implicitlyWait(5);
+		LogUtil.printCurrentMethodName();
+		List<AndroidElement> elementList = mDriver.findElementsByClassName(AdClass);
+		WaitUtil.implicitlyWait(10);
+		mDriver.findElement(By.id("com.cmic.mmnes:id/index_item_rl")); // 主要是为了让主线程进如隐式等待，避免CPU等待过长
+		ScrollUtil.scrollToBase();
+		WaitUtil.forceWait(2);
+		String gameAdClass = "android.support.v4.view.ViewPager";
+		List<AndroidElement> elementListAfterScroll = mDriver.findElementsByClassName(gameAdClass);
+		// 滑动到底部，集团广告的ViewPage，主页的ViewPage
+		assertEquals(elementList.size() != elementListAfterScroll.size(), true);
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
+	@Tips(description = "检测主页软件Tab集团广告内容显示", riskPoint = "必须保障依赖，不然稳定性差")
+	public void checkMainSoftAdContent() throws InterruptedException {
+		WaitUtil.implicitlyWait(5);
+		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
+		LogUtil.printCurrentMethodName();
+		// 进入该方法说明了底部的集团广告存在
+		if (elementList.isEmpty()) {
+			System.out.println("判断子项列表为空");
+			ScreenUtil.screenShotForce("判断子项列表为空");
+			return;
+		}
+		elementList.get(elementList.size() - 1).click();
+		// TODO 后期可加入页面逻辑检测
+		WaitUtil.forceWait(3);
+		ScreenUtil.screenShot("主页软件Tab集团广告显示");
+
+		// 可能进入.activity.LoginActivity页面
+		String curAct = ContextUtil.getCurrentActivity();
+		boolean isTargetAct1 = curAct.equals(".activity.LoginActivity") || curAct.equals(".activity.FavorActivity")
+				|| curAct.equals(".activity.DetailActivity");
+		assertEquals(isTargetAct1, true);
+		if (curAct.equals(".activity.LoginActivity")) {// 登陆页要退两次
+			PageRouteUtil.pressBack();
+			WaitUtil.forceWait(2);
+		}
+		WaitUtil.implicitlyWait(5);
+		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
+		e.click();
+		WaitUtil.forceWait(2);
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+	}
+
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
+	@Tips(description = "检查GameTab底部的集团广告是否存在", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
+	public void checMainGameAdShow() throws InterruptedException {
+		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
+		LogUtil.printCurrentMethodName();
+		String gameAdClass = "android.support.v4.view.ViewPager";
+		List<AndroidElement> elementList = mDriver.findElementsByClassName(gameAdClass);
+		WaitUtil.implicitlyWait(10);
+		mDriver.findElement(By.id("com.cmic.mmnes:id/index_item_rl"));
+		ScrollUtil.scrollToBase();
+		WaitUtil.forceWait(2);
+		List<AndroidElement> elementListAfterScroll = mDriver.findElementsByClassName(gameAdClass);
+		// 滑动到底部，集团广告的ViewPage，主页的ViewPage
+		assertEquals(elementList.size() != elementListAfterScroll.size(), true);
+	}
+
+	// TODO 出现新的Activity需要重新进行覆盖
+	@Test(dependsOnMethods = { "checMainGameAdShow" })
+	@Tips(description = "检测主页游戏Tab集团广告内容显示", riskPoint = "必须保障依赖，不然稳定性差||可能进入登陆页面")
+	public void checkMainGameAdContent() throws InterruptedException {
+		String curAct1 = ContextUtil.getCurrentActivity();
+		boolean isTargetAct1 = curAct1.equals(".activity.LoginActivity") || curAct1.equals(".activity.FavorActivity");
+		if (isTargetAct1) {// 用于失败重试
+			while (ContextUtil.getCurrentActivity().equals(".activity.MainActivity")) {
+				PageRouteUtil.pressBack();
+				WaitUtil.forceWait(3);
+			}
+		} else {
+			// 显示正常
+		}
+		WaitUtil.implicitlyWait(10);
+		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
+		LogUtil.printCurrentMethodName();
+		// 进入该方法说明了底部的集团广告存在
+		elementList.get(elementList.size() - 1).click();
+
+		// TODO 后期可加入页面逻辑检测
+		WaitUtil.forceWait(5);
+		ScreenUtil.screenShot("主页游戏Tab集团广告显示");
+
+		// 可能进入.activity.LoginActivity页面
+		String curAct = ContextUtil.getCurrentActivity();
+		boolean isTargetAct = curAct.equals(".activity.LoginActivity") || curAct.equals(".activity.FavorActivity");
+		assertEquals(isTargetAct, true);
+		if (curAct.equals(".activity.LoginActivity")) {// LoginActivity先退一次
+			PageRouteUtil.pressBack();// 后退时还是不够稳健
+			WaitUtil.forceWait(3);
+		}
+		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
+		e.click();
+		WaitUtil.forceWait(3);
+		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+	}
+}

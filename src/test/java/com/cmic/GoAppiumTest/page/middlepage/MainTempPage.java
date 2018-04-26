@@ -25,6 +25,9 @@ public class MainTempPage extends BasePage {
 	@AndroidFindBy(id = "com.cmic.mmnes:id/update_point_iv")
 	private AndroidElement updateNumPoint;// 右上角角标计数
 
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.LinearLayout\").resourceId(\"com.cmic.mmnes:id/search_layout\").childSelector(new UiSelector().className(\"android.widget.TextView\"))")
+	private AndroidElement rollKeyword;// 滚动热词[outside]
+
 	public MainTempPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new MainTempAction();
@@ -39,6 +42,16 @@ public class MainTempPage extends BasePage {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+
+	@Tips(description = "获取外界的滚动热词")
+	public String getRollKeyWordText() {
+		return rollKeyword.getText();
+	}
+
+	public void click2SearchActivity() {
+		searchContainer.click();
+		forceWait(2);
 	}
 
 	@Tips(description = "临时操作页面的内部Action")

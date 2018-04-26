@@ -1,6 +1,7 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Random;
@@ -11,6 +12,9 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.SearchPage;
+import com.cmic.GoAppiumTest.page.action.SearchAction;
+import com.cmic.GoAppiumTest.page.middlepage.MainTempPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -21,23 +25,20 @@ import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidElement;
 
-public class TestSearchActivity extends BaseTest{
+public class TestSearchActivity extends BaseTest {
 
 	private int originItemCount;
 	private int currentItemCount;
 	private String rollHotKeyInMainAct;// 滚动热词
 	private String searchBeforePerform;
 
+	private SearchPage mSearchPage;
+
 	@Tips(description = "假设已经在MainAct", riskPoint = "耦合度暂不考虑，从MainTest完成进入")
 	@Override
 	public void setUpBeforeClass() {
-		try {
-			PageRedirect.redirect2SearchActivity();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		WaitUtil.implicitlyWait(2);
+		mSearchPage = new SearchPage();
+		mSearchPage.action.go2SelfPage();
 	}
 
 	@Override
@@ -47,34 +48,30 @@ public class TestSearchActivity extends BaseTest{
 
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws InterruptedException {// 1
-		// TODO 后期需要确定是否为初次安装还是应用启动
-		// 先确认是否进入该页面
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
-		ScreenUtil.screenShot("进入必备应用搜索界面");
+		assertEquals(getCurrentPageName(), ".activity.SearchActivity");
+		mSearchPage.snapScreen("进入必备应用搜索界面");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击加载更多")
-	public void checkGetMore() throws InterruptedException {
+	public void checkGetMore() {
 		LogUtil.printCurrentMethodNameInLog4J();
-		originItemCount = mDriver.findElementsByClassName("android.widget.LinearLayout").size();
-		AndroidElement getMoreIv = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_more"));
-		getMoreIv.click();
-		WaitUtil.forceWait(2);
-		currentItemCount = mDriver.findElementsByClassName("android.widget.LinearLayout").size();
-		assertEquals(originItemCount < currentItemCount, true);
+		originItemCount = mSearchPage.getCountOfTargetHotWord();
+		// 进行操作
+		mSearchPage.clickLoadMoreSwitch();
+		currentItemCount = mSearchPage.getCountOfTargetHotWord();// TODO 可能存在风险
+		assertTrue(originItemCount < currentItemCount);
 	}
 
+	// TODO 可能存在风险，可以拆分依赖
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击收起更多")
-	public void closeTheWordList() throws InterruptedException {
-		WaitUtil.implicitlyWait(5);
+	public void closeTheWordList() {
 		LogUtil.printCurrentMethodNameInLog4J();
-		AndroidElement getMoreIv = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_more"));
-		getMoreIv.click();
-		WaitUtil.forceWait(2);
-		currentItemCount = mDriver.findElementsByClassName("android.widget.LinearLayout").size();
+		// 进行操作
+		mSearchPage.clickLoadMoreSwitch();
+		currentItemCount = mSearchPage.getCountOfTargetHotWord();
 		assertEquals(currentItemCount, originItemCount);
 	}
 
@@ -85,85 +82,60 @@ public class TestSearchActivity extends BaseTest{
 		LogUtil.printCurrentMethodNameInLog4J();
 		Random random = new Random();
 		// TODO 模拟一个数字
-		List<AndroidElement> list = mDriver.findElementsByClassName("android.widget.LinearLayout");
+		int tempCount = 0;
 		int randomIndex = 0;
-		if (list.size() > 3) {
-			randomIndex = random.nextInt(list.size() - 3);
-		} else {
-			System.err.println("页面显示不全");
-			ScreenUtil.screenShotForce("randomCheckOne页面显示不全");
-			return;
+		if ((tempCount = mSearchPage.getCountOfTargetHotWord()) <= 3) {// 如果显示没有热词则抛出错误
+			LogUtil.e("页面显示不全");
+			throw new RuntimeException("randomCheckOne页面显示不全");
 		}
-		AndroidElement hotkeyItem = list.get(randomIndex);
-		searchBeforePerform = hotkeyItem.getText();
-		if (searchBeforePerform.equals("软件") || searchBeforePerform.equals("游戏") || searchBeforePerform.equals("热门")) {
-			searchBeforePerform = list.get(randomIndex + 1).getText();
-		}
-		// TODO 必要时截图
-		hotkeyItem.click();
-		WaitUtil.forceWait(2);
+		// 正常页面显示的情况
+		mSearchPage.randomClickHotword();
 		// TODO 风险不一定退出
-		PageRouteUtil.pressBack();
+		mSearchPage.action.go2Backforward();
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击搜索栏目的clear图标||同意默认情况写下为不显示，受randomCheckOne影响可见")
 	public void clickTheClearSearchRly() {
-		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodNameInLog4J();
-		if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/search_clear_iv"))) {
-			AndroidElement clearIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_clear_iv"));
-			clearIv.click();
-		}
+		mSearchPage.clickCleanHistory();
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击搜索ActionBar的后退")
 	public void checkBack() throws InterruptedException {
-		if (!ContextUtil.getCurrentActivity().equals(".activity.SearchActivity")) {
-			System.err.println("checkBack当前不在目标页面无法测试");
-			return;
-		}
-		WaitUtil.implicitlyWait(5);
-		AndroidElement backIv = mDriver.findElement(By.id("com.cmic.mmnes:id/search_back_layout"));
 		LogUtil.printCurrentMethodNameInLog4J();
-		backIv.click();
-		WaitUtil.forceWait(2);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
-		// 获取瞬时滚动热词用于checkWordFromOutside测试
-		String rollHotKeyWordUiSelector = "new UiSelector().className(\"android.widget.LinearLayout\").resourceId(\"com.cmic.mmnes:id/search_layout\")"
-				+ ".childSelector(new UiSelector().className(\"android.widget.TextView\"))";
-		AndroidElement rollHotKeyWordTv = mDriver.findElementByAndroidUIAutomator(rollHotKeyWordUiSelector);
-		rollHotKeyInMainAct = rollHotKeyWordTv.getText();
-		if (rollHotKeyInMainAct == null) {
-			ScreenUtil.screenShotForce("checkBack获取不到滚动热词");
-			WaitUtil.forceWait(1);
-			rollHotKeyInMainAct = rollHotKeyWordTv.getText();
+		if (!getCurrentPageName().equals("SearchActivity")) {
+			LogUtil.e("checkBack当前不在目标页面无法测试");
+			throw new RuntimeException("checkBack当前不在目标页面无法测试");
 		}
-		System.err.println("外界热词为：" + rollHotKeyInMainAct);
+		mSearchPage.action.go2Backforward();
+		mSearchPage.forceWait(2);
+		assertEquals(getCurrentPageName(), "MainActivity");
+		// 获取瞬时滚动热词用于checkWordFromOutside测试
+		MainTempPage mainTempPage = new MainTempPage();
+		rollHotKeyInMainAct = mainTempPage.getRollKeyWordText();
+		if (rollHotKeyInMainAct == null) {
+			mSearchPage.snapScreenForce("checkBack获取不到滚动热词");
+			mSearchPage.forceWait(1);
+			rollHotKeyInMainAct = mainTempPage.getRollKeyWordText();
+		}
+		LogUtil.e("外界热词为{}", rollHotKeyInMainAct);
 		// 再次点击返回SearchActivity
-		WaitUtil.implicitlyWait(3);
-		AndroidElement searchLayout = mDriver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
-		searchLayout.click();
-		WaitUtil.forceWait(2);
+		mainTempPage.click2SearchActivity();
 	}
 
 	@Test(dependsOnMethods = { "checkBack" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "被传入的热词")
 	public void checkWordFromOutside() {//
-		if (!ContextUtil.getCurrentActivity().equals(".activity.SearchActivity")) {
-			System.err.println("checkWordFromOutside页面异常");
-			ScreenUtil.screenShotForce("checkWordFromOutside异常截图+i++");
-		}
 		LogUtil.printCurrentMethodNameInLog4J();
-		try {
-			WaitUtil.implicitlyWait(10);
-			AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
-			// TODO 必要时截图
-			System.err.println("滚动热词为：" + searchEt.getText());
-			assertEquals(searchEt.getText(), rollHotKeyInMainAct);
-		} catch (Exception e) {
-			ScreenUtil.screenShotForce("checkWordFromOutside失败时截图");
+		if (!getCurrentPageName().equals("SearchActivity")) {
+			LogUtil.e("checkWordFromOutside页面异常");
+			throw new RuntimeException("checkWordFromOutside异常截图");
 		}
+		String rollText = mSearchPage.getCurrentSearchKeyWord();
+		// TODO 必要时截图
+		LogUtil.e("滚动热词为: {}" + rollText);
+		assertEquals(rollText, rollHotKeyInMainAct);
 	}
 }
