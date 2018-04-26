@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -58,7 +59,7 @@ public class BasePage {
 	public void forceWait(int sleepTime) {
 		WaitUtil.forceWait(sleepTime);
 	}
-	
+
 	@Tips(description = "进行截屏")
 	public void snapScreen(String snapMsg) {
 		ScreenUtil.screenShot(snapMsg);
@@ -81,7 +82,7 @@ public class BasePage {
 	public int getScreenDpi() {
 		return 0;
 	}
-
+	
 	@Tips(description = "获取当前屏幕宽度")
 	public static int getDeviceWidth() {
 		return driver.manage().window().getSize().width;

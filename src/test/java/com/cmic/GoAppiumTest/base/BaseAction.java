@@ -11,7 +11,9 @@ import com.cmic.GoAppiumTest.util.KeyboardUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
+import com.cmic.GoAppiumTest.util.WaitUtil;
 
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.android.AndroidKeyCode;
@@ -22,7 +24,7 @@ public abstract class BaseAction {
 
 	@Tips(description = "无参数构造方法")
 	public BaseAction() {
-		//
+		// TODO
 	}
 
 	@Tips(description = "点击按钮")
@@ -39,29 +41,26 @@ public abstract class BaseAction {
 	@Tips(description = "回到当前页面")
 	public abstract void go2SelfPage();
 
-	@Tips(description = "点击坐标或按钮")
-	public void go2Tap() {
-
-	}
-
 	@Tips(description = "双击按钮")
 	public void go2DoubleTap() {
 
 	}
 
 	@Tips(description = "长按按钮")
-	public void go2LongTap() {
-
-	}
-
-	@Tips(description = "全屏幕滑动")
-	public void go2SwipeInFullScreen() {
-
+	public void go2LongTap(AndroidElement e) {
+		TouchAction ta = new TouchAction(driver);
+		ta.longPress(e).release().perform(); // 长按
 	}
 
 	@Tips(description = "控件内滚动")
 	public void go2SwipeInElement(AndroidElement elementScrollable, Heading heading) {
 		ElementUtil.swipeControl(elementScrollable, heading);
+	}
+
+	@Tips(description = "全屏幕滑动")
+	public void go2SwipeFullScreen(ScrollUtil.Direction heading, int precent) {
+		ScrollUtil.scrollToPrecent(heading, precent);
+		WaitUtil.forceWait(2);
 	}
 
 	@Tips(description = "滚动到底部")
@@ -86,12 +85,11 @@ public abstract class BaseAction {
 
 	@Tips(description = "复制Et内容")
 	public void go2CopyText() {
-
 	}
 
 	@Tips(description = "粘贴复制的文字")
-	public void go2PasteText() {
-
+	public void go2PasteText(AndroidElement e) {
+		ElementUtil.ctrlVPaste(e);
 	}
 
 	@Tips(description = "获取Excel的数据")
@@ -148,6 +146,13 @@ public abstract class BaseAction {
 	@Tips(description = "打开通知栏界面")
 	public void go2OpenNotifications() {
 		DeviceUtil.openNotification();
+		WaitUtil.forceWait(1);
+	}
+
+	@Tips(description = "关闭通知栏")
+	public void go2CloseNotification() {
+		DeviceUtil.closeNotification();
+		WaitUtil.forceWait(1);
 	}
 
 	@Tips(description = "重置应用数据，清除缓存")
@@ -235,4 +240,21 @@ public abstract class BaseAction {
 	public void goLaunchApp() {
 		driver.launchApp();
 	}
+
+	public void go2killApp() {
+		AppUtil.killApp();
+	}
+
+	public void go2killApp(String packageName) {
+		AppUtil.killApp(packageName);
+	}
+
+	public boolean go2GetElementSelectedStatus(AndroidElement e) {
+		return e.isSelected();
+	}
+
+	public boolean go2GetElementEnableStatus(AndroidElement e) {
+		return e.isEnabled();
+	}
+
 }

@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.util.AppUtil;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -51,6 +52,20 @@ public class PageRedirect {
 		for (int i = 0; i < 4; i++) {
 			buttonAllow.click();
 			WaitUtil.implicitlyWait(1);// 等待1S
+		}
+	}
+
+	@Tips(description = "到达流量管家页面")
+	public static void redirect2TrafficManagerActivity() {
+		if (ContextUtil.getCurrentActivity().equals(".activity.MainActivity")) {// MainAct
+			WaitUtil.implicitlyWait(2);// 等待1S
+			AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/jump_ll"));
+			managerRly.click();
+		} else {
+			PageRedirect.redirect2MainActivity();
+			WaitUtil.implicitlyWait(2);// 等待1S
+			AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/jump_ll"));
+			managerRly.click();
 		}
 	}
 
