@@ -8,6 +8,7 @@ import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.KeyboardUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
@@ -20,6 +21,11 @@ import io.appium.java_client.android.AndroidKeyCode;
 
 public abstract class BaseAction {
 
+	@Tips(description = "重试时间")
+	protected static final int TIMESTEP = 3;
+	@Tips(description = "重试次数")
+	protected static final int RETRYTIME = 3;
+	@Tips(description = "驱动")
 	protected static AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 
 	@Tips(description = "无参数构造方法")
@@ -30,12 +36,17 @@ public abstract class BaseAction {
 	@Tips(description = "点击按钮")
 	public void go2Click(AndroidElement e) {
 		if (driver == null) {
-			System.err.println("DriverNull");
+			LogUtil.e("DriverNull");
 		}
 		if (e == null) {
-			System.out.println("eNull");
+			LogUtil.d("eNull");
 		}
 		e.click();
+	}
+
+	@Tips(description = "输入文字")
+	public void go2SendWord(AndroidElement e, String keyWord) {
+		e.sendKeys(keyWord);
 	}
 
 	@Tips(description = "回到当前页面")
@@ -201,9 +212,9 @@ public abstract class BaseAction {
 		// AppUtil.killApp(App.PACKAGE_NAME); #调用adb
 	}
 
-	@Tips(description = "强制休眠")
-	public boolean go2CheckElementIsPresentInSafe() {
-		return false;
+	@Tips(description = "元素是否出现")
+	public boolean go2CheckElementIsPresentInSafe(AndroidElement e) {
+		return e.isDisplayed();
 	}
 
 	@Tips(description = "键盘切换")

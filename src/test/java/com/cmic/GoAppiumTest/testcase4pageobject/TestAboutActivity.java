@@ -32,14 +32,14 @@ public class TestAboutActivity extends BaseTest {
 	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
 	@Override
 	public void tearDownAfterClass() {
-		if (ContextUtil.getCurrentActivity().equals(".activity.AboutActivity")) {
+		if (getCurrentPageName().equals("AboutActivity")) {
 			PageRouteUtil.pressBack();
-		} else if (ContextUtil.getCurrentActivity().equals(".activity.ProtocalActivity")) {
-			PageRouteUtil.pressBack();
-			WaitUtil.forceWait(2);
+		} else if (getCurrentPageName().equals("ProtocalActivity")) {
 			PageRouteUtil.pressBack();
 			WaitUtil.forceWait(2);
-		} else if (ContextUtil.getCurrentActivity().equals(".activity.SettingActivity")) {
+			PageRouteUtil.pressBack();
+			WaitUtil.forceWait(2);
+		} else if (getCurrentPageName().equals("SettingActivity")) {
 			return;
 		}
 	}
@@ -48,7 +48,7 @@ public class TestAboutActivity extends BaseTest {
 	public void initCheck() {// 1
 		// 先确认是否进入该页面
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.AboutActivity");
+		assertEquals(getCurrentPageName(), "AboutActivity");
 		ScreenUtil.screenShot("进入必备应用关于界面");
 		WaitUtil.implicitlyWait(2);
 	}
@@ -73,7 +73,7 @@ public class TestAboutActivity extends BaseTest {
 		LogUtil.printCurrentMethodNameInLog4J();
 		AndroidElement aboutProtocolLly = mDriver.findElement(By.id("com.cmic.mmnes:id/about_user_protocol_layout"));
 		aboutProtocolLly.click();
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ProtocalActivity");
+		assertEquals(getCurrentPageName(), "ProtocalActivity");
 		ScreenUtil.screenShot("用户协议显示");
 	}
 
@@ -84,6 +84,6 @@ public class TestAboutActivity extends BaseTest {
 		WaitUtil.forceWait(2);
 		mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
 		WaitUtil.forceWait(2);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.AboutActivity");
+		assertEquals(getCurrentPageName(), "AboutActivity");
 	}
 }

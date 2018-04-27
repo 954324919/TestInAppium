@@ -2,25 +2,21 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.MainGameTabPage;
 import com.cmic.GoAppiumTest.util.AppUtil;
-import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
-import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
-import io.appium.java_client.android.AndroidElement;
-
+@Listeners(FailSnapshotListener.class)
 public class TestMainActivity4GameTab extends BaseTest {
 
 	private MainGameTabPage mMainGamePage;
@@ -41,7 +37,7 @@ public class TestMainActivity4GameTab extends BaseTest {
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
-		assertEquals(getCurrentPageName(), ".activity.MainActivity");
+		assertEquals(getCurrentPageName(), "MainActivity");
 		mMainGamePage.snapScreen("进入必备应用主页界面");
 	}
 

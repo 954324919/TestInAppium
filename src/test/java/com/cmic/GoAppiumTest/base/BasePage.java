@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -55,8 +56,17 @@ public class BasePage {
 		wait.until(ExpectedConditions.elementToBeClickable(locator));
 	}
 
+	public String getPackageName() {
+		return ContextUtil.getPackageName();
+	}
+
 	@Tips(description = "强制休眠")
 	public void forceWait(int sleepTime) {
+		WaitUtil.forceWait(sleepTime);
+	}
+
+	@Tips(description = "强制休眠")
+	public void forceWait(double sleepTime) {
 		WaitUtil.forceWait(sleepTime);
 	}
 
@@ -77,7 +87,7 @@ public class BasePage {
 		WaitUtil.implicitlyWait(implicitlyTime);
 	}
 
-	@Tips(description = "获取当前的activity,返回文件名")
+	@Tips(description = "获取当前的activity,返回最简名")
 	public String getCurrActivity() {
 		String str = driver.currentActivity();
 		return str.substring(str.lastIndexOf(".") + 1);
@@ -101,6 +111,6 @@ public class BasePage {
 
 	@Tips(description = "检测元素是否显示")
 	public boolean isElementIsPresent(AndroidElement e) {
-		return false;
+		return e.isDisplayed();
 	}
 }

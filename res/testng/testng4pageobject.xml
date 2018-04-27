@@ -60,41 +60,39 @@
 	<!-- 此部分测试应用的常规功能 -->
 	<test name="Test4Regular" preserve-order="true">
 		<classes>
-			<!-- 必备应用的首页软件Tab -->
-			<class
-				name="com.cmic.GoAppiumTest.testcase4pageobject.TestMainActivity4SoftTab">
+			<!-- 必备应用的搜索页测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchActivity">
 				<methods>
 					<include name="initCheck" />
+					<include name="checkGetMore" />
+					<include name="closeTheWordList" />
+					<include name="randomCheckOne" />
+					<include name="clickTheClearSearchRly" />
+					<include name="checkBack" />
+					<include name="checkWordFromOutside" />
+				</methods>
+			</class>
+			<!-- 必备应用的搜索结果SearchActivity#ResultFragment测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestSearchResultActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkSild2OtherTab" />
 					<include name="checkClick2OtherTab" />
-					<include name="testSlip2OtherTab" />
-					<include name="testWellSelect" />
-					<include name="scroll2SoftWareBottom" />
-					<include name="moreSoftware" />
-					<include name="refreshSoftBatch" />
+					<include name="checkRandomClick2Detail" />
+					<include name="checkRandomClick2Download" />
+					<include name="checkDownloadButtonUpdate" />
+					<include name="checkSearch2Baseline" />
+					<include name="checkErrorInput4EmptyPage" />
 				</methods>
 			</class>
-			<!-- 必备应用的首页游戏Tab -->
-			<class
-				name="com.cmic.GoAppiumTest.testcase4pageobject.TestMainActivity4GameTab">
+			<!-- 必备应用的流量管家页面测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestTrafficManagerActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkGreatGame" />
-					<include name="check2GameBottom" />
-					<include name="moreGame" />
-					<include name="refreshGameBatch" />
-				</methods>
-			</class>
-			<!-- 必备应用的首页-更新测试 -->
-			<class
-				name="com.cmic.GoAppiumTest.testcase4pageobject.TestMainActivityExtra">
-				<methods>
-					<include name="initCheck" />
-					<include name="testNotification" />
-					<include name="checkNotifyNum" />
-					<include name="checkSearchKeyWordCycle" />
-					<include name="zoomAndShrink" />
-					<include name="lockOrNotEffect" />
-					<include name="configChangeOreatation" />
+					<include name="checkTrafficInfo" />
+					<include name="checkSlipToOtherTab" />
+					<include name="checkClick2OtherTab" />
+					<include name="checkDropDown2Refesh" />
 				</methods>
 			</class>
 		</classes>

@@ -13,6 +13,7 @@ import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
@@ -35,18 +36,13 @@ import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestSearchResultActivity extends BaseTest {
 
+	private SearchResultPage mSearchResultPage;
+
 	@Tips(description = "假设已经入SearchActivity的热词界面")
 	@Override
 	public void setUpBeforeClass() {
-		PageRedirect.redirect2SearchActivity();
-		WaitUtil.implicitlyWait(5);
-		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
-		searchEt.click();
-		searchEt.clear();
-		searchEt.sendKeys("和飞信");
-		WaitUtil.implicitlyWait(5);
-		mDriver.findElement(By.id("com.cmic.mmnes:id/search_icon_layout")).click();
-		WaitUtil.forceWait(2);
+		mSearchResultPage = new SearchResultPage();
+		mSearchResultPage.action.go2SelfPage();
 	}
 
 	@Override
@@ -56,10 +52,9 @@ public class TestSearchResultActivity extends BaseTest {
 
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
-		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
+		LogUtil.e("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
+		assertEquals(getCurrentPageName(), ".activity.SearchActivity");
 		boolean isPresent = ElementUtil.isElementPresentSafe(By.id("com.cmic.mmnes:id/search_count_tv"));
 		assertEquals(isPresent, true);
 		ScreenUtil.screenShot("进入必备搜索结果界面");
@@ -124,12 +119,12 @@ public class TestSearchResultActivity extends BaseTest {
 		List<AndroidElement> eListItem = mDriver.findElements(By.id("com.cmic.mmnes:id/item_layout"));
 		LogUtil.printCurrentMethodName();
 		if (eListItem.isEmpty()) {
-			System.err.println("列表为空");
+			LogUtil.e("列表为空");
 			return;
 		}
 		eListItem.get(RandomUtil.getRandomNum(eListItem.size() - 1)).click();
 		WaitUtil.forceWait(2);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
+		assertEquals(getCurrentPageName(), ".activity.DetailActivity");
 		PageRouteUtil.pressBack();
 		WaitUtil.forceWait(2);
 	}
@@ -148,7 +143,7 @@ public class TestSearchResultActivity extends BaseTest {
 		AndroidElement targetElement = eListStatusBtn.get(randomInder);
 		// TODO 暂时取巧不够稳定
 		if (targetElement.getText().equals("打开")) {
-			System.err.println("已经是打开的状态");
+			LogUtil.e("已经是打开的状态");
 			return;
 		}
 		assertEquals(targetElement.getText(), "下载");

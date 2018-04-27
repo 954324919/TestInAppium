@@ -9,6 +9,7 @@ import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.action.SplashAction;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -58,7 +59,9 @@ public class MainTempPage extends BasePage {
 	public class MainTempAction extends BaseAction {
 		@Override
 		public void go2SelfPage() {
-			PageRedirect.redirect2MainActivity();
+			if (!ContextUtil.getCurrentPageActivtiy().equals("MainActivity")) {
+				PageRedirect.redirect2MainActivity();
+			}
 		}
 	}
 }

@@ -28,9 +28,17 @@ public class SearchPage extends BasePage {
 	@AndroidFindBy(id = "com.cmic.mmnes:id/searchText")
 	private AndroidElement searchContainer;// 内部热词
 
+	@AndroidFindBy(id = "com.cmic.mmnes:id/search_icon_layout")
+	private AndroidElement btnSubmitSearch;
+
 	public SearchPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new SearchAction();
+	}
+
+	public void clickSubmitSearch() {
+		action.go2Click(btnSubmitSearch);
+		forceWait(1);
 	}
 
 	public void clickCleanHistory() {
@@ -48,6 +56,17 @@ public class SearchPage extends BasePage {
 
 	public String getCurrentSearchKeyWord() {
 		return searchContainer.getText();
+	}
+
+	public void go2SearchByKeyWord(String searchKeyWord) {
+		action.go2Click(searchContainer);// 获取焦点
+		forceWait(0.5);
+		action.go2Clear(searchContainer);
+		forceWait(0.5);
+		action.go2SendWord(searchContainer, searchKeyWord);
+		forceWait(0.5);
+		action.go2Click(btnSubmitSearch);
+		WaitUtil.forceWait(2);
 	}
 
 	public void randomClickHotword() {

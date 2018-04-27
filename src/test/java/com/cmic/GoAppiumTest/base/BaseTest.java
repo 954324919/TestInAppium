@@ -15,6 +15,7 @@ import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.FileUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PropertiesUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 
@@ -40,7 +41,7 @@ public abstract class BaseTest {
 	@BeforeClass
 	public void beforeClass() {
 		mTag = getClass().getSimpleName();
-		System.out.println("测试用例集[" + mTag + "]开始");
+		LogUtil.w("测试用例集[{}]开始", mTag);
 		// 屏幕截图
 		setUpBeforeClass();
 		ScreenUtil.screenShot("进入" + mTag);
@@ -53,18 +54,18 @@ public abstract class BaseTest {
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
 		tearDownAfterClass();
-		System.out.println("测试用例集[" + mTag + "]结束");
+		LogUtil.w("测试用例集[{}]结束", mTag);
 	}
 
 	@BeforeMethod
 	public void tipBeforeTestCase() {
 		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
+		LogUtil.i("测试用例[{}]开始", ++App.CASE_COUNT);
 	}
 
 	@AfterMethod
 	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
+		LogUtil.i("测试用例[{}]结束", App.CASE_COUNT);
 	}
 
 	@BeforeSuite

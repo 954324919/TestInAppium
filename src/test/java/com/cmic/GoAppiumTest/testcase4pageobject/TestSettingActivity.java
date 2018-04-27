@@ -58,7 +58,7 @@ public class TestSettingActivity extends BaseTest {
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SettingActivity");
+		assertEquals(getCurrentPageName(), "SettingActivity");
 		ScreenUtil.screenShot("进入必备应用设置中心界面");
 		WaitUtil.implicitlyWait(2);
 	}
@@ -67,7 +67,7 @@ public class TestSettingActivity extends BaseTest {
 	@Tips(description = "检查自更新设置的影响")
 	public void checkAutoUpdate() throws InterruptedException {
 		WaitUtil.implicitlyWait(5);
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		AndroidElement updateSetting = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_zero_layout"));
 		updateSetting.click();
 		// TODO 检查影响，0404暂不实现
@@ -80,7 +80,7 @@ public class TestSettingActivity extends BaseTest {
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipShow() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		// TODO 检查影响，0404暂不实现
 		showDialog();
 		WaitUtil.implicitlyWait(2);
@@ -102,7 +102,7 @@ public class TestSettingActivity extends BaseTest {
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipCloseInOtherWay() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		WaitUtil.implicitlyWait(2);
 		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
 		// 重新点击显示NotifyDialog
@@ -132,7 +132,7 @@ public class TestSettingActivity extends BaseTest {
 	@Tips(description = "检查下载提示的影响")
 	public void setRangeByEditText() {
 		showDialog();
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		WaitUtil.implicitlyWait(2);
 		AndroidElement et = mDriver.findElement(By.id("com.cmic.mmnes:id/flow_setting_et"));
 		et.clear();
@@ -156,7 +156,7 @@ public class TestSettingActivity extends BaseTest {
 	@Test(dependsOnMethods = { "initCheck" })
 	public void setRangeBySeekbar() throws InterruptedException {
 		showDialog();
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		WaitUtil.implicitlyWait(2);
 		String seekBarUiSelector = "new UiSelector().className(\"android.widget.SeekBar\").resourceId(\"com.cmic.mmnes:id/flow_seekbar\")";
 		AndroidElement seekbar = mDriver.findElementByAndroidUIAutomator(seekBarUiSelector);

@@ -2,27 +2,23 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.MainSoftTabPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
-import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
-import io.appium.java_client.android.AndroidElement;
-
+@Listeners(FailSnapshotListener.class)
 public class TestMainActivity4SoftTab extends BaseTest {
 
 	private MainSoftTabPage mMainSoftPage;
@@ -52,8 +48,10 @@ public class TestMainActivity4SoftTab extends BaseTest {
 		LogUtil.printCurrentMethodNameInLog4J();
 		mMainSoftPage.clickGameTab();
 		// TODO 必要时截图
+		mMainSoftPage.snapScreen("进入必备应用主页界面测试点击跳转游戏Tab");
 		mMainSoftPage.clickSoftTab();
 		// TODO 必要时截图
+		mMainSoftPage.snapScreen("进入必备应用主页界面测试点击跳转软件Tab");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

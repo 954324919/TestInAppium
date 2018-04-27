@@ -40,7 +40,7 @@ public class TestShareActivity extends BaseTest {
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SettingActivity");
+		assertEquals(getCurrentPageName(), "SettingActivity");
 		ScreenUtil.screenShot("进入必备应用设置中心-分享界面");
 		WaitUtil.implicitlyWait(2);
 	}
@@ -49,7 +49,7 @@ public class TestShareActivity extends BaseTest {
 	@Tips(description = "检查分享应用功能")
 	public void shareTheApp() throws InterruptedException {
 		goShare();
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		WaitUtil.implicitlyWait(2);
 		// TODO 检查影响，0404暂不实现
 		boolean shareLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_cancel"));
@@ -71,7 +71,7 @@ public class TestShareActivity extends BaseTest {
 	public void shareByLink() throws InterruptedException {
 		goShare();
 		WaitUtil.implicitlyWait(5);
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		AndroidElement shareByLinkLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_copy"));
 		shareByLinkLly.click();
 
@@ -82,7 +82,7 @@ public class TestShareActivity extends BaseTest {
 	@Tips(description = "测试更多分享|目前只有短信分享的方式", riskPoint = "后台运行出现问题，直接重启应用")
 	public void shareByMore() throws InterruptedException {
 		goShare();
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		WaitUtil.implicitlyWait(5);
 		AndroidElement shareByMoreLly = mDriver.findElement(By.id("com.cmic.mmnes:id/tv_share"));
 		shareByMoreLly.click();

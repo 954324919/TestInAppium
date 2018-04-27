@@ -7,11 +7,7 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.page.middlepage.MainTempPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
-import com.cmic.GoAppiumTest.util.WaitUtil;
 
 public class TestMainActivityExtra extends BaseTest {
 
@@ -27,7 +23,6 @@ public class TestMainActivityExtra extends BaseTest {
 	@Override
 	public void tearDownAfterClass() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)

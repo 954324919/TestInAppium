@@ -72,7 +72,7 @@ public class AppUtil {
 	 * @param packageName
 	 */
 	public static void clearAppData(String packageName) {
-		System.err.println("清除应用缓存并杀死应用进程");
+		LogUtil.w("清除应用缓存并杀死应用进程");
 		AdbManager.excuteAdbShell("adb shell pm clear " + packageName);
 		WaitUtil.implicitlyWait(2);
 	}

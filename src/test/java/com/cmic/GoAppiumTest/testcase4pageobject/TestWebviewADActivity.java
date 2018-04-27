@@ -43,7 +43,7 @@ public class TestWebviewADActivity extends BaseTest {
 		// 建议移到和MainyAc一起测试 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+		assertEquals(getCurrentPageName(), "MainActivity");
 		ScreenUtil.screenShot("进入必备应用主页广告界面");
 		WaitUtil.implicitlyWait(2);
 	}
@@ -54,7 +54,7 @@ public class TestWebviewADActivity extends BaseTest {
 	public void checkMainSoftAdShow() throws InterruptedException {
 		String AdClass = "android.support.v4.view.ViewPager";
 		WaitUtil.implicitlyWait(5);
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		List<AndroidElement> elementList = mDriver.findElementsByClassName(AdClass);
 		WaitUtil.implicitlyWait(10);
 		mDriver.findElement(By.id("com.cmic.mmnes:id/index_item_rl")); // 主要是为了让主线程进如隐式等待，避免CPU等待过长
@@ -71,7 +71,7 @@ public class TestWebviewADActivity extends BaseTest {
 	public void checkMainSoftAdContent() throws InterruptedException {
 		WaitUtil.implicitlyWait(5);
 		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		// 进入该方法说明了底部的集团广告存在
 		if (elementList.isEmpty()) {
 			System.out.println("判断子项列表为空");
@@ -83,12 +83,12 @@ public class TestWebviewADActivity extends BaseTest {
 		WaitUtil.forceWait(3);
 		ScreenUtil.screenShot("主页软件Tab集团广告显示");
 
-		// 可能进入.activity.LoginActivity页面
-		String curAct = ContextUtil.getCurrentActivity();
-		boolean isTargetAct1 = curAct.equals(".activity.LoginActivity") || curAct.equals(".activity.FavorActivity")
-				|| curAct.equals(".activity.DetailActivity");
+		// 可能进入LoginActivity页面
+		String curAct = getCurrentPageName();
+		boolean isTargetAct1 = curAct.equals("LoginActivity") || curAct.equals("FavorActivity")
+				|| curAct.equals("DetailActivity");
 		assertEquals(isTargetAct1, true);
-		if (curAct.equals(".activity.LoginActivity")) {// 登陆页要退两次
+		if (curAct.equals("LoginActivity")) {// 登陆页要退两次
 			PageRouteUtil.pressBack();
 			WaitUtil.forceWait(2);
 		}
@@ -96,14 +96,14 @@ public class TestWebviewADActivity extends BaseTest {
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
 		e.click();
 		WaitUtil.forceWait(2);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+		assertEquals(getCurrentPageName(), "MainActivity");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "检查GameTab底部的集团广告是否存在", riskPoint = "开发大哥根本没有定义ID，怎么定位控件啊，0405取巧")
 	public void checMainGameAdShow() throws InterruptedException {
 		ScrollUtil.scrollToPrecent(Direction.LEFT, 80);
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		String gameAdClass = "android.support.v4.view.ViewPager";
 		List<AndroidElement> elementList = mDriver.findElementsByClassName(gameAdClass);
 		WaitUtil.implicitlyWait(10);
@@ -119,10 +119,10 @@ public class TestWebviewADActivity extends BaseTest {
 	@Test(dependsOnMethods = { "checMainGameAdShow" })
 	@Tips(description = "检测主页游戏Tab集团广告内容显示", riskPoint = "必须保障依赖，不然稳定性差||可能进入登陆页面")
 	public void checkMainGameAdContent() throws InterruptedException {
-		String curAct1 = ContextUtil.getCurrentActivity();
-		boolean isTargetAct1 = curAct1.equals(".activity.LoginActivity") || curAct1.equals(".activity.FavorActivity");
+		String curAct1 = getCurrentPageName();
+		boolean isTargetAct1 = curAct1.equals("LoginActivity") || curAct1.equals("FavorActivity");
 		if (isTargetAct1) {// 用于失败重试
-			while (ContextUtil.getCurrentActivity().equals(".activity.MainActivity")) {
+			while (getCurrentPageName().equals("MainActivity")) {
 				PageRouteUtil.pressBack();
 				WaitUtil.forceWait(3);
 			}
@@ -131,7 +131,7 @@ public class TestWebviewADActivity extends BaseTest {
 		}
 		WaitUtil.implicitlyWait(10);
 		List<AndroidElement> elementList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		// 进入该方法说明了底部的集团广告存在
 		elementList.get(elementList.size() - 1).click();
 
@@ -139,17 +139,17 @@ public class TestWebviewADActivity extends BaseTest {
 		WaitUtil.forceWait(5);
 		ScreenUtil.screenShot("主页游戏Tab集团广告显示");
 
-		// 可能进入.activity.LoginActivity页面
-		String curAct = ContextUtil.getCurrentActivity();
-		boolean isTargetAct = curAct.equals(".activity.LoginActivity") || curAct.equals(".activity.FavorActivity");
+		// 可能进入LoginActivity页面
+		String curAct = getCurrentPageName();
+		boolean isTargetAct = curAct.equals("LoginActivity") || curAct.equals("FavorActivity");
 		assertEquals(isTargetAct, true);
-		if (curAct.equals(".activity.LoginActivity")) {// LoginActivity先退一次
+		if (curAct.equals("LoginActivity")) {// LoginActivity先退一次
 			PageRouteUtil.pressBack();// 后退时还是不够稳健
 			WaitUtil.forceWait(3);
 		}
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv"));
 		e.click();
 		WaitUtil.forceWait(3);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.MainActivity");
+		assertEquals(getCurrentPageName(), "MainActivity");
 	}
 }

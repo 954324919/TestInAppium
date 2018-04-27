@@ -58,7 +58,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.ManagerCenterActivity");
+		assertEquals(getCurrentPageName(), "ManagerCenterActivity");
 		ScreenUtil.screenShot("进入必备应用管理中心界面");
 		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
@@ -71,7 +71,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 	public void checkSlide2OtherTab() throws InterruptedException {
 		// TODO 加入页面空的判断
 		WaitUtil.implicitlyWait(5);
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		AndroidElement downloadTabTip = mDriver.findElementByAndroidUIAutomator(
 				"new UiSelector().className(\"android.widget.TextView\").textContains(\"下载\")");
 		AndroidElement updateTabTip = mDriver.findElementByAndroidUIAutomator(
@@ -92,7 +92,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 		WaitUtil.implicitlyWait(3);
 		AndroidElement downloadTabTip = mDriver.findElementByAndroidUIAutomator(
 				"new UiSelector().className(\"android.widget.TextView\").textContains(\"下载\")");
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		AndroidElement updateTabTip = mDriver.findElementByAndroidUIAutomator(
 				"new UiSelector().className(\"android.widget.TextView\").textContains(\"更新\")");
 		downloadTabTip.click();
@@ -109,7 +109,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 	@Tips(description = "点击更新的Item", riskPoint = "页面不显示")
 	public void checkRamdomEnterDetail() throws InterruptedException {
 		switchUpdate();
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		WaitUtil.implicitlyWait(3);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
 		if (eList.size() > 0) {
@@ -118,7 +118,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 			eList.get(randomIndex).click();
 			WaitUtil.forceWait(2);
 			// TODO 不稳定待解决
-			assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
+			assertEquals(getCurrentPageName(), "DetailActivity");
 			WaitUtil.implicitlyWait(3);
 			mDriver.findElement(By.id("com.cmic.mmnes:id/back_iv")).click();
 			WaitUtil.forceWait(2);
@@ -127,14 +127,14 @@ public class TestDownloadManagerActivity extends BaseTest {
 
 	@Test(dependsOnMethods = { "initCheck" })
 	public void checkUpdate2Baseline() {
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		ScrollUtil.scrollToBase();
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "更新一个Itme", riskPoint = "下载速度太快，进入安装页面")
 	public void checkUpdateOne() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		String updateBtnUiSelector = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\")";
 		List<AndroidElement> eList = mDriver.findElementsByAndroidUIAutomator(updateBtnUiSelector);
 		if (eList.size() > 0) {
@@ -167,7 +167,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击全部下载|马上切换到下载页关闭")
 	public void checkUpdateAll() throws InterruptedException {
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/updateall_tx"));
 		e.click();
 		// 进入取消
@@ -189,7 +189,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 	@Tips(description = "切换到下载页面", riskPoint = "存在不稳定的因素")
 	public void checkDownloadPauseAndResumeAll() throws InterruptedException {
 		// 切换到下载页面
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		ScrollUtil.scrollToPrecent(Direction.RIGHT, 80);
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/function_tv"));
 		e.click();
@@ -200,7 +200,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 	@Tips(description = "点击继续和暂停", riskPoint = "可能进入安装状态")
 	public void checkDownloadPauseAndResumeOne() throws InterruptedException {
 		WaitUtil.implicitlyWait(5);
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/status_btn"));
 		if (eList.size() > 0) {
 			int minItemSize = Math.min(eList.size(), 4);
@@ -232,7 +232,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 	@Test(dependsOnMethods = { "initCheck" })
 	public void checkDeleteDownloadTask() {
 		WaitUtil.implicitlyWait(5);
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/delete_btn"));
 		if (eList.size() > 0) {
 			int minItemSize = Math.min(eList.size(), 5);
@@ -257,7 +257,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 	@Tips(description = "取消下载但保存文件", riskPoint = "缺乏稳定性较高的检验方法,先保留")
 	public void checkDeleteTaskAndKeepTheFile() {
 		// TODO 业务逻辑不清楚，不写用例
-		LogUtil.printCurrentMethodName();
+		LogUtil.printCurrentMethodNameInLog4J();
 	}
 
 	@Tips(description = "普通方法")

@@ -11,9 +11,10 @@ public class SearchAction extends BaseAction {
 		if (!ContextUtil.getCurrentActivity().equals("SearchActivity"))
 			PageRedirect.redirect2SearchActivity();
 	}
-	
-	public SearchAction() {
-		// TODO Auto-generated constructor stub
-	}
 
+	public SearchAction() {
+		if (!ContextUtil.getCurrentPageActivtiy().equals("SearchActivity")) {
+			PageRedirect.redirect2MainActivity();
+		}
+	}
 }

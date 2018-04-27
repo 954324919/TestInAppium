@@ -14,4 +14,8 @@ public class DownloadManagerPage extends BasePage {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new DownloadManagerAction();
 	}
+
+	public void aCache() {
+
+	}
 }
