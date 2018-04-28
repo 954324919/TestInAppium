@@ -16,6 +16,8 @@ import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Heading;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.DetailPage;
+import com.cmic.GoAppiumTest.page.action.DetailAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -38,21 +40,15 @@ import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestDetailActivity extends BaseTest {
 
-	private String mTempItemName;
+	private DetailPage detailPage;
+	private DetailAction detailAction;
 
 	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "假设已经入首页且显示正常，开始准备跳转到详情页")
 	@Override
 	public void setUpBeforeClass() {
-		PageRedirect.redirect2MainActivity();
-		Random randomIndex = new Random();// 主页显示16个Item
-		int index = 1 + randomIndex.nextInt(14);
-		// 定位点击
-		WaitUtil.implicitlyWait(10);
-		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
-		AndroidElement e = eList.get(index);
-		WaitUtil.implicitlyWait(2);
-		mTempItemName = mDriver.findElements(By.id("com.cmic.mmnes:id/recommend_item_appname_tv")).get(index).getText();
-		e.click();
+		detailPage = new DetailPage();
+		detailAction = (DetailAction) detailPage.action;
+		detailAction.go2SelfPage();
 	}
 
 	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
@@ -65,16 +61,14 @@ public class TestDetailActivity extends BaseTest {
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
+		LogUtil.w("进行[{}]用例集的初始化检验，失败则跳过该用例集的所有测试",getClass().getSimpleName());
 		assertEquals(getCurrentPageName(), "DetailActivity");
-		ScreenUtil.screenShot("进入必备详情页面");
-		WaitUtil.implicitlyWait(2);
+		detailPage.snapScreen("进入必备详情页面");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	public void checkActionBarSearch() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
-		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		AndroidElement e = mDriver.findElement(By.id("com.cmic.mmnes:id/search_iv"));
 		e.click();
 		// 是否进入SearchActivity页面

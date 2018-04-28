@@ -6,8 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.page.action.SearchAction;
+import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidElement;
@@ -26,10 +29,16 @@ public class SearchPage extends BasePage {
 	public AndroidElement btnClear;// 清除历史的按钮
 
 	@AndroidFindBy(id = "com.cmic.mmnes:id/searchText")
-	private AndroidElement searchContainer;// 内部热词
+	public AndroidElement searchContainer;// 内部热词
 
 	@AndroidFindBy(id = "com.cmic.mmnes:id/search_icon_layout")
 	private AndroidElement btnSubmitSearch;
+
+	@AndroidFindBy(id = "com.cmic.mmnes:id/pager_indicator")
+	public AndroidElement pageIndicator;
+
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"搜索历史\")")
+	public AndroidElement tvHistoryLabel; // 历史基类的标签
 
 	public SearchPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
@@ -69,6 +78,15 @@ public class SearchPage extends BasePage {
 		WaitUtil.forceWait(2);
 	}
 
+	public void go2DownloadBySearchRalation() {
+		int targetXPx = ScreenUtil.getDeviceWidth() / 2;
+		int targetYPx = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight()
+				+ ScreenUtil.dp2Px(App.RELATION_DIRECTION_ITEM_HEIGHT_DP) / 2;
+		LogUtil.e(targetXPx + " " + targetYPx);
+		ScreenUtil.singleTap(targetXPx, targetYPx);
+		WaitUtil.forceWait(2);
+	}
+
 	public void randomClickHotword() {
 		Random random = new Random();
 		// TODO 模拟一个数字
@@ -85,4 +103,13 @@ public class SearchPage extends BasePage {
 			forceWait(1);
 		}
 	}
+
+	public void clickTargetUiSelectorElement(String searchHistoryItem) {
+		String itemHistoryUiSeletor = "new UiSelector().className(\"android.widget.TextView\").textContains(\""
+				+ searchHistoryItem + "\")";
+		AndroidElement item = driver.findElementByAndroidUIAutomator(itemHistoryUiSeletor);
+		item.click();
+		WaitUtil.forceWait(2);
+	}
+
 }

@@ -1,5 +1,8 @@
 package com.cmic.GoAppiumTest.helper;
 
+import java.util.List;
+import java.util.Random;
+
 import org.openqa.selenium.By;
 
 import com.cmic.GoAppiumTest.App;
@@ -67,6 +70,18 @@ public class PageRedirect {
 			AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/jump_ll"));
 			managerRly.click();
 		}
+	}
+
+	public static void redirect2DetailActivity() {
+		PageRedirect.redirect2MainActivity();
+		Random randomIndex = new Random();// 主页显示16个Item
+		int index = 1 + randomIndex.nextInt(14);
+		// 定位点击
+		WaitUtil.implicitlyWait(10);
+		List<AndroidElement> eList = driver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
+		AndroidElement e = eList.get(index);
+		WaitUtil.implicitlyWait(2);
+		e.click();
 	}
 
 	@Tips(description = "到达关于页面=")

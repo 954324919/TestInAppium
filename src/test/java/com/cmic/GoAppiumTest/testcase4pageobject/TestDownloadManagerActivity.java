@@ -14,6 +14,8 @@ import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.DownloadManagerPage;
+import com.cmic.GoAppiumTest.page.action.DownloadManagerAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -37,15 +39,15 @@ import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestDownloadManagerActivity extends BaseTest {
 
+	private DownloadManagerPage downloadManagerPage;
+	private DownloadManagerAction downloadManagerAction;
+
 	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "假设已经入首页且显示正常，开始准备跳转到下载管理页")
 	@Override
 	public void setUpBeforeClass() {
-		// PageRedirect.redirect2DownloadManagerActivity();
-		PageRedirect.redirect2MainActivity();
-		WaitUtil.implicitlyWait(2);// 等待1S
-		AndroidElement managerRly = mDriver.findElement(By.id("com.cmic.mmnes:id/managerview"));
-		managerRly.click();
-		WaitUtil.forceWait(2);
+		downloadManagerPage = new DownloadManagerPage();
+		downloadManagerAction = (DownloadManagerAction) downloadManagerPage.action;
+		downloadManagerAction.go2SelfPage();
 	}
 
 	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
@@ -57,9 +59,9 @@ public class TestDownloadManagerActivity extends BaseTest {
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
+		LogUtil.e("进行[{}]用例集的初始化检验，失败则跳过该用例集的所有测试",getClass().getSimpleName());
 		assertEquals(getCurrentPageName(), "ManagerCenterActivity");
-		ScreenUtil.screenShot("进入必备应用管理中心界面");
+		downloadManagerPage.snapScreen("进入必备应用管理中心界面");
 		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
 		if (eList.size() <= 0) {
@@ -155,7 +157,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 			WaitUtil.forceWait(1);
 			// TODO 提高对安装界面的兼容性需要修复
 			if (targetElement.getText().equals("安装")) {
-				System.err.println("已经进入安装");
+				LogUtil.e("已经进入安装");
 				PageRouteUtil.pressBack();// 回退
 			}
 			assertEquals(targetElement.getText(), "继续");
@@ -207,7 +209,7 @@ public class TestDownloadManagerActivity extends BaseTest {
 			int randomIndex = RandomUtil.getRandomNum(minItemSize);
 			AndroidElement targetElement = eList.get(randomIndex);
 			targetElement.click();// 开始下载
-			System.err.println(targetElement.getText());
+			LogUtil.e(targetElement.getText());
 			// TODO 网速判断
 			// 开始下载
 			WaitUtil.implicitlyWait(5);
