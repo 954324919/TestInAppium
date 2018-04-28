@@ -69,6 +69,21 @@ public class PageRedirect {
 		}
 	}
 
+	@Tips(description = "到达关于页面=")
+	public static void redirect2AboutActivity() {
+		if (ContextUtil.getCurrentPageActivtiy().equals("AboutActivity")) {
+			return;
+		} else if (ContextUtil.getCurrentPageActivtiy().equals("SettingActivity")) {
+			// 不操作
+		} else {
+			redirect2SettingActivity();
+		}
+		WaitUtil.implicitlyWait(2);// 等待1S
+		AndroidElement aboutLly = driver.findElement(By.id("com.cmic.mmnes:id/ll_about"));
+		aboutLly.click();
+
+	}
+
 	/**
 	 * 重定向到MainActivity
 	 */
@@ -119,6 +134,17 @@ public class PageRedirect {
 		AndroidElement settingRly = driver.findElement(By.id("com.cmic.mmnes:id/setting_iv"));
 		settingRly.click();
 		WaitUtil.forceWait(2);
+	}
+
+	public static void rediret2ShareActivity() {
+		if (!ContextUtil.getCurrentPageActivtiy().equals("SettingActivity")) {
+			redirect2SettingActivity();
+		}
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareLly = driver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
+		shareLly.click();
+		WaitUtil.forceWait(3);
+
 	}
 
 	public static void redirect2SearchActivity() {

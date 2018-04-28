@@ -6,10 +6,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
@@ -75,7 +77,7 @@ public class BasePage {
 		ScreenUtil.screenShot(snapMsg);
 		WaitUtil.implicitlyWait(2);
 	}
-
+	
 	@Tips(description = "强制进行截屏")
 	public void snapScreenForce(String snapMsg) {
 		ScreenUtil.screenShotForce(snapMsg);
@@ -112,5 +114,18 @@ public class BasePage {
 	@Tips(description = "检测元素是否显示")
 	public boolean isElementIsPresent(AndroidElement e) {
 		return e.isDisplayed();
+	}
+
+	@Tips(description = "Toast是否出现")
+	public boolean isTargetToast(String targetToast) {
+		try {
+			final WebDriverWait wait = new WebDriverWait(driver, 3);
+			Assert.assertNotNull(wait.until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + targetToast + "')]"))));
+			LogUtil.w("找到了toas:{} ", targetToast);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

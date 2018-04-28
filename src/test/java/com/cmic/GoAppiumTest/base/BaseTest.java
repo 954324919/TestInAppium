@@ -16,8 +16,11 @@ import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.PropertiesUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
+import com.cmic.GoAppiumTest.util.ScrollUtil;
+import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -93,6 +96,17 @@ public abstract class BaseTest {
 	@Tips(description = "获取当前应用的Activity名称")
 	public String getCurrentPackageName() {
 		return ContextUtil.getCurrentPageActivtiy();
+	}
+
+	@Tips(description = "用于非确定的页面返回")
+	public void go2Backforward() {
+		PageRouteUtil.pressBack();
+		WaitUtil.forceWait(1);
+	}
+
+	@Tips(description = "用于某些非确定页面滚动到底部")
+	public void go2Swipe2Bottom() {
+		ScrollUtil.scrollToBase();
 	}
 
 }

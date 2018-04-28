@@ -15,6 +15,8 @@ import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.SettingPage;
+import com.cmic.GoAppiumTest.page.action.SettingAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -28,53 +30,37 @@ import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestSettingActivity extends BaseTest {
 
+	private SettingPage settingPage;
+	private SettingAction settingAction;
+
 	@Override
 	public void setUpBeforeClass() {
-		PageRedirect.redirect2SettingActivity();
+		settingPage = new SettingPage();
+		settingAction = (SettingAction) settingPage.action;
+		settingAction.go2SelfPage();
 	}
 
 	@Override
 	public void tearDownAfterClass() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@BeforeClass
-	@Tips(description = "假设已经入ManagerAct&&未跳转到其他页面")
-	public void beforeClass() {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		PageRedirect.redirect2SettingActivity();
-		System.err.println("测试用例集[" + mTag + "]开始");
-	}
-
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
+		LogUtil.e("进行[{}]用例集的初始化检验，失败则跳过该用例集的所有测试", getClass().getSimpleName());
 		assertEquals(getCurrentPageName(), "SettingActivity");
-		ScreenUtil.screenShot("进入必备应用设置中心界面");
-		WaitUtil.implicitlyWait(2);
+		settingPage.snapScreen("进入必备应用设置中心界面");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查自更新设置的影响")
 	public void checkAutoUpdate() throws InterruptedException {
-		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodNameInLog4J();
-		AndroidElement updateSetting = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_zero_layout"));
-		updateSetting.click();
-		// TODO 检查影响，0404暂不实现
-		WaitUtil.forceWait(1);
-		updateSetting.click();
-		// TODO 检查影响，0404暂不实现
-		WaitUtil.forceWait(1);
+		settingAction.go2ClickAndWait(settingPage.llyAutoUpdateSetting, 2);
+		settingPage.snapScreen("前后对比");
+		settingAction.go2ClickAndWait(settingPage.llyAutoUpdateSetting, 2);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
@@ -82,14 +68,13 @@ public class TestSettingActivity extends BaseTest {
 	public void downloadTipShow() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
 		// TODO 检查影响，0404暂不实现
-		showDialog();
-		WaitUtil.implicitlyWait(2);
-		boolean notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
-		assertEquals(notifyLlyIsPresent, true);
-		if (notifyLlyIsPresent) {
-			PageRouteUtil.pressBack();
+		settingPage.go2ShowDownloadSettingTip();
+		if (settingPage.sbDownloadTip != null && settingPage.sbDownloadTip.isDisplayed()) {
+			settingAction.go2Backforward();
+		} else {
+			LogUtil.e("下载提示弹窗不显示");
+			throw new RuntimeException("下载提示弹窗不显示");
 		}
-		WaitUtil.forceWait(1);
 	}
 
 	public void showDialog() {
@@ -103,88 +88,57 @@ public class TestSettingActivity extends BaseTest {
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipCloseInOtherWay() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
-		// 重新点击显示NotifyDialog
-		notifyLly.click();
-		WaitUtil.forceWait(1);
 		boolean notifyLlyIsPresent;
-		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		WaitUtil.implicitlyWait(2);
+		settingPage.go2ShowDownloadSettingTip();
+		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
 		assertEquals(notifyLlyIsPresent, true);
-		AndroidElement clearIcon = mDriver.findElement(By.id("com.cmic.mmnes:id/close_iv"));
-		clearIcon.click();
-		WaitUtil.forceWait(1);
-		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		settingAction.go2Click(settingPage.btnCloseDownloadTipDialog);
+		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
 		assertEquals(notifyLlyIsPresent, false);
 		// 重新点击显示NotifyDialog
-		notifyLly.click();
-		WaitUtil.forceWait(1);
-		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
-		assertEquals(notifyLlyIsPresent, true);
-		AndroidElement cancelIcon = mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_cancel"));
-		cancelIcon.click();
-		WaitUtil.forceWait(1);
-		notifyLlyIsPresent = ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/flow_seekbar"));
+		settingAction.go2ClickAndWait(settingPage.btnCloseDownloadTipDialog, 1);
+		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
+		assertEquals(notifyLlyIsPresent, false);
+		settingAction.go2ClickAndWait(settingPage.btnCancelDownloadTipDialog, 1);
+		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
 		assertEquals(notifyLlyIsPresent, false);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查下载提示的影响")
 	public void setRangeByEditText() {
-		showDialog();
 		LogUtil.printCurrentMethodNameInLog4J();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement et = mDriver.findElement(By.id("com.cmic.mmnes:id/flow_setting_et"));
-		et.clear();
-		et.sendKeys("250");
-		ScreenUtil.screenShot("输入250M时提示");
+		settingPage.go2ShowDownloadSettingTip();
+
+		settingAction.go2SendWord(settingPage.etDownloadTip, "250");
+		settingPage.snapScreen("输入250M时提示");
 		// 点击确认
-		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement notifyContentTv = mDriver
-				.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_content"));
-		String setDownloadRangerResult = notifyContentTv.getText().replaceAll("[^0-9]", "");
+		settingAction.go2ClickAndWait(settingPage.btnDownloadTipDialogAccept, 2);
+		String setDownloadRangerResult = settingAction.go2GetText(settingPage.tvDownloadTipNum).replaceAll("[^0-9]",
+				"");
 		assertEquals(setDownloadRangerResult, "250");
 		// 回复原先的Seekbar状态
-		showDialog();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement et1 = mDriver.findElement(By.id("com.cmic.mmnes:id/flow_setting_et"));
-		et1.clear();
-		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
+		settingAction.go2SendWord(settingPage.etDownloadTip, "");
+		settingPage.snapScreen("输入为空时提示");
+		// 点击确认
+		settingAction.go2ClickAndWait(settingPage.btnDownloadTipDialogAccept, 2);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	public void setRangeBySeekbar() throws InterruptedException {
-		showDialog();
 		LogUtil.printCurrentMethodNameInLog4J();
+		settingPage.go2ShowDownloadSettingTip();
 		WaitUtil.implicitlyWait(2);
-		String seekBarUiSelector = "new UiSelector().className(\"android.widget.SeekBar\").resourceId(\"com.cmic.mmnes:id/flow_seekbar\")";
-		AndroidElement seekbar = mDriver.findElementByAndroidUIAutomator(seekBarUiSelector);
-		seekbar.clear();
+		settingAction.go2Clear(settingPage.sbDownloadTip);
+
 		// 点击Seekbar中间点
-		// 获取控件开始位置的坐标轴
-		Point start = seekbar.getLocation();
-		int startX = start.x;
-		int startY = start.y;
-		// 获取控件宽高
-		Dimension q = seekbar.getSize();
-		int x = q.getWidth();
-		int y = q.getHeight();
-		// 计算出控件结束坐标
-		int endX = x + startX;
-		int endY = y + startY;
-		// 计算中间点坐标
-		int centreX = (endX + startX) / 2;
-		int centreY = (endY + startY) / 2;
-		// 点击
-		ScreenUtil.singleTap(centreX, centreY);
-		WaitUtil.forceWait(1);
-		ScreenUtil.screenShot("输入250M时提示");
+		settingPage.go2TapTheHalfSeekbar();
+		settingPage.snapScreen("输入250M时提示");
 		// 点击确认
-		mDriver.findElement(By.id("com.cmic.mmnes:id/mm_dialog_ok")).click();
-		WaitUtil.implicitlyWait(2);
-		AndroidElement notifyContentTv = mDriver
-				.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_content"));
-		assertEquals(notifyContentTv.getText().replaceAll("[^0-9]", ""), "250");
+		settingAction.go2ClickAndWait(settingPage.btnDownloadTipDialogAccept, 2);
+		String setDownloadRangerResult = settingAction.go2GetText(settingPage.tvDownloadTipNum).replaceAll("[^0-9]",
+				"");
+		assertEquals(setDownloadRangerResult, "250");
 	}
 }

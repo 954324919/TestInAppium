@@ -43,10 +43,18 @@ public abstract class BaseAction {
 		}
 		e.click();
 	}
+	
+	public void go2TapByPoint(int x,int y) {
+		ScreenUtil.singleTap(x, y);
+	}
 
 	@Tips(description = "输入文字")
 	public void go2SendWord(AndroidElement e, String keyWord) {
 		e.sendKeys(keyWord);
+	}
+
+	public String go2GetText(AndroidElement e) {
+		return e.getText();
 	}
 
 	@Tips(description = "回到当前页面")
@@ -268,4 +276,8 @@ public abstract class BaseAction {
 		return e.isEnabled();
 	}
 
+	public void go2ClickAndWait(AndroidElement e, int waitSecond) {
+		e.click();
+		WaitUtil.forceWait(waitSecond);
+	}
 }
