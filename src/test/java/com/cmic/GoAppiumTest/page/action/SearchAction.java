@@ -13,8 +13,6 @@ public class SearchAction extends BaseAction {
 	}
 
 	public SearchAction() {
-		if (!ContextUtil.getCurrentPageActivtiy().equals("SearchActivity")) {
-			PageRedirect.redirect2MainActivity();
-		}
+		//TODO 无参构造方法
 	}
 }

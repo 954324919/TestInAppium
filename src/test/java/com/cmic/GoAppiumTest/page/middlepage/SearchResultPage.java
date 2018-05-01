@@ -113,25 +113,22 @@ public class SearchResultPage extends BasePage {
 		forceWait(1);
 	}
 
-	private AndroidElement targetElement;
-
 	public String getRandomTargetText() {
-		if (targetElement != null) {
-			return "";
-		}
-		return targetElement.getText();
+		return statusBtnList.get(targetElementIndex).getText();
 	}
+
+	@Tips(description = "用于缓存随机点击的按钮")
+	public int targetElementIndex = 0;
 
 	@Tips()
 	public void randomGo2Download() {
-		if (targetElement != null) {
-			action.go2Click(targetElement);
-			return;
-		}
 		if (statusBtnList.size() > 0) {
-			targetElement = statusBtnList.get(RandomUtil.getRandomNum(statusBtnList.size() - 1));
+			if (targetElementIndex == 0) {
+				targetElementIndex = RandomUtil.getRandomNum(statusBtnList.size() - 1);
+			}
+			AndroidElement targetElement = statusBtnList.get(targetElementIndex);
 			if (targetElement.getText().equals("打开")) {
-				System.err.println("已经是打开的状态");
+				LogUtil.e("已经是打开的状态");
 				return;
 			}
 			assertEquals(targetElement.getText(), "下载");

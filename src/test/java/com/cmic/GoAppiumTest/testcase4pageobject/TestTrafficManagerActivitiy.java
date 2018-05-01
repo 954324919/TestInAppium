@@ -41,7 +41,7 @@ public class TestTrafficManagerActivitiy extends BaseTest {
 	public void initCheck() {// 1
 		// 先确认是否进入该页面
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
-		if (getCurrentPageName().equals("TrafficDetailActivity")) {
+		if (!getCurrentPageName().equals("TrafficDetailActivity")) {
 			mTrafficPage.action.go2SelfPage();
 			mTrafficPage.forceWait(mRetryTime + 2);
 		}
@@ -67,14 +67,14 @@ public class TestTrafficManagerActivitiy extends BaseTest {
 		mTrafficPage.snapScreen("滑动-切换到按套餐查看");
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
+	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试点击切换")
 	public void checkClick2OtherTab() {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodNameInLog4J();
 		mTrafficPage.clickTrafficType();// 按类型查看
 		mTrafficPage.snapScreen("切换到按类型查看");
-		mTrafficPage.clickTrafficsuit();// 按套餐查看
+		mTrafficPage.clickTrafficSuit();// 按套餐查看
 		mTrafficPage.snapScreen("点击-切换到按套餐查看");
 	}
 

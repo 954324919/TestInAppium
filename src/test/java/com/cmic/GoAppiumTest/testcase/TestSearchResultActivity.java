@@ -54,7 +54,7 @@ public class TestSearchResultActivity extends BaseTest {
 	public void initCheck() {// 1
 		// 先确认是否进入该页面
 		LogUtil.e("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(getCurrentPageName(), ".activity.SearchActivity");
+		assertEquals(getCurrentPageName(), "SearchActivity");
 		boolean isPresent = ElementUtil.isElementPresentSafe(By.id("com.cmic.mmnes:id/search_count_tv"));
 		assertEquals(isPresent, true);
 		ScreenUtil.screenShot("进入必备搜索结果界面");

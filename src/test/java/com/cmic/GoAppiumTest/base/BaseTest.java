@@ -75,6 +75,7 @@ public abstract class BaseTest {
 	public void beforeSuit() {
 		// TODO 补充适配
 		String packageName = capaConfig.getProperty("APP_PACKAGE_NAME");
+		//LogUtil.d("Hello SuitBefore{}",packageName);//TODO 0501 在有多个可调式设备时会出现异常，需要Fix
 		if (AppUtil.isInstallWithoutDriver(packageName)) {
 			AppUtil.unInstall(packageName);
 		}

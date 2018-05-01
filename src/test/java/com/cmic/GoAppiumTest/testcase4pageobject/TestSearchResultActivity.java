@@ -31,7 +31,7 @@ public class TestSearchResultActivity extends BaseTest {
 	@Override
 	public void setUpBeforeClass() {
 		mSearchResultPage = new SearchResultPage();
-		mSearchResultPage.action.go2SelfPage();
+		((SearchResultAction) mSearchResultPage.action).go2SelfPageWithKey("移动");
 	}
 
 	@Override

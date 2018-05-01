@@ -25,7 +25,7 @@ public class SearchPage extends BasePage {
 	@AndroidFindBy(className = "android.widget.LinearLayout")
 	public List<AndroidElement> hotwordItemList;// 热词列表
 
-	@AndroidFindBy(id = "com.cmic.mmnes:id/search_clear_iv")
+	@AndroidFindBy(id = "com.cmic.mmnes:id/delete_ll")
 	public AndroidElement btnClear;// 清除历史的按钮
 
 	@AndroidFindBy(id = "com.cmic.mmnes:id/searchText")

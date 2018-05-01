@@ -3,25 +3,19 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.BaseTest;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SearchPage;
-import com.cmic.GoAppiumTest.page.action.SearchAction;
 import com.cmic.GoAppiumTest.page.middlepage.MainTempPage;
+import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
-import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidElement;
 
@@ -30,7 +24,6 @@ public class TestSearchActivity extends BaseTest {
 	private int originItemCount;
 	private int currentItemCount;
 	private String rollHotKeyInMainAct;// 滚动热词
-	private String searchBeforePerform;
 
 	private SearchPage mSearchPage;
 
@@ -49,7 +42,7 @@ public class TestSearchActivity extends BaseTest {
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws InterruptedException {// 1
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
-		assertEquals(getCurrentPageName(), ".activity.SearchActivity");
+		assertEquals(getCurrentPageName(), "SearchActivity");
 		mSearchPage.snapScreen("进入必备应用搜索界面");
 	}
 
@@ -65,7 +58,7 @@ public class TestSearchActivity extends BaseTest {
 	}
 
 	// TODO 可能存在风险，可以拆分依赖
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "点击收起更多")
 	public void closeTheWordList() {
 		LogUtil.printCurrentMethodNameInLog4J();
@@ -95,13 +88,6 @@ public class TestSearchActivity extends BaseTest {
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
-	@Tips(description = "点击搜索栏目的clear图标||同意默认情况写下为不显示，受randomCheckOne影响可见")
-	public void clickTheClearSearchRly() {
-		LogUtil.printCurrentMethodNameInLog4J();
-		mSearchPage.clickCleanHistory();
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击搜索ActionBar的后退")
 	public void checkBack() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
@@ -120,7 +106,7 @@ public class TestSearchActivity extends BaseTest {
 			mSearchPage.forceWait(1);
 			rollHotKeyInMainAct = mainTempPage.getRollKeyWordText();
 		}
-		LogUtil.e("外界热词为{}", rollHotKeyInMainAct);
+		LogUtil.w("外界热词为{}", rollHotKeyInMainAct);
 		// 再次点击返回SearchActivity
 		mainTempPage.click2SearchActivity();
 	}
@@ -135,7 +121,19 @@ public class TestSearchActivity extends BaseTest {
 		}
 		String rollText = mSearchPage.getCurrentSearchKeyWord();
 		// TODO 必要时截图
-		LogUtil.e("滚动热词为: {}" + rollText);
+		LogUtil.w("滚动热词为: {}", rollText);
 		assertEquals(rollText, rollHotKeyInMainAct);
+	}
+
+	@Test(dependsOnMethods = { "checkWordFromOutside" })
+	@Tips(description = "点击搜索栏目的clear图标||同意默认情况写下为不显示，受randomCheckOne影响可见")
+	public void clickTheClearSearchRly() {
+		mSearchPage.clickSubmitSearch();
+		SearchResultPage searchResultPage = new SearchResultPage();
+		assertTrue(searchResultPage.searchResultCount.isDisplayed());// 验证进入了搜索结果的页面
+		searchResultPage.action.go2Backforward();
+		LogUtil.printCurrentMethodNameInLog4J();
+		// 检查点击清除历史按钮的效果
+		mSearchPage.clickCleanHistory();// 不再验证
 	}
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.action.SplashAction;
+import com.cmic.GoAppiumTest.page.action.TrafficAction;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -25,7 +26,7 @@ public class TrafficManagerPage extends BasePage {
 
 	public TrafficManagerPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
-		action = new SplashAction();
+		action = new TrafficAction();
 	}
 
 	@Tips(description = "点击切换到TrafficType")
@@ -35,7 +36,7 @@ public class TrafficManagerPage extends BasePage {
 	}
 
 	@Tips(description = "点击切换到TrafficSuit")
-	public void clickTrafficsuit() {
+	public void clickTrafficSuit() {
 		action.go2Click(tabTrafficSuit);
 		forceWait(1);
 	}
@@ -45,6 +46,6 @@ public class TrafficManagerPage extends BasePage {
 		WaitUtil.implicitlyWait(5);
 		int width = driver.manage().window().getSize().width;
 		int height = driver.manage().window().getSize().height;
-		driver.swipe(width / 2, height / 2, width / 2, height / 2 + height * precent / 100, 500);
+		driver.swipe(width / 2, height / 2, width / 2, height / 2 + height * precent / 200, 500);
 	}
 }
