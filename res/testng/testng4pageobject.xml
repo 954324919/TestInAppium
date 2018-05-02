@@ -60,18 +60,24 @@
 	<!-- 此部分测试应用的常规功能 -->
 	<test name="Test4Regular" preserve-order="true">
 		<classes>
-			<!-- 必备应用的设置管理测试 -->
-			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestSettingActivity">
+			<!-- 必备应用的关于应用测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestAboutActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkAutoUpdate" />
-					<include name="downloadTipShow" />
-					<include name="downloadTipCloseInOtherWay" />
-					<include name="setRangeByEditText" />
-					<include name="setRangeBySeekbar" />
+					<include name="checkAboutUpdate" />
+					<include name="checkUserProtocol" />
+					<include name="rollAndClose" />
 				</methods>
 			</class>
-
+			<!-- 必备应用的分享应用测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestShareActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="shareTheApp" />
+					<include name="shareByLink" />
+					<include name="shareByMore" />
+				</methods>
+			</class>
 		</classes>
 	</test>
 </suite>

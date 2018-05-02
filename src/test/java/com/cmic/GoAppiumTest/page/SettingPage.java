@@ -26,6 +26,9 @@ public class SettingPage extends BasePage {
 	@AndroidFindBy(id = "com.cmic.mmnes:id/setting_download_notice_content")
 	public AndroidElement tvDownloadTipNum;// 下载提示设置的限制数
 
+	@AndroidFindBy(id = "com.cmic.mmnes:id/rl_share")
+	public AndroidElement llyShare;// 下载提示设置的限制数
+
 	public SettingPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new SettingAction();
@@ -34,5 +37,10 @@ public class SettingPage extends BasePage {
 	public void go2ShowDownloadSettingTip() {
 		action.go2Click(llyDownloadTipDialog);
 		forceWait(2);
+	}
+
+	public void go2SharePage() {
+		action.go2Click(llyShare);
+		forceWait(1.5);
 	}
 }
