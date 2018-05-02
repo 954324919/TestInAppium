@@ -17,6 +17,8 @@ import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SettingPage;
 import com.cmic.GoAppiumTest.page.action.SettingAction;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadTipDialogPage;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadTipDialogPage.DownloadTipDialogAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
@@ -30,14 +32,21 @@ import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestSettingActivity extends BaseTest {
 
+	// Page 部分
 	private SettingPage settingPage;
+	private DownloadTipDialogPage downloadTipDialogPage;
+
+	// Action 部分
 	private SettingAction settingAction;
+	private DownloadTipDialogAction downloadTipDialogAction;
 
 	@Override
 	public void setUpBeforeClass() {
 		settingPage = new SettingPage();
 		settingAction = (SettingAction) settingPage.action;
 		settingAction.go2SelfPage();
+		downloadTipDialogPage = new DownloadTipDialogPage();
+		downloadTipDialogAction = (DownloadTipDialogAction) downloadTipDialogPage.action;
 	}
 
 	@Override
@@ -49,7 +58,7 @@ public class TestSettingActivity extends BaseTest {
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		LogUtil.e("进行[{}]用例集的初始化检验，失败则跳过该用例集的所有测试", getClass().getSimpleName());
+		LogUtil.w("进行[{}]用例集的初始化检验，失败则跳过该用例集的所有测试", getClass().getSimpleName());
 		assertEquals(getCurrentPageName(), "SettingActivity");
 		settingPage.snapScreen("进入必备应用设置中心界面");
 	}
@@ -69,74 +78,68 @@ public class TestSettingActivity extends BaseTest {
 		LogUtil.printCurrentMethodNameInLog4J();
 		// TODO 检查影响，0404暂不实现
 		settingPage.go2ShowDownloadSettingTip();
-		if (settingPage.sbDownloadTip != null && settingPage.sbDownloadTip.isDisplayed()) {
-			settingAction.go2Backforward();
+		// 保存Page
+		if (downloadTipDialogPage.isElementShown(downloadTipDialogPage.sbDownloadTip)) {
+			downloadTipDialogAction.go2Backforward();
 		} else {
 			LogUtil.e("下载提示弹窗不显示");
 			throw new RuntimeException("下载提示弹窗不显示");
 		}
 	}
 
-	public void showDialog() {
-		WaitUtil.implicitlyWait(2);
-		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
-		notifyLly.click();
-		WaitUtil.forceWait(1);
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "downloadTipShow" })
 	@Tips(description = "检查下载提示的影响")
 	public void downloadTipCloseInOtherWay() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
 		boolean notifyLlyIsPresent;
-		WaitUtil.implicitlyWait(2);
 		settingPage.go2ShowDownloadSettingTip();
-		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
+		notifyLlyIsPresent = downloadTipDialogPage.isElementShown(downloadTipDialogPage.sbDownloadTip);
 		assertEquals(notifyLlyIsPresent, true);
-		settingAction.go2Click(settingPage.btnCloseDownloadTipDialog);
-		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
+		downloadTipDialogAction.go2Click(downloadTipDialogPage.btnCloseDownloadTipDialog);
+		notifyLlyIsPresent = downloadTipDialogPage.isElementShown(downloadTipDialogPage.sbDownloadTip);
 		assertEquals(notifyLlyIsPresent, false);
 		// 重新点击显示NotifyDialog
-		settingAction.go2ClickAndWait(settingPage.btnCloseDownloadTipDialog, 1);
-		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
+		settingPage.go2ShowDownloadSettingTip();
+		downloadTipDialogAction.go2ClickAndWait(downloadTipDialogPage.btnCloseDownloadTipDialog, 1);
+		notifyLlyIsPresent = downloadTipDialogPage.isElementShown(downloadTipDialogPage.sbDownloadTip);
 		assertEquals(notifyLlyIsPresent, false);
-		settingAction.go2ClickAndWait(settingPage.btnCancelDownloadTipDialog, 1);
-		notifyLlyIsPresent = settingPage != null && settingPage.sbDownloadTip.isDisplayed();
+		// 重新点击显示NotifyDialog
+		settingPage.go2ShowDownloadSettingTip();
+		downloadTipDialogAction.go2ClickAndWait(downloadTipDialogPage.btnCancelDownloadTipDialog, 1);
+		notifyLlyIsPresent = downloadTipDialogPage.isElementShown(downloadTipDialogPage.sbDownloadTip);
 		assertEquals(notifyLlyIsPresent, false);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "downloadTipCloseInOtherWay" })
 	@Tips(description = "检查下载提示的影响")
 	public void setRangeByEditText() {
 		LogUtil.printCurrentMethodNameInLog4J();
 		settingPage.go2ShowDownloadSettingTip();
-
-		settingAction.go2SendWord(settingPage.etDownloadTip, "250");
+		settingAction.go2SendWord(downloadTipDialogPage.etDownloadTip, "250");
 		settingPage.snapScreen("输入250M时提示");
 		// 点击确认
-		settingAction.go2ClickAndWait(settingPage.btnDownloadTipDialogAccept, 2);
+		downloadTipDialogAction.go2ClickAndWait(downloadTipDialogPage.btnDownloadTipDialogAccept, 1);
 		String setDownloadRangerResult = settingAction.go2GetText(settingPage.tvDownloadTipNum).replaceAll("[^0-9]",
 				"");
 		assertEquals(setDownloadRangerResult, "250");
 		// 回复原先的Seekbar状态
-		settingAction.go2SendWord(settingPage.etDownloadTip, "");
-		settingPage.snapScreen("输入为空时提示");
+		settingPage.go2ShowDownloadSettingTip();
+		downloadTipDialogAction.go2SendWord(downloadTipDialogPage.etDownloadTip, "");
+		downloadTipDialogPage.snapScreen("输入为空时提示");
 		// 点击确认
-		settingAction.go2ClickAndWait(settingPage.btnDownloadTipDialogAccept, 2);
+		downloadTipDialogAction.go2ClickAndWait(downloadTipDialogPage.btnDownloadTipDialogAccept, 1);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "setRangeByEditText" })
 	public void setRangeBySeekbar() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
 		settingPage.go2ShowDownloadSettingTip();
-		WaitUtil.implicitlyWait(2);
-		settingAction.go2Clear(settingPage.sbDownloadTip);
-
+		downloadTipDialogAction.go2Clear(downloadTipDialogPage.sbDownloadTip);
 		// 点击Seekbar中间点
-		settingPage.go2TapTheHalfSeekbar();
+		downloadTipDialogPage.go2TapTheHalfSeekbar();
 		settingPage.snapScreen("输入250M时提示");
 		// 点击确认
-		settingAction.go2ClickAndWait(settingPage.btnDownloadTipDialogAccept, 2);
+		downloadTipDialogAction.go2ClickAndWait(downloadTipDialogPage.btnDownloadTipDialogAccept, 2);
 		String setDownloadRangerResult = settingAction.go2GetText(settingPage.tvDownloadTipNum).replaceAll("[^0-9]",
 				"");
 		assertEquals(setDownloadRangerResult, "250");

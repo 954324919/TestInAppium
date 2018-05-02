@@ -52,6 +52,8 @@ public abstract class BaseAction {
 
 	@Tips(description = "输入文字")
 	public void go2SendWord(AndroidElement e, String keyWord) {
+		e.clear();
+		WaitUtil.forceWait(0.5);
 		e.sendKeys(keyWord);
 	}
 

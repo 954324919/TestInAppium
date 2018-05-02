@@ -60,7 +60,18 @@
 	<!-- 此部分测试应用的常规功能 -->
 	<test name="Test4Regular" preserve-order="true">
 		<classes>
-		
+			<!-- 必备应用的设置管理测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestSettingActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="checkAutoUpdate" />
+					<include name="downloadTipShow" />
+					<include name="downloadTipCloseInOtherWay" />
+					<include name="setRangeByEditText" />
+					<include name="setRangeBySeekbar" />
+				</methods>
+			</class>
+
 		</classes>
 	</test>
 </suite>
