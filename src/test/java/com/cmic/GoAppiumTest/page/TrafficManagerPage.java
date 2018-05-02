@@ -1,5 +1,6 @@
 package com.cmic.GoAppiumTest.page;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
@@ -27,6 +28,15 @@ public class TrafficManagerPage extends BasePage {
 	public TrafficManagerPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new TrafficAction();
+	}
+
+	@Tips(description = "检查页面是否加载")
+	public boolean checkInit() {
+		try {
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
 	}
 
 	@Tips(description = "点击切换到TrafficType")

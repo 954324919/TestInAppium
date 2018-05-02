@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 
 import com.cmic.GoAppiumTest.base.BaseAction;
@@ -12,16 +13,17 @@ import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SearchPage;
-import com.cmic.GoAppiumTest.page.action.SearchAction;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.RandomUtil;
 
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 
 public class SearchResultPage extends BasePage {
 
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(id = "com.cmic.mmnes:id/search_count_tv")
 	public AndroidElement searchResultCount;// 搜索结果数目标签
 
@@ -37,9 +39,11 @@ public class SearchResultPage extends BasePage {
 	@AndroidFindBy(id = "com.cmic.mmnes:id/item_layout")
 	public List<AndroidElement> targetSerachResultList;// 具体到某个Tab中的SearchResult结果
 
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\")")
 	public List<AndroidElement> statusBtnList;// 具体到某个Tab中的下载按钮结果
 
+	@WithTimeout(time = 3, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(id = "com.cmic.mmnes:id/mm_down_goon")
 	public AndroidElement downLoadGoOn;// 下载继续按钮
 
@@ -54,6 +58,16 @@ public class SearchResultPage extends BasePage {
 		action = new SearchResultAction();
 	}
 
+	public boolean isDialogShow() {
+		try {
+			downLoadGoOn.isDisplayed();
+			return true;
+		} catch (NoSuchElementException e) {
+			LogUtil.e(e.toString());
+			return false;
+		}
+	}
+
 	public boolean getErrorTipVisiable() {
 		return errorTip.isDisplayed();
 	}
@@ -62,8 +76,15 @@ public class SearchResultPage extends BasePage {
 		return isElementIsPresent(searchResultCount);
 	}
 
+	@Tips(description = "Dialog是否显示")
 	public boolean isDownloadGoOnShow() {
-		return downLoadGoOn.isDisplayed();
+		try {
+			downLoadGoOn.isDisplayed();
+			return true;
+		} catch (NoSuchElementException e) {
+			LogUtil.d(e.toString());
+			return false;
+		}
 	}
 
 	public void click2GameTab() {
@@ -120,25 +141,42 @@ public class SearchResultPage extends BasePage {
 	@Tips(description = "用于缓存随机点击的按钮")
 	public int targetElementIndex = 0;
 
-	@Tips()
-	public void randomGo2Download() {
+	@Tips(description = "随机点击开始下载")
+	public void randomGo2DownloadStart() {
 		if (statusBtnList.size() > 0) {
-			if (targetElementIndex == 0) {
-				targetElementIndex = RandomUtil.getRandomNum(statusBtnList.size() - 1);
-			}
+			targetElementIndex = RandomUtil.getRandomNum(statusBtnList.size() - 1);
+			LogUtil.w("选中开始下载位置为{}", targetElementIndex);
 			AndroidElement targetElement = statusBtnList.get(targetElementIndex);
 			if (targetElement.getText().equals("打开")) {
 				LogUtil.e("已经是打开的状态");
 				return;
 			}
 			assertEquals(targetElement.getText(), "下载");
-			// TODO 网速判断
 			// 开始下载
 			targetElement.click();
 		} else {
 			LogUtil.e("没有可下载的搜索结果");
 			throw new RuntimeException("没有可下载的搜索结果");
 		}
+	}
+
+	@Tips(description = "将随机开始的下载暂停", riskPoint = "在移动网络会进入提示页面")
+	public void randomGo2DownloadPause() {
+		AndroidElement targetElement = statusBtnList.get(targetElementIndex);
+		if (targetElement.getText().equals("暂停")) {
+			targetElement.click();
+		} else if (targetElement.getText().equals("打开")) {
+			LogUtil.e("已经是打开的状态");
+			return;
+		} else {
+			LogUtil.e("当前按钮状态为{}", targetElement.getText());
+			return;
+		}
+	}
+
+	@Tips(description = "不依赖PageFactory的点击方法", riskPoint = "在移动网络会进入提示页面")
+	public void randomGo2DownloadPause1() throws NoSuchElementException {
+		// TODO
 	}
 
 	public void randomGo2Open() {

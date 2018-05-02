@@ -3,6 +3,7 @@ package com.cmic.GoAppiumTest.base;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -46,6 +47,17 @@ public class BasePage {
 
 	}
 
+	@Tips(description = "元素是否显示", riskPoint = "防止因为NoSuchEx导致的加载紊乱或等待时间过长")
+	public boolean isElementShown(AndroidElement element) {
+		try {
+			if (element != null)
+				element.isDisplayed();
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
 	@Tips(description = "等待直到控件可可视")
 	protected void waitForVisibilityOf(By locator) {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
@@ -77,7 +89,7 @@ public class BasePage {
 		ScreenUtil.screenShot(snapMsg);
 		WaitUtil.implicitlyWait(2);
 	}
-	
+
 	@Tips(description = "强制进行截屏")
 	public void snapScreenForce(String snapMsg) {
 		ScreenUtil.screenShotForce(snapMsg);

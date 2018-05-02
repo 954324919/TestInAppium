@@ -3,9 +3,11 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 import static org.testng.Assert.assertEquals;
 
 import org.openqa.selenium.By;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.TrafficManagerPage;
@@ -18,7 +20,7 @@ import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
 import io.appium.java_client.android.AndroidElement;
-
+@Listeners(ExtentReportListener.class)
 public class TestTrafficManagerActivitiy extends BaseTest {
 
 	private int mRetryTime = 3;

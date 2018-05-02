@@ -2,27 +2,24 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
 
-import java.util.List;
-
-import org.openqa.selenium.By;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage.SearchResultAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.AppUtil;
-import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
+
+import io.appium.java_client.android.Connection;
+
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
-import io.appium.java_client.android.AndroidElement;
-
+@Listeners(ExtentReportListener.class)
 public class TestSearchResultActivity extends BaseTest {
 
 	private SearchResultPage mSearchResultPage;
@@ -96,13 +93,19 @@ public class TestSearchResultActivity extends BaseTest {
 	@Tips(description = "检查随机下载", riskPoint = "下载状态实际难以预测，当前findView不够稳定")
 	public void checkRandomClick2Download() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
-		mSearchResultPage.randomGo2Download();
-		mSearchResultPage.forceWait(1);
-		mSearchResultPage.randomGo2Download();// TODO 新增，马上点击停止
-		WaitUtil.forceWait(0.5);
-		if (mSearchResultPage.isDownloadGoOnShow()) {
+		Connection temp = mSearchResultPage.action.go2GetNetWorkStatus();
+		LogUtil.w("当前网络状态为{}", temp.name());
+		boolean isDataStatu = (temp == Connection.DATA);// 移动数据网络状态
+		mSearchResultPage.randomGo2DownloadStart();
+		if (!isDataStatu) {// 不是移动网络状态//WIFI
+			mSearchResultPage.randomGo2DownloadPause();// 马上点击停止，防止进入安装界面
+			WaitUtil.forceWait(0.5);
+		} else {// 移动网络状态//DATA//CANTUSE
+			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
 			mSearchResultPage.click2GoOnDownload();
-			mSearchResultPage.randomGo2Download();
+			mSearchResultPage.forceWait(1);
+			// 再点击暂停
+			mSearchResultPage.randomGo2DownloadPause();// 马上点击停止，防止进入安装界面
 		}
 		assertEquals(mSearchResultPage.getRandomTargetText().contains("继续"), true);
 	}
@@ -119,7 +122,7 @@ public class TestSearchResultActivity extends BaseTest {
 	@Test(dependsOnMethods = { "initCheck" })
 	public void checkSearch2Baseline() {
 		LogUtil.printCurrentMethodNameInLog4J();
-		mSearchResultPage.action.go2Swipe2Bottom();
+		mSearchResultPage.action.go2Swipe2BottomWithTimeOut(5);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

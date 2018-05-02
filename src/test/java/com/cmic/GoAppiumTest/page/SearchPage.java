@@ -4,18 +4,24 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BasePage;
+import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.action.SearchAction;
+import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 
 public class SearchPage extends BasePage {
 
@@ -34,6 +40,7 @@ public class SearchPage extends BasePage {
 	@AndroidFindBy(id = "com.cmic.mmnes:id/search_icon_layout")
 	private AndroidElement btnSubmitSearch;
 
+	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(id = "com.cmic.mmnes:id/pager_indicator")
 	public AndroidElement pageIndicator;
 
@@ -78,11 +85,32 @@ public class SearchPage extends BasePage {
 		WaitUtil.forceWait(2);
 	}
 
-	public void go2DownloadBySearchRalation() {
+	public void go2SearchByKeyWordInRalation(String searchKeyWord) {
+		action.go2Click(searchContainer);// 获取焦点
+		forceWait(0.5);
+		action.go2Clear(searchContainer);
+		forceWait(0.5);
+		action.go2SendWord(searchContainer, searchKeyWord);
+		forceWait(2);
+	}
+
+	@Tips(description = "通过简单条目到达详情页面1")
+	public void go2DetailInRalationEasyItem() {
+		// 1.进行点击
+		int targetXPx = ScreenUtil.getDeviceWidth() / 2;
+		int targetYPx = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight()
+				+ ScreenUtil.dp2Px(App.RELATION_DIRECTION_ITEM_HEIGHT_DP * 2 + 10);
+		LogUtil.w("在go2DetailInRalationEasyItem实际点击的坐标为：{},{}", targetXPx, targetYPx);
+		ScreenUtil.singleTap(targetXPx, targetYPx);
+		WaitUtil.forceWait(2);
+	}
+
+	@Tips(description = "通过直达链接条目到达详情页")
+	public void go2DetailInRalationDerict() {
 		int targetXPx = ScreenUtil.getDeviceWidth() / 2;
 		int targetYPx = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight()
 				+ ScreenUtil.dp2Px(App.RELATION_DIRECTION_ITEM_HEIGHT_DP) / 2;
-		LogUtil.e(targetXPx + " " + targetYPx);
+		LogUtil.w("在go2DetailInRalationDerict实际点击的坐标为：{},{}", targetXPx, targetYPx);
 		ScreenUtil.singleTap(targetXPx, targetYPx);
 		WaitUtil.forceWait(2);
 	}
