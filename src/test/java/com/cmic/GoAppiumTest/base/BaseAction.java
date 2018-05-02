@@ -96,6 +96,11 @@ public abstract class BaseAction {
 		ScrollUtil.scrollToBase();
 	}
 
+	@Tips(description = "获取页面数据源")
+	public String go2GetPageResource() {
+		return driver.getPageSource();
+	}
+
 	@Tips(description = "滚动到底部")
 	public void go2Swipe2BottomWithTimeOut(int timeoutSecond) {
 		ScrollUtil.scrollToBaseTimeoutQuit(timeoutSecond);
@@ -293,6 +298,11 @@ public abstract class BaseAction {
 	}
 
 	public void go2ClickAndWait(AndroidElement e, int waitSecond) {
+		e.click();
+		WaitUtil.forceWait(waitSecond);
+	}
+
+	public void go2ClickAndWait(AndroidElement e, double waitSecond) {
 		e.click();
 		WaitUtil.forceWait(waitSecond);
 	}

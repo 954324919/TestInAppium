@@ -53,18 +53,17 @@ public class TestDownloadManagerActivity extends BaseTest {
 	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
 	@Override
 	public void tearDownAfterClass() {
+		// TODO
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		LogUtil.e("进行[{}]用例集的初始化检验，失败则跳过该用例集的所有测试",getClass().getSimpleName());
+		LogUtil.w("进行[{}]用例集的初始化检验，失败则跳过该用例集的所有测试", getClass().getSimpleName());
 		assertEquals(getCurrentPageName(), "ManagerCenterActivity");
 		downloadManagerPage.snapScreen("进入必备应用管理中心界面");
-		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
-		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
-		if (eList.size() <= 0) {
+		if (downloadManagerPage.targetPageItemList.size() <= 0) {
 			throw new AssertionError("不存在可更新的应用或游戏");
 		}
 	}

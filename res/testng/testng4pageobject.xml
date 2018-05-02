@@ -60,22 +60,42 @@
 	<!-- 此部分测试应用的常规功能 -->
 	<test name="Test4Regular" preserve-order="true">
 		<classes>
-			<!-- 必备应用的关于应用测试 -->
-			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestAboutActivity">
+			<!-- 必备应用的下载管理测试 -->
+			<class
+				name="com.cmic.GoAppiumTest.testcase4pageobject.TestDownloadManagerActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkAboutUpdate" />
-					<include name="checkUserProtocol" />
-					<include name="rollAndClose" />
+					<include name="checkSlide2OtherTab" />
+					<include name="checkClick2OtherTab" />
+					<include name="checkRamdomEnterDetail" />
+					<include name="checkUpdate2Baseline" />
+					<include name="checkUpdateOne" />
+					<include name="checkUpdateAll" /> <!-- 50 MileStone -->
+					<include name="checkDownloadPauseAndResumeAll" />
+					<include name="checkDownloadPauseAndResumeOne" />
+					<include name="checkDeleteDownloadTask" />
+					<include name="checkDeleteTaskAndKeepTheFile" />
 				</methods>
 			</class>
-			<!-- 必备应用的分享应用测试 -->
-			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestShareActivity">
+
+			<!-- 必备应用的应用详情页DetailActivity测试 -->
+			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestDetailActivity">
 				<methods>
 					<include name="initCheck" />
-					<include name="shareTheApp" />
-					<include name="shareByLink" />
-					<include name="shareByMore" />
+					<include name="checkActionBarSearch" />
+					<include name="checkTheImageScrollView" />  <!-- 100 MileStone -->
+					<include name="checkImageBrower" />
+					<include name="opearaInImageBrower" />
+					<include name="checkWithoutInstall" />
+					<include name="checkBriefIntroduction" />
+					<include name="checkAdInDetail" />
+					<include name="checkOtherInstall" />
+					<include name="checkDownloadInOtherInstall" />
+					<include name="checkPermission" />
+					<include name="checkTipOff" />
+					<include name="checkPostTipOffReport" />
+					<include name="checkRightTopNumTip" />
+					<include name="checkBottomDownload" />
 				</methods>
 			</class>
 		</classes>
