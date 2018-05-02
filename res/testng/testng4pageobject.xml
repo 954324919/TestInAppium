@@ -60,58 +60,7 @@
 	<!-- 此部分测试应用的常规功能 -->
 	<test name="Test4Regular" preserve-order="true">
 		<classes>
-			<!-- 必备应用的搜索联想页面测试 -->
-			<!-- 必备应用的搜索结果SearchActivity#ResultFragment测试 -->
-			<!-- 必备应用的流量管家页面测试 -->
-			<class
-				name="com.cmic.GoAppiumTest.testcase4pageobject.TestTrafficManagerActivitiy">
-				<methods>
-					<include name="initCheck" />
-					<include name="checkTrafficInfo" />
-					<include name="checkSlipToOtherTab" />
-					<include name="checkClick2OtherTab" />
-					<include name="checkDropDown2Refesh" />
-				</methods>
-			</class>
-			<!-- 必备应用的搜索页测试 -->
-			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestSearchActivity">
-				<methods>
-					<include name="initCheck" />
-					<include name="checkGetMore" />
-					<include name="closeTheWordList" />
-					<include name="randomCheckOne" />
-					<include name="checkBack" />
-					<include name="checkWordFromOutside" />
-					<include name="clickTheClearSearchRly" />
-				</methods>
-			</class>
-			<!-- 必备应用的搜索结果SearchActivity#ResultFragment测试 -->
-			<class
-				name="com.cmic.GoAppiumTest.testcase4pageobject.TestSearchResultActivity">
-				<methods>
-					<include name="initCheck" />
-					<include name="checkSild2OtherTab" />
-					<include name="checkClick2OtherTab" />
-					<include name="checkRandomClick2Detail" />
-					<include name="checkRandomClick2Download" />
-					<include name="checkDownloadButtonUpdate" />
-					<include name="checkSearch2Baseline" />
-					<include name="checkErrorInput4EmptyPage" />
-				</methods>
-			</class>
-			<!-- 必备应用的搜索联想页面测试 -->
-			<class
-				name="com.cmic.GoAppiumTest.testcase4pageobject.TestSearchActivityExtra">
-				<methods>
-					<include name="initCheck" />
-					<include name="checkSearchRalation" />
-					<include name="checkClickDownload" />
-					<include name="checkClick2DetailByDirectItem" />
-					<include name="checkClick2SearchResultByEasyItem" />
-					<include name="checkSearchHistory" />
-					<include name="checkEnterDetailFromHistory" />
-				</methods>
-			</class>
+		
 		</classes>
 	</test>
 </suite>
