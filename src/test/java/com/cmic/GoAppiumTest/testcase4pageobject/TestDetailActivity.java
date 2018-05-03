@@ -2,6 +2,7 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
@@ -75,6 +76,8 @@ public class TestDetailActivity extends BaseTest {
 	public void checkTheImageScrollView() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
 		detailAction.go2ClickAndWait(detailPage.imageAdScorll, 1.5);
+		assertEquals(getCurrentPageName(), "ImageBrowseActivity");
+		detailAction.go2Backforward();// 退出ImageBrowseActivity
 		detailAction.go2SwipeInElement(detailPage.imageAdScorll, Heading.LEFT);
 		ScreenUtil.screenShot("滑动详情页广告图");
 		detailAction.go2SwipeInElement(detailPage.imageAdScorll, Heading.RIGHT);
@@ -157,7 +160,6 @@ public class TestDetailActivity extends BaseTest {
 		detailAction.go2Backforward();
 	}
 
-	// TODO 待修复
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击其他人正在安装的下载按钮")
 	public void checkDownloadInOtherInstall() throws InterruptedException {
@@ -212,7 +214,7 @@ public class TestDetailActivity extends BaseTest {
 
 	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "测试举报页面", riskPoint = "造成脏数据|遍历深度浅")
-	public void checkPostTipOffReport() throws InterruptedException {
+	public void checkPostTipOffReport() {
 		LogUtil.printCurrentMethodNameInLog4J();
 		detailAction.go2ClickAndWait(detailPage.btnPost, 2);
 		assertEquals(getCurrentPageName(), "AppReportActivity");
@@ -224,7 +226,7 @@ public class TestDetailActivity extends BaseTest {
 		postAction.go2ClickAndWait(postPage.btnReportTypeSelect, 1.5);
 		postAction.go2ClickAndWait(postPage.targetTypeItem, 0.5);
 		// 填写举报内容
-		postAction.go2SendWord(postPage.etReportInfo, "[测试举报功能，请忽略！我是测试人员");
+		postAction.go2SendWord(postPage.etReportInfo, "[测试举报功能]请忽略！我是测试人员");
 		// 填写手机号
 		postAction.go2SendWord(postPage.etPhoneNum, "18814127364");
 		// 填写电子邮箱
@@ -232,27 +234,31 @@ public class TestDetailActivity extends BaseTest {
 		// 点击提交
 		postAction.go2Click(postPage.btnSubmit);
 		Assert.assertEquals(postPage.isTargetToast(reportPostErrorToast), false);
-		postPage.forceWait(0.5);
-		if (!getCurrentPageName().equals("DetailActivity")) {
+		LogUtil.w("准备该方法了1");
+		while (!getCurrentPackageName().equals("DetailActivity")) {// 在未有举报过时会出现直接跳出至DetailAct
 			// 回退
-			postAction.go2Backforward();
-			assertEquals(getCurrentPageName(), "DetailActivity");
+			go2Backforward();
 		}
+		LogUtil.w("准备该方法了");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试下载计数")
 	public void checkRightTopNumTip() {
 		LogUtil.printCurrentMethodNameInLog4J();
-		WaitUtil.implicitlyWait(5);
-		assertEquals(detailPage.tvPointNum, "");
+		String updateNum = detailAction.go2GetText(detailPage.tvPointNum);
+		if (updateNum.equals("")) {
+			LogUtil.e("可更新应用数目不显示");
+		} else {
+			LogUtil.w("可更新应用数目为{}", updateNum);
+		}
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "测试下载|不同网络状态和Notice级别可能存在影响")
 	public void checkBottomDownload() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
-		assertEquals(detailPage.btnInstall, "下载");
+		assertTrue(detailAction.go2GetText(detailPage.btnInstall).contains("下载"));
 		// 开始检查网络
 		Connection temp = detailAction.go2GetNetWorkStatus();
 		LogUtil.w("当前网络状态为{}", temp.name());
@@ -266,6 +272,6 @@ public class TestDetailActivity extends BaseTest {
 			// 再点击暂停
 			detailAction.go2ClickAndWait(detailPage.btnInstall, 0.5);// 马上点击停止，防止进入安装界面
 		}
-		assertEquals(detailPage.getRandomTargetText().contains("继续"), true);
+		assertEquals(detailAction.go2GetText(detailPage.btnInstall).contains("继续"), true);
 	}
 }

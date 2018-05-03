@@ -131,10 +131,10 @@ public class BasePage {
 	@Tips(description = "Toast是否出现")
 	public boolean isTargetToast(String targetToast) {
 		try {
-			final WebDriverWait wait = new WebDriverWait(driver, 3);
+			final WebDriverWait wait = new WebDriverWait(driver, 2);
 			Assert.assertNotNull(wait.until(ExpectedConditions
 					.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + targetToast + "')]"))));
-			LogUtil.w("找到了toas:{} ", targetToast);
+			LogUtil.w("找到了toast:{} ", targetToast);
 			return true;
 		} catch (Exception e) {
 			return false;
