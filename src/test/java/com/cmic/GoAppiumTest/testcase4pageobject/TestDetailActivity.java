@@ -3,19 +3,12 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 
-import java.util.List;
-import java.util.Random;
-
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Heading;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.DetailPage;
 import com.cmic.GoAppiumTest.page.action.DetailAction;
@@ -23,17 +16,11 @@ import com.cmic.GoAppiumTest.page.middlepage.PermissionDetailOfDetailPage;
 import com.cmic.GoAppiumTest.page.middlepage.PostPage;
 import com.cmic.GoAppiumTest.page.middlepage.PostPage.PostAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
-import com.cmic.GoAppiumTest.util.RandomUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-
-import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.android.Connection;
 
 /**

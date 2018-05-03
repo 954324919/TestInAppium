@@ -4,12 +4,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
-
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;

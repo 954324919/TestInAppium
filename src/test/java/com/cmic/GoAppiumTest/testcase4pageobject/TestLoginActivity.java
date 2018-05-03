@@ -1,13 +1,16 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.LoginPage;
 import com.cmic.GoAppiumTest.page.action.LoginAction;
 
 @Tips(description = "暂时保存|触发时机难以确定")
+@Listeners(FailSnapshotListener.class)
 public class TestLoginActivity extends BaseTest {
 
 	public LoginPage loginPage;

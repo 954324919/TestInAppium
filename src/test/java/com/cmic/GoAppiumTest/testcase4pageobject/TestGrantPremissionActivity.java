@@ -1,31 +1,19 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
-
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import com.aventstack.extentreports.model.Log;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.PermissionPage;
 import com.cmic.GoAppiumTest.page.SplashPage;
-import com.cmic.GoAppiumTest.page.action.PermissionAction;
-import com.cmic.GoAppiumTest.page.middlepage.PermissionTipsPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
-import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
-import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-
-import io.appium.java_client.android.AndroidElement;
 
 /**
  * @描述 权限管理弹窗(系统)+权限细则

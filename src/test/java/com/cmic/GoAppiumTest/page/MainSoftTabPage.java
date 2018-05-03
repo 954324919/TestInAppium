@@ -2,16 +2,12 @@ package com.cmic.GoAppiumTest.page;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.support.PageFactory;
-
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.action.MainSoftTabAction;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;

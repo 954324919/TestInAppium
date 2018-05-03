@@ -2,13 +2,9 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-
 import java.util.Random;
-
-import org.openqa.selenium.By;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
@@ -16,10 +12,7 @@ import com.cmic.GoAppiumTest.page.SearchPage;
 import com.cmic.GoAppiumTest.page.middlepage.MainTempPage;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-
-import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestSearchActivity extends BaseTest {
 

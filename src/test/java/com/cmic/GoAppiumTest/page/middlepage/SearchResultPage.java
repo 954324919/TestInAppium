@@ -2,12 +2,11 @@ package com.cmic.GoAppiumTest.page.middlepage;
 
 import static org.testng.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.PageFactory;
-
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
@@ -15,7 +14,6 @@ import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SearchPage;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.RandomUtil;
-
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -49,6 +47,9 @@ public class SearchResultPage extends BasePage {
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\").textContains(\"打开\")")
 	public List<AndroidElement> downLoadOpenList;
+
+	@AndroidFindBy(id = "com.cmic.mmnes:id/app_name")
+	public List<AndroidElement> searchResultList;
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"建议你 \")")
 	public AndroidElement errorTip;
@@ -209,5 +210,13 @@ public class SearchResultPage extends BasePage {
 			SearchPage searchPageTemp = new SearchPage();
 			searchPageTemp.go2SearchByKeyWord(keyword);
 		}
+	}
+
+	public List<String> getSearchResultList() {
+		List<String> textList = new ArrayList<String>();
+		for (AndroidElement e : searchResultList) {
+			textList.add(e.getText());
+		}
+		return textList;
 	}
 }

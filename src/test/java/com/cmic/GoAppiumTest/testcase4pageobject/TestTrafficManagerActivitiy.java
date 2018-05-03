@@ -1,25 +1,17 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
-
-import org.openqa.selenium.By;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.TrafficManagerPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
-import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
-import io.appium.java_client.android.AndroidElement;
 @Listeners(ExtentReportListener.class)
 public class TestTrafficManagerActivitiy extends BaseTest {
 

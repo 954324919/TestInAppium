@@ -60,6 +60,10 @@ public abstract class BaseAction {
 	public String go2GetText(AndroidElement e) {
 		return e.getText();
 	}
+	
+	public Object[][] readExcel(String filepath, String sheetName) throws Exception{
+		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
+	}
 
 	@Tips(description = "回到当前页面")
 	public abstract void go2SelfPage();

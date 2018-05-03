@@ -4,19 +4,12 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
-
-import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.action.DetailAction;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.RandomUtil;
-import com.cmic.GoAppiumTest.util.WaitUtil;
-
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -129,7 +122,7 @@ public class DetailPage extends BasePage {
 			return;
 		}
 	}
-	
+
 	public String getRandomTargetText() {
 		return hotInstallStartBtn.get(targetElementIndex).getText();
 	}

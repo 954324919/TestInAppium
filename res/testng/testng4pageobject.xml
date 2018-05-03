@@ -60,9 +60,10 @@
 	<!-- 此部分测试应用的常规功能 -->
 	<test name="Test4Regular" preserve-order="true">
 		<classes>
-			<!-- 必备应用的下载管理测试 -->
+
+			<!-- 必备应用的下载管理更新Tab的测试 -->
 			<class
-				name="com.cmic.GoAppiumTest.testcase4pageobject.TestDownloadManagerActivity">
+				name="com.cmic.GoAppiumTest.testcase4pageobject.TestDownloadManagerActivityUTab">
 				<methods>
 					<include name="initCheck" />
 					<include name="checkSlide2OtherTab" />
@@ -71,6 +72,14 @@
 					<include name="checkUpdate2Baseline" />
 					<include name="checkUpdateOne" />
 					<include name="checkUpdateAll" /> <!-- 50 MileStone -->
+				</methods>
+			</class>
+
+			<!-- 必备应用的下载管理更新Tab的测试 -->
+			<class
+				name="com.cmic.GoAppiumTest.testcase4pageobject.TestDownloadManagerActivityDTab">
+				<methods>
+					<include name="initCheck" />
 					<include name="checkDownloadPauseAndResumeAll" />
 					<include name="checkDownloadPauseAndResumeOne" />
 					<include name="checkDeleteDownloadTask" />

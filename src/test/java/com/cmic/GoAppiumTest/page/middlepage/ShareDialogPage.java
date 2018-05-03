@@ -3,12 +3,10 @@ package com.cmic.GoAppiumTest.page.middlepage;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
-
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SettingPage;
-
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 @Tips(description = "用于描述分享弹窗的Page|由于冲突暂时不启用")

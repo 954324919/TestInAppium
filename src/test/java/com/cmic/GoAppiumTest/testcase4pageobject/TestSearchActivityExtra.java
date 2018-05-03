@@ -1,14 +1,9 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
-
-import org.eclipse.jetty.websocket.common.ConnectionState;
 import org.openqa.selenium.By;
-import org.openqa.selenium.net.NetworkUtils;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
-import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
@@ -16,12 +11,9 @@ import com.cmic.GoAppiumTest.page.SearchPage;
 import com.cmic.GoAppiumTest.page.action.SearchAction;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.ElementUtil;
-import com.cmic.GoAppiumTest.util.KeyboardUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.NetworkUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidElement;

@@ -3,14 +3,11 @@ package com.cmic.GoAppiumTest.page.middlepage;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.support.PageFactory;
-
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
-import com.cmic.GoAppiumTest.page.action.SplashAction;
 import com.cmic.GoAppiumTest.util.ContextUtil;
-
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;

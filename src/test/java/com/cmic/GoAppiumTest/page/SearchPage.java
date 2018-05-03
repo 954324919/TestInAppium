@@ -3,21 +3,14 @@ package com.cmic.GoAppiumTest.page;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
-
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.action.SearchAction;
-import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -38,7 +31,7 @@ public class SearchPage extends BasePage {
 	public AndroidElement searchContainer;// 内部热词
 
 	@AndroidFindBy(id = "com.cmic.mmnes:id/search_icon_layout")
-	private AndroidElement btnSubmitSearch;
+	public AndroidElement btnSubmitSearch;
 
 	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(id = "com.cmic.mmnes:id/pager_indicator")
@@ -139,5 +132,4 @@ public class SearchPage extends BasePage {
 		item.click();
 		WaitUtil.forceWait(2);
 	}
-
 }

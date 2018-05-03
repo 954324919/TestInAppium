@@ -4,7 +4,6 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
@@ -14,9 +13,7 @@ import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage.SearchResultAction
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-
 import io.appium.java_client.android.Connection;
-
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
 @Listeners(ExtentReportListener.class)

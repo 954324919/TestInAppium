@@ -2,8 +2,6 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
-
-import org.openqa.selenium.By;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -18,13 +16,7 @@ import com.cmic.GoAppiumTest.page.middlepage.SharePage.ShareAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
-import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
-import com.cmic.GoAppiumTest.util.ScreenUtil;
-import com.cmic.GoAppiumTest.util.WaitUtil;
-
-import io.appium.java_client.android.AndroidElement;
 
 @Listeners(ExtentReportListener.class)
 public class TestShareActivity extends BaseTest {
