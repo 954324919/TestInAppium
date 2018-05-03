@@ -6,16 +6,21 @@ import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.ContextUtil;
+
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 
 @Tips(description = "权限提示过度页", riskPoint = "由于是过渡页面，不拆分Page和Action", triggerTime = "授权过程不接受App要求的权限")
 public class PermissionTipsPage extends BasePage {
 
+	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(id = "com.cmic.mmnes:id/show_pre_text")
 	public AndroidElement btnPermissionDetail;// 权限获取说明按钮[PermissionTip]
 
+	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(id = "com.cmic.mmnes:id/mm_continue")
 	public AndroidElement btnPermisssionRefuse;// 点击含泪拒绝[PermissionTip]
 
@@ -51,14 +56,13 @@ public class PermissionTipsPage extends BasePage {
 			// TODO Auto-generated constructor stub
 		}
 
-		@Tips(description = "进入应用权限管理页面", triggerTime = "在PermissionTipsPage页面,拒绝权限提示的再次获取")
-		public void go2PackageManager(AndroidElement e) {
-			//
-		}
-
 		@Override
 		public void go2SelfPage() {
-			PageRedirect.redirect2PermissionRalation();
+			if (ContextUtil.getCurrentPageActivtiy().equals("GrantPermissionsActivity")) {
+				return;
+			} else {
+				PageRedirect.redirect2PermissionRalation();
+			}
 		}
 	}
 }

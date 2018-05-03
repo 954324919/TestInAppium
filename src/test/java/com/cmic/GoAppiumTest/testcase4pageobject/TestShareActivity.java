@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SettingPage;
 import com.cmic.GoAppiumTest.page.action.SettingAction;
@@ -41,7 +42,7 @@ public class TestShareActivity extends BaseTest {
 
 	@Override
 	public void tearDownAfterClass() {
-		// TODO
+		// 杀死包
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -80,9 +81,10 @@ public class TestShareActivity extends BaseTest {
 		settingPage.go2SharePage();// 进入分享页面
 		sharePage.clickShareMore();
 		// 抓取Toast
-		LogUtil.w("当前页面的所属包名为{}",ContextUtil.getPackageName());
+		LogUtil.w("当前页面的所属包名为{}", ContextUtil.getPackageName());
 		assertNotEquals(ContextUtil.getPackageName(), App.PACKAGE_NAME);
 		sharePage.snapScreen("短信分享");
+		shareAction.go2Backforward();
 		AppUtil.runInBackground4AWhile();
 	}
 }

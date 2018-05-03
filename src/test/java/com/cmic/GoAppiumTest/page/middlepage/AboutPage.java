@@ -5,6 +5,8 @@ import org.openqa.selenium.support.PageFactory;
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
+import com.cmic.GoAppiumTest.util.ContextUtil;
+
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -40,7 +42,7 @@ public class AboutPage extends BasePage {
 
 		@Override
 		public void go2SelfPage() {
-			PageRedirect.redirect2AboutActivity();
+			PageRedirect.redirect2AboutActivity();// 内部已经有优化逻辑
 		}
 
 		public AboutAction() {

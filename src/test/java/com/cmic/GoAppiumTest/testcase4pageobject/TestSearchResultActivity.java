@@ -8,6 +8,8 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage.DownloadDialogAction;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage.SearchResultAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
@@ -99,8 +101,10 @@ public class TestSearchResultActivity extends BaseTest {
 			WaitUtil.forceWait(0.5);
 		} else {// 移动网络状态//DATA//CANTUSE
 			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
-			mSearchResultPage.click2GoOnDownload();
-			mSearchResultPage.forceWait(1);
+			// 获取页面的Page实例
+			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
+			DownloadDialogAction downloadDialogAction = (DownloadDialogAction) downloadDialogPage.action;
+			downloadDialogAction.go2ClickAndWait(downloadDialogPage.downLoadGoOn, 1);
 			// 再点击暂停
 			mSearchResultPage.randomGo2DownloadPause();// 马上点击停止，防止进入安装界面
 		}

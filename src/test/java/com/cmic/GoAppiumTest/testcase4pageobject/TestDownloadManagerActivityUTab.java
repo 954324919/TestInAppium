@@ -13,7 +13,9 @@ import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.DownloadManagerUpdatePage;
 import com.cmic.GoAppiumTest.page.action.DownloadManagerUpdateAction;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage;
 import com.cmic.GoAppiumTest.page.middlepage.UpdateAllTipDialogPage;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage.DownloadDialogAction;
 import com.cmic.GoAppiumTest.page.middlepage.UpdateAllTipDialogPage.UpdateAllTipDialogAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -92,7 +94,6 @@ public class TestDownloadManagerActivityUTab extends BaseTest {
 	public void checkRamdomEnterDetail() throws InterruptedException {
 		updateTabAction.go2SelfPage();
 		LogUtil.printCurrentMethodNameInLog4J();
-		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/app_name"));
 		updateTabPage.go2RandomDetail();
 		// TODO 不稳定待解决
 		assertEquals(getCurrentPageName(), "DetailActivity");
@@ -120,8 +121,10 @@ public class TestDownloadManagerActivityUTab extends BaseTest {
 			WaitUtil.forceWait(0.5);
 		} else {// 移动网络状态//DATA//CANTUSE
 			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
-			updateTabPage.randomGo2StartDownload();
-			updateTabPage.forceWait(1);
+			// 获取页面的Page实例
+			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
+			DownloadDialogAction downloadDialogAction = (DownloadDialogAction) downloadDialogPage.action;
+			downloadDialogAction.go2ClickAndWait(downloadDialogPage.downLoadGoOn, 1);
 			// 再点击暂停
 			updateTabPage.randomGo2PauseDownload();// 马上点击停止，防止进入安装界面
 		}

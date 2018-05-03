@@ -3,7 +3,7 @@ package com.cmic.GoAppiumTest.page.action;
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
-import com.cmic.GoAppiumTest.util.WaitUtil;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 
 public class SettingAction extends BaseAction {
 
@@ -15,8 +15,14 @@ public class SettingAction extends BaseAction {
 	@Tips(description = "到达SplashPage")
 	@Override
 	public void go2SelfPage() {
-		// TODO 添加检验
-		PageRedirect.redirect2SettingActivity();
-		WaitUtil.forceWait(1);
+		if ("SettingActivity".equals(ContextUtil.getCurrentPageActivtiy())) {
+			// 已经是SettingActivity
+		} else if ("MainActivity".equals(ContextUtil.getCurrentPageActivtiy())) {
+			PageRedirect.incFromMain2Setting();
+		} else if ("ManagerCenterActivity".equals(ContextUtil.getCurrentPageActivtiy())) {
+			PageRedirect.incFromDownloadManager2Setting();
+		} else {
+			PageRedirect.redirect2SettingActivity();
+		}
 	}
 }

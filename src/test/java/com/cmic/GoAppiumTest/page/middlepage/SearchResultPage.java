@@ -12,6 +12,7 @@ import com.cmic.GoAppiumTest.base.BasePage;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SearchPage;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.RandomUtil;
 import io.appium.java_client.android.AndroidElement;
@@ -203,8 +204,12 @@ public class SearchResultPage extends BasePage {
 			// TODO Auto-generated method stub
 		}
 
+		@Tips(description = "通过搜索Keyword进入SearchResult页面")
 		public void go2SelfPageWithKey(String keyword) {
-			if (!getCurrActivity().equals("SearchActivity")) {// 非SearchAct页面
+			if (ContextUtil.getCurrentPageActivtiy().equals("SearchActivity")) {
+			} else if (ContextUtil.getCurrentPageActivtiy().equals("MainActivity")) {// 非SearchAct页面
+				PageRedirect.incFromMain2Search();
+			} else {// 非SearchAct页面
 				PageRedirect.redirect2SearchActivity();
 			}
 			SearchPage searchPageTemp = new SearchPage();

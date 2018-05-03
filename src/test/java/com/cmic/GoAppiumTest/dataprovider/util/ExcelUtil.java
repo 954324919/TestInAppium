@@ -103,6 +103,7 @@ public class ExcelUtil {
 	 */
 	@Tips(riskPoint = "只适合包含首行标题栏的数据格式")
 	public static Object[][] readExcel(String filepath, String sheetName) throws Exception {
+		filepath = FileUtil.filePathTransformRelative(filepath);
 		InputStream is = null;
 		Workbook wb = null;
 		try {

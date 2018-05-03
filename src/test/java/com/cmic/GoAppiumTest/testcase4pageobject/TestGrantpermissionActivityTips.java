@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.PermissionPage;
 import com.cmic.GoAppiumTest.page.middlepage.PermissionTipsPage;
@@ -99,6 +100,7 @@ public class TestGrantpermissionActivityTips extends BaseTest {
 		// PermissionTipsPage mPermissionTipPage = new PermissionTipsPage();
 		mPermissionTipPage.click2RetryGetPermission();
 		mPermissionTipPage.snapScreen("进入权限管理中心");
+		mPermissionTipPage.action.go2Backforward();
 		mPermissionTipPage.action.go2AppReset();
 		// WaitUtil.forceWait(1); #停止为了重入
 		Assert.assertEquals(getCurrentPageName(), "SplashActivity");

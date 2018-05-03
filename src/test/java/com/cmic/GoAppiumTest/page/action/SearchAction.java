@@ -8,11 +8,16 @@ public class SearchAction extends BaseAction {
 
 	@Override
 	public void go2SelfPage() {
-		if (!ContextUtil.getCurrentActivity().equals("SearchActivity"))
+		if (ContextUtil.getCurrentPageActivtiy().equals("SearchActivity")) {
+			return;
+		} else if (ContextUtil.getCurrentPageActivtiy().equals("MainActivity")) {
+			PageRedirect.incFromMain2Search();
+		} else {
 			PageRedirect.redirect2SearchActivity();
+		}
 	}
 
 	public SearchAction() {
-		//TODO 无参构造方法
+		// TODO 无参构造方法
 	}
 }

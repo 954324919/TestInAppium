@@ -9,17 +9,20 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SearchPage;
 import com.cmic.GoAppiumTest.page.action.SearchAction;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.util.LogUtil;
 
-public class CheckSearchPageObject extends BaseTest {
+@Listeners(FailSnapshotListener.class)
+public class CheckSearch4PageObject extends BaseTest {
 
 	private SearchPage searchPage;
 	private SearchAction searchAction;
@@ -66,11 +69,11 @@ public class CheckSearchPageObject extends BaseTest {
 		LogUtil.w("数据驱动用例集[" + mTag + "]结束");
 	}
 
-	@Test(enabled = false)
+	@Test
 	public void initCheck() {// 1
 		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		assertEquals(getCurrentPackageName(), ".activity.SearchActivity");
+		assertEquals(getCurrentPackageName(), "SearchActivity");
 		searchPage.snapScreen("进入必备应用搜索界面");
 	}
 
@@ -84,7 +87,7 @@ public class CheckSearchPageObject extends BaseTest {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" }, dataProvider = "searchMetadata", enabled = false)
+	@Test(dependsOnMethods = { "initCheck" }, dataProvider = "searchMetadata")
 	public void searchDataProvider(String searchKeyWord, String searchResult1, String searchResult2) {
 		// 点击搜索栏输入
 		searchAction.go2SendWord(searchPage.searchContainer, searchKeyWord);

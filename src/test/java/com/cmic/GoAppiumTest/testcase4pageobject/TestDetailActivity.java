@@ -13,8 +13,10 @@ import com.cmic.GoAppiumTest.helper.Heading;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.DetailPage;
 import com.cmic.GoAppiumTest.page.action.DetailAction;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage;
 import com.cmic.GoAppiumTest.page.middlepage.PermissionDetailOfDetailPage;
 import com.cmic.GoAppiumTest.page.middlepage.PostPage;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage.DownloadDialogAction;
 import com.cmic.GoAppiumTest.page.middlepage.PostPage.PostAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -175,8 +177,10 @@ public class TestDetailActivity extends BaseTest {
 			WaitUtil.forceWait(0.5);
 		} else {// 移动网络状态//DATA//CANTUSE
 			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
-			detailPage.go2RandomStartDownloadOtherInstall();
-			detailPage.forceWait(1);
+			// 获取页面的Page实例
+			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
+			DownloadDialogAction downloadDialogAction = (DownloadDialogAction) downloadDialogPage.action;
+			downloadDialogAction.go2ClickAndWait(downloadDialogPage.downLoadGoOn, 1);
 			// 再点击暂停
 			detailPage.go2RandomPauseDownloadOtherInstall();// 马上点击停止，防止进入安装界面
 		}
@@ -249,6 +253,7 @@ public class TestDetailActivity extends BaseTest {
 		String updateNum = detailAction.go2GetText(detailPage.tvPointNum);
 		if (updateNum.equals("")) {
 			LogUtil.e("可更新应用数目不显示");
+			detailPage.snapScreenForce("可更新应用数目不显示");
 		} else {
 			LogUtil.w("可更新应用数目为{}", updateNum);
 		}

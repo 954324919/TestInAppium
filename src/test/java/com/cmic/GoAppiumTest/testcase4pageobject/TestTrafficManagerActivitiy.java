@@ -22,8 +22,7 @@ public class TestTrafficManagerActivitiy extends BaseTest {
 	public void setUpBeforeClass() {
 		// TODO 在没有卸载软件时，可能会报错
 		mTrafficPage = new TrafficManagerPage();
-		mTrafficPage.action.go2SelfPage();
-		mTrafficPage.forceWait(3);// 加载比较慢
+		mTrafficPage.action.go2SelfPage();// 加载比较慢
 	}
 
 	@Override

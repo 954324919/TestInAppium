@@ -33,10 +33,6 @@ public class SearchPage extends BasePage {
 	@AndroidFindBy(id = "com.cmic.mmnes:id/search_icon_layout")
 	public AndroidElement btnSubmitSearch;
 
-	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
-	@AndroidFindBy(id = "com.cmic.mmnes:id/pager_indicator")
-	public AndroidElement pageIndicator;
-
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"搜索历史\")")
 	public AndroidElement tvHistoryLabel; // 历史基类的标签
 
@@ -56,7 +52,7 @@ public class SearchPage extends BasePage {
 	}
 
 	public void clickLoadMoreSwitch() {
-		action.go2Click(btnGetMore);
+		action.go2ClickAndWait(btnGetMore, 1);
 	}
 
 	public int getCountOfTargetHotWord() {
@@ -126,6 +122,9 @@ public class SearchPage extends BasePage {
 	}
 
 	public void clickTargetUiSelectorElement(String searchHistoryItem) {
+		if (searchHistoryItem.length() > 5) {// 搜索条目过长导致条目不显示
+			searchHistoryItem = searchHistoryItem.substring(0, searchHistoryItem.length() / 2);
+		}
 		String itemHistoryUiSeletor = "new UiSelector().className(\"android.widget.TextView\").textContains(\""
 				+ searchHistoryItem + "\")";
 		AndroidElement item = driver.findElementByAndroidUIAutomator(itemHistoryUiSeletor);

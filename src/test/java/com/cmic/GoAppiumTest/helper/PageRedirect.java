@@ -9,6 +9,7 @@ import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -44,6 +45,14 @@ public class PageRedirect {
 		element.click();
 	}
 
+	@Tips(description = "重回到Laucher,防止应用启动第三方软件进入任务栈顶造成紊乱", riskPoint = "可能导致Session丢失")
+	public static void redirect2Laucher() {
+		while (!ContextUtil.getCurrentPageActivtiy().equals("Launcher")) {
+			PageRouteUtil.pressBack();
+			WaitUtil.forceWait(1);
+		}
+	}
+
 	/**
 	 * 重定向到RequestiteActivity
 	 */
@@ -66,14 +75,22 @@ public class PageRedirect {
 			managerRly.click();
 		} else {
 			PageRedirect.redirect2MainActivity();
-			WaitUtil.implicitlyWait(2);// 等待1S
-			AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/jump_ll"));
-			managerRly.click();
+			incFromMain2Traffic();
 		}
 	}
 
+	@Tips(description = "从MainAct到TrafficAct的增量操作")
+	public static void incFromMain2Traffic() {
+		WaitUtil.implicitlyWait(2);// 等待1S
+		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/jump_ll"));
+		managerRly.click();
+		WaitUtil.forceWait(3);
+	}
+
 	public static void redirect2DetailActivity() {
-		PageRedirect.redirect2MainActivity();
+		if (!ContextUtil.getCurrentPageActivtiy().equals("MainActivity")) {
+			PageRedirect.redirect2MainActivity();
+		}
 		Random randomIndex = new Random();// 主页显示16个Item
 		int index = 1 + randomIndex.nextInt(14);
 		// 定位点击
@@ -96,7 +113,15 @@ public class PageRedirect {
 		WaitUtil.implicitlyWait(2);// 等待1S
 		AndroidElement aboutLly = driver.findElement(By.id("com.cmic.mmnes:id/ll_about"));
 		aboutLly.click();
+		WaitUtil.forceWait(3);
+	}
 
+	@Tips(description = "从MainAct到AboutAct的增量操作")
+	public static void incFromMain2About() {
+	}
+
+	@Tips(description = "从MainAct到DownloadManagerAct的增量操作")
+	public static void incFromSetting2About() {
 	}
 
 	/**
@@ -117,10 +142,15 @@ public class PageRedirect {
 	 */
 	public static void redirect2DownloadManagerActivity() {
 		redirect2MainActivity();
+		incFromMain2DownloadManager();
+	}
+
+	@Tips(description = "从MainAct到DownloadManagerAct的增量操作")
+	public static void incFromMain2DownloadManager() {
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/managerview"));
 		managerRly.click();
-		WaitUtil.forceWait(2);
+		WaitUtil.forceWait(3);
 	}
 
 	/**
@@ -145,10 +175,21 @@ public class PageRedirect {
 	 */
 	public static void redirect2SettingActivity() {
 		redirect2DownloadManagerActivity();
+		incFromDownloadManager2Setting();// 等待1S
+	}
+
+	@Tips(description = "从DownloadManager到SettingAct的增量操作")
+	public static void incFromDownloadManager2Setting() {
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement settingRly = driver.findElement(By.id("com.cmic.mmnes:id/setting_iv"));
 		settingRly.click();
 		WaitUtil.forceWait(2);
+	}
+
+	@Tips(description = "从MainAct到SettingAct的增量操作")
+	public static void incFromMain2Setting() {
+		incFromMain2DownloadManager();
+		incFromDownloadManager2Setting();// 等待1S
 	}
 
 	public static void rediret2ShareActivity() {
@@ -164,6 +205,11 @@ public class PageRedirect {
 
 	public static void redirect2SearchActivity() {
 		redirect2MainActivity();
+		incFromMain2Search();// 等待1S
+	}
+
+	@Tips(description = "从MainAct到SearchAct的增量操作")
+	public static void incFromMain2Search() {
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement searchLayout = driver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
 		searchLayout.click();

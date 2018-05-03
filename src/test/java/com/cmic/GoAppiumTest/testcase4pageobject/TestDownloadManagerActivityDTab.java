@@ -9,6 +9,8 @@ import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.DownloadManagerDownloadPage;
 import com.cmic.GoAppiumTest.page.action.DownloadManagerDownloadAction;
 import com.cmic.GoAppiumTest.page.action.DownloadManagerUpdateAction;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage;
+import com.cmic.GoAppiumTest.page.middlepage.DownloadDialogPage.DownloadDialogAction;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
@@ -65,8 +67,10 @@ public class TestDownloadManagerActivityDTab extends BaseTest {
 			WaitUtil.forceWait(0.5);
 		} else {// 移动网络状态//DATA//CANTUSE
 			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
-			downloadTabPage.randomGo2StartDownload();
-			downloadTabPage.forceWait(1);
+			// 获取页面的Page实例
+			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
+			DownloadDialogAction downloadDialogAction = (DownloadDialogAction) downloadDialogPage.action;
+			downloadDialogAction.go2ClickAndWait(downloadDialogPage.downLoadGoOn, 1);
 			// 再点击暂停
 			downloadTabPage.randomGo2PauseDownload();// 马上点击停止，防止进入安装界面
 		}

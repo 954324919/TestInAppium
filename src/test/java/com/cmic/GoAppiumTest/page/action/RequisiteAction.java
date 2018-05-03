@@ -3,6 +3,7 @@ package com.cmic.GoAppiumTest.page.action;
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 public class RequisiteAction extends BaseAction {
@@ -14,7 +15,9 @@ public class RequisiteAction extends BaseAction {
 
 	@Override
 	public void go2SelfPage() {
-		PageRedirect.redirect2RequestiteActivity();
-		WaitUtil.forceWait(1);		
+		if (!ContextUtil.getCurrentPageActivtiy().equals("RequisiteActivity")) {
+			PageRedirect.redirect2RequestiteActivity();
+			WaitUtil.forceWait(1);
+		}
 	}
 }

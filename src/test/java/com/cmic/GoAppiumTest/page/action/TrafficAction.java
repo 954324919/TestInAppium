@@ -2,6 +2,7 @@ package com.cmic.GoAppiumTest.page.action;
 
 import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
+import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 public class TrafficAction extends BaseAction {
@@ -12,7 +13,12 @@ public class TrafficAction extends BaseAction {
 
 	@Override
 	public void go2SelfPage() {
-		PageRedirect.redirect2TrafficManagerActivity();
-		WaitUtil.forceWait(2);
+		if (ContextUtil.getCurrentPageActivtiy().equals("TrafficDetailActivity")) {
+			return;
+		} else if (ContextUtil.getCurrentPageActivtiy().equals("MainActivity")) {
+			PageRedirect.incFromMain2Traffic();
+		} else {
+			PageRedirect.redirect2TrafficManagerActivity();
+		}
 	}
 }

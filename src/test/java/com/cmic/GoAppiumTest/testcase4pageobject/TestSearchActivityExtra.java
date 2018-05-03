@@ -129,7 +129,7 @@ public class TestSearchActivityExtra extends BaseTest {
 		searchPage.snapScreen("搜索历史生成");
 	}
 
-	@Test(dependsOnMethods = { "checkClick2SearchResultByEasyItem" })
+	@Test(dependsOnMethods = { "checkSearchHistory" })
 	public void checkEnterDetailFromHistory() throws InterruptedException {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodNameInLog4J();

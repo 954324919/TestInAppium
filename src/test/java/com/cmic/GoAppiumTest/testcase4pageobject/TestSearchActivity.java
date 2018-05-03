@@ -13,6 +13,7 @@ import com.cmic.GoAppiumTest.page.middlepage.MainTempPage;
 import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.LogUtil;
+
 @Listeners(ExtentReportListener.class)
 public class TestSearchActivity extends BaseTest {
 
@@ -68,11 +69,7 @@ public class TestSearchActivity extends BaseTest {
 			riskPoint = "耦合度过高，与下列clickTheClearSearchRly风险点太高")
 	public void randomCheckOne() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
-		Random random = new Random();
-		// TODO 模拟一个数字
-		int tempCount = 0;
-		int randomIndex = 0;
-		if ((tempCount = mSearchPage.getCountOfTargetHotWord()) <= 3) {// 如果显示没有热词则抛出错误
+		if (mSearchPage.getCountOfTargetHotWord() <= 3) {// 如果显示没有热词则抛出错误
 			LogUtil.e("页面显示不全");
 			throw new RuntimeException("randomCheckOne页面显示不全");
 		}

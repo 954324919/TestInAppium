@@ -39,6 +39,9 @@ public class TestSplashActvity extends BaseTest {
 		// 确认为SplashActivity
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
 		// TODO 先试探错误的情况
+		if (!getCurrentPageName().equals("SplashActivity")) {
+			mSpalashPage.action.go2SelfPage();
+		}
 		Assert.assertEquals(getCurrentPageName(), "SplashActivity");
 	}
 
