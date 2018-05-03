@@ -7,6 +7,7 @@ import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.DownloadManagerDownloadPage;
+import com.cmic.GoAppiumTest.page.action.DownloadManagerDownloadAction;
 import com.cmic.GoAppiumTest.page.action.DownloadManagerUpdateAction;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -19,12 +20,12 @@ import io.appium.java_client.android.Connection;
 public class TestDownloadManagerActivityDTab extends BaseTest {
 
 	private DownloadManagerDownloadPage downloadTabPage;
-	private DownloadManagerUpdateAction downloadTabAction;
+	private DownloadManagerDownloadAction downloadTabAction;
 
 	@Override
 	public void setUpBeforeClass() {
 		downloadTabPage = new DownloadManagerDownloadPage();
-		downloadTabAction = (DownloadManagerUpdateAction) downloadTabPage.action;
+		downloadTabAction = (DownloadManagerDownloadAction) downloadTabPage.action;
 		downloadTabAction.go2SelfPage();
 	}
 
@@ -34,7 +35,7 @@ public class TestDownloadManagerActivityDTab extends BaseTest {
 	}
 
 	@Test
-	public void initCheck() {
+	public void initCheck() {// TODO 验证比较弱
 		assertEquals(getCurrentPageName(), "ManagerCenterActivity");
 		downloadTabPage.snapScreen("进入必备应用管理中心界面的下载Tab");
 		if (downloadTabPage.targetPageItemList.size() <= 0) {
@@ -46,7 +47,6 @@ public class TestDownloadManagerActivityDTab extends BaseTest {
 	@Tips(description = "切换到下载页面", riskPoint = "存在不稳定的因素")
 	public void checkDownloadPauseAndResumeAll() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
-		downloadTabAction.go2SwipeFullScreen(Direction.RIGHT, 80);
 		downloadTabAction.go2ClickAndWait(downloadTabPage.btnAllOperate, 1);
 	}
 
@@ -70,7 +70,7 @@ public class TestDownloadManagerActivityDTab extends BaseTest {
 			// 再点击暂停
 			downloadTabPage.randomGo2PauseDownload();// 马上点击停止，防止进入安装界面
 		}
-		assertEquals(downloadTabPage.getRandomTargetText().contains("继续"), true);
+		assertEquals(downloadTabPage.getRandomTargetText(), "继续");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

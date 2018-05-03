@@ -13,6 +13,8 @@ import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.DownloadManagerUpdatePage;
 import com.cmic.GoAppiumTest.page.action.DownloadManagerUpdateAction;
+import com.cmic.GoAppiumTest.page.middlepage.UpdateAllTipDialogPage;
+import com.cmic.GoAppiumTest.page.middlepage.UpdateAllTipDialogPage.UpdateAllTipDialogAction;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
@@ -123,7 +125,7 @@ public class TestDownloadManagerActivityUTab extends BaseTest {
 			// 再点击暂停
 			updateTabPage.randomGo2PauseDownload();// 马上点击停止，防止进入安装界面
 		}
-		assertEquals(updateTabPage.getRandomTargetText().contains("继续"), true);
+		assertEquals(updateTabPage.getRandomTargetText(), "继续");
 	}
 
 	// TODO 过于耗费流量暂时关闭
@@ -132,11 +134,14 @@ public class TestDownloadManagerActivityUTab extends BaseTest {
 	public void checkUpdateAll() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
 		updateTabAction.go2ClickAndWait(updateTabPage.btnAllUpdate, 2);
+		// 出现UpdateTipDialog
+		UpdateAllTipDialogPage upAllTipDialogPage = new UpdateAllTipDialogPage();
+		UpdateAllTipDialogAction upAllTipDialogAction = (UpdateAllTipDialogAction) upAllTipDialogPage.action;
 		// 先点击取消检验效果
-		updateTabAction.go2ClickAndWait(updateTabPage.btnCancelUpdate, 2);
+		upAllTipDialogAction.go2ClickAndWait(upAllTipDialogPage.btnCancelUpdate, 2);
 		updateTabPage.snapScreen("下载管理取消全部下载");// TODO 可改用其他方式验证
 		// 进入确认
 		updateTabAction.go2ClickAndWait(updateTabPage.btnAllUpdate, 2);
-		updateTabAction.go2ClickAndWait(updateTabPage.btnAcceptUpdate, 2);
+		upAllTipDialogAction.go2ClickAndWait(upAllTipDialogPage.btnAcceptUpdate, 2);
 	}
 }

@@ -84,7 +84,7 @@ public class DownloadManagerDownloadPage extends BasePage {
 		}
 	}
 
-	@Tips(description = "下载管理页面下载Tab的某个Item暂停下载")
+	@Tips(description = "下载管理页面下载Tab的某个Item暂停下载", riskPoint = "该测试用例耦合度高，从更新[全部更新的测试用例]进入，导致不是待下载的初始状态")
 	public void randomGo2StartDownload() {
 		int tempIndex = RandomUtil.getRandomNum(targetDownItemList.size() - 1);
 		int targetElementIndex = Math.min(tempIndex, 5);// 防止点击到超出显示页面Item
@@ -97,7 +97,7 @@ public class DownloadManagerDownloadPage extends BasePage {
 			LogUtil.e("已经是打开的状态");
 			return;
 		}
-		assertEquals(btnTextTip, "下载");
+		assertEquals(btnTextTip, "继续");// 从更新[全部更新的测试用例]进入，导致不是待下载的初始状态
 		// 开始下载
 		action.go2ClickAndWait(targetElement, 1);
 	}

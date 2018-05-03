@@ -36,12 +36,6 @@ public class DownloadManagerUpdatePage extends BasePage {
 	@AndroidFindBy(id = "com.cmic.mmnes:id/mm_down_goon")
 	public AndroidElement btnDownloadGoOn; // 土豪继续下载
 
-	@AndroidFindBy(id = "com.cmic.mmnes:id/mm_dialog_cancel")
-	public AndroidElement btnCancelUpdate;// 取消更新
-
-	@AndroidFindBy(id = "com.cmic.mmnes:id/mm_dialog_ok")
-	public AndroidElement btnAcceptUpdate;// 确定更新
-
 	public DownloadManagerUpdatePage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new DownloadManagerUpdateAction();
@@ -79,7 +73,7 @@ public class DownloadManagerUpdatePage extends BasePage {
 			LogUtil.e("已经是打开的状态");
 			return;
 		}
-		assertEquals(btnTextTip, "下载");
+		assertEquals(btnTextTip, "更新");
 		// 开始下载
 		action.go2ClickAndWait(targetElement, 1);
 	}
