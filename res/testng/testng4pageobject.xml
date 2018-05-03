@@ -247,4 +247,24 @@
 			</class>
 		</classes>
 	</test>
+	<test name="Test4PythonAnalyze" preserve-order="true" enabled="false">
+		<classes>
+			<class name="com.cmic.GoAppiumTest.script.PerformanceAnalyze4PageObject">
+				<methods>
+					<include name="initCheck" />
+					<include name="passSplashAct" />
+					<include name="passPermissionGrantAct" />
+					<include name="passRequestPageAct" />
+					<include name="passMainAct" />
+					<include name="passTrafficManagerAct" />
+					<include name="passSearchAct" />
+					<include name="passDownloadManagerAct" />
+					<include name="passDetailAct" />
+					<include name="goWebviewPage" />
+					<include name="goDownload" />
+					<include name="extraAnalyze" />
+				</methods>
+			</class>
+		</classes>
+	</test>
 </suite>
