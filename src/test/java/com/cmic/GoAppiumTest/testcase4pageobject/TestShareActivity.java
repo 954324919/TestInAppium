@@ -81,10 +81,12 @@ public class TestShareActivity extends BaseTest {
 		settingPage.go2SharePage();// 进入分享页面
 		sharePage.clickShareMore();
 		// 抓取Toast
-		LogUtil.w("当前页面的所属包名为{}", ContextUtil.getPackageName());
-		assertNotEquals(ContextUtil.getPackageName(), App.PACKAGE_NAME);
+		String messagePackageName = ContextUtil.getPackageName();
+		LogUtil.w("当前页面的所属包名为{}", messagePackageName);
+		assertNotEquals(messagePackageName, App.PACKAGE_NAME);
 		sharePage.snapScreen("短信分享");
-		shareAction.go2Backforward();
+		shareAction.go2Backforward();// 回退一次到到首页
+		shareAction.killApp(messagePackageName);
 		AppUtil.runInBackground4AWhile();
 	}
 }

@@ -95,17 +95,19 @@ public class TestWebviewADActivity extends BaseTest {
 				gamePage.action.go2Backforward();
 			}
 		}
-		gamePage.clickGameAdBannner();
+		gamePage.clickGameAdBannner();// 点击显示
 		gamePage.snapScreen("主页游戏Tab集团广告显示");
 		// 可能进入LoginActivity页面
 		String curAct = getCurrentPageName();
 		boolean isTargetAct = curAct.equals("LoginActivity") || curAct.equals("FavorActivity")
 				|| curAct.equals("DetailActivity");
+		LogUtil.w("当前页面为{}", curAct);
 		assertEquals(isTargetAct, true);
 		if (curAct.equals("LoginActivity")) {// 登陆页要退两次
 			gamePage.action.go2Backforward();
+			gamePage.forceWait(0.5);
 		}
-		gamePage.action.go2Backforward();
+		go2Backforward();
 		assertEquals(getCurrentPageName(), "MainActivity");
 	}
 }

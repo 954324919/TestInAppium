@@ -45,6 +45,10 @@ public abstract class BaseAction {
 		}
 		e.click();
 	}
+	
+	public void killApp(String packageName) {
+		AppUtil.killApp(packageName);
+	}
 
 	public void go2TapByPoint(int x, int y) {
 		ScreenUtil.singleTap(x, y);

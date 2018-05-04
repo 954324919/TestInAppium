@@ -58,7 +58,7 @@
 	</test>
 
 	<!-- 此部分测试应用的常规功能 -->
-	<test name="Test4Regular" preserve-order="true" enabled="false">
+	<test name="Test4Regular" preserve-order="true">
 		<classes>
 			<!-- 必备应用的首页软件Tab -->
 			<class
@@ -178,9 +178,9 @@
 				<methods>
 					<include name="initCheck" />
 					<include name="checkDownloadPauseAndResumeAll" />
-					<include name="checkDownloadPauseAndResumeOne" />
 					<include name="checkDeleteDownloadTask" />
 					<include name="checkDeleteTaskAndKeepTheFile" />
+					<include name="checkDownloadPauseAndResumeOne" />
 				</methods>
 			</class>
 			<!-- 必备应用的设置管理测试 -->

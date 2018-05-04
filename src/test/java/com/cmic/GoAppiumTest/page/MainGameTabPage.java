@@ -39,7 +39,7 @@ public class MainGameTabPage extends BasePage {
 		}
 		AndroidElement bottomBanner = pageGameItemList.get(pageGameItemList.size() - 1);
 		action.go2Click(bottomBanner);
-		WaitUtil.forceWait(3);
+		WaitUtil.forceWait(5);
 	}
 
 	@Tips(description = "获取ViewPage的数目")

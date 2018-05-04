@@ -24,6 +24,8 @@ import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 import com.cmic.GoAppiumTest.util.WaitUtil;
+
+import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.android.Connection;
 
 /**
@@ -171,12 +173,13 @@ public class TestDetailActivity extends BaseTest {
 		Connection temp = detailAction.go2GetNetWorkStatus();
 		LogUtil.w("当前网络状态为{}", temp.name());
 		boolean isDataStatu = (temp == Connection.DATA);// 移动数据网络状态
-		detailPage.go2RandomStartDownloadOtherInstall();
 		if (!isDataStatu) {// 不是移动网络状态//WIFI
-			detailPage.go2RandomPauseDownloadOtherInstall();// 马上点击停止，防止进入安装界面
-			WaitUtil.forceWait(0.5);
+			AndroidElement tempE = detailPage.go2RandomStartDownloadOtherInstall();
+			if (tempE != null)
+				detailAction.go2ClickAndWait(tempE, 0.5);// 马上点击停止，防止进入安装界面
 		} else {// 移动网络状态//DATA//CANTUSE
 			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
+			detailPage.go2RandomStartDownloadOtherInstall();
 			// 获取页面的Page实例
 			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
 			DownloadDialogAction downloadDialogAction = (DownloadDialogAction) downloadDialogPage.action;

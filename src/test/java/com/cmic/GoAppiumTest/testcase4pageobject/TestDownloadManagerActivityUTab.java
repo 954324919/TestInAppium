@@ -106,7 +106,7 @@ public class TestDownloadManagerActivityUTab extends BaseTest {
 		updateTabAction.go2Swipe2Bottom();
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "更新一个Itme", riskPoint = "下载速度太快，进入安装页面")
 	public void checkUpdateOne() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
@@ -114,12 +114,13 @@ public class TestDownloadManagerActivityUTab extends BaseTest {
 		Connection temp = updateTabAction.go2GetNetWorkStatus();
 		LogUtil.w("当前网络状态为{}", temp.name());
 		boolean isDataStatu = (temp == Connection.DATA);// 移动数据网络状态
-		updateTabPage.randomGo2StartDownload();
-
 		if (!isDataStatu) {// 不是移动网络状态//WIFI
-			updateTabPage.randomGo2PauseDownload();// 马上点击停止，防止进入安装界面
-			WaitUtil.forceWait(0.5);
+			LogUtil.w("由于处于WIFI网络，开始下载");
+			AndroidElement tempAndroidElement = updateTabPage.randomGo2StartDownload();
+			if (tempAndroidElement != null)
+				updateTabAction.go2ClickAndWait(tempAndroidElement, 0.5);
 		} else {// 移动网络状态//DATA//CANTUSE
+			updateTabPage.randomGo2StartDownload();
 			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
 			// 获取页面的Page实例
 			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
@@ -132,19 +133,31 @@ public class TestDownloadManagerActivityUTab extends BaseTest {
 	}
 
 	// TODO 过于耗费流量暂时关闭
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "checkUpdateOne" })
 	@Tips(description = "点击全部下载,不关闭|马上切换到下载页关闭")
 	public void checkUpdateAll() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
+
+		Connection temp = updateTabAction.go2GetNetWorkStatus();
+		LogUtil.w("当前网络状态为{}", temp.name());
+		boolean isDataStatu = (temp == Connection.DATA);// 移动数据网络状态
 		updateTabAction.go2ClickAndWait(updateTabPage.btnAllUpdate, 2);
-		// 出现UpdateTipDialog
-		UpdateAllTipDialogPage upAllTipDialogPage = new UpdateAllTipDialogPage();
-		UpdateAllTipDialogAction upAllTipDialogAction = (UpdateAllTipDialogAction) upAllTipDialogPage.action;
-		// 先点击取消检验效果
-		upAllTipDialogAction.go2ClickAndWait(upAllTipDialogPage.btnCancelUpdate, 2);
-		updateTabPage.snapScreen("下载管理取消全部下载");// TODO 可改用其他方式验证
-		// 进入确认
-		updateTabAction.go2ClickAndWait(updateTabPage.btnAllUpdate, 2);
-		upAllTipDialogAction.go2ClickAndWait(upAllTipDialogPage.btnAcceptUpdate, 2);
+		if (!isDataStatu) {// 不是移动网络状态//WIFI
+			LogUtil.w("由于处于WIFI网络，开始下载");
+			// 出现UpdateTipDialog
+			UpdateAllTipDialogPage upAllTipDialogPage = new UpdateAllTipDialogPage();
+			UpdateAllTipDialogAction upAllTipDialogAction = (UpdateAllTipDialogAction) upAllTipDialogPage.action;
+			// 先点击取消检验效果
+			upAllTipDialogAction.go2ClickAndWait(upAllTipDialogPage.btnCancelUpdate, 2);
+			updateTabPage.snapScreen("下载管理取消全部下载");// TODO 可改用其他方式验证
+			// 进入确认
+			updateTabAction.go2ClickAndWait(updateTabPage.btnAllUpdate, 2);
+			upAllTipDialogAction.go2ClickAndWait(upAllTipDialogPage.btnAcceptUpdate, 2);
+		} else {// 移动网络状态//DATA//CANTUSE
+			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
+			DownloadDialogAction downloadDialogAction = (DownloadDialogAction) downloadDialogPage.action;
+			downloadDialogAction.go2ClickAndWait(downloadDialogPage.downLoadGoOn, 1);
+		}
+
 	}
 }

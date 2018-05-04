@@ -92,18 +92,19 @@ public class DetailPage extends BasePage {
 	public int targetElementIndex = 0;
 
 	@Tips
-	public void go2RandomStartDownloadOtherInstall() {
+	public AndroidElement go2RandomStartDownloadOtherInstall() {
 		if (hotInstallStartBtn.size() > 0) {
 			targetElementIndex = RandomUtil.getRandomNum(hotInstallStartBtn.size() - 1);
 			LogUtil.w("选中开始下载位置为{}", targetElementIndex);
 			AndroidElement targetElement = hotInstallStartBtn.get(targetElementIndex);
 			if (targetElement.getText().equals("打开")) {
 				LogUtil.e("已经是打开的状态");
-				return;
+				return null;
 			}
 			assertEquals(targetElement.getText(), "下载");
 			// 开始下载
 			targetElement.click();
+			return targetElement;
 		} else {
 			LogUtil.e("没有可下载的搜索结果");
 			throw new RuntimeException("没有可下载的搜索结果");

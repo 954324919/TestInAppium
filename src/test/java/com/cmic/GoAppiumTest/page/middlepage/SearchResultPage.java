@@ -144,18 +144,19 @@ public class SearchResultPage extends BasePage {
 	public int targetElementIndex = 0;
 
 	@Tips(description = "随机点击开始下载")
-	public void randomGo2DownloadStart() {
+	public AndroidElement randomGo2DownloadStart() {
 		if (statusBtnList.size() > 0) {
-			targetElementIndex = RandomUtil.getRandomNum(statusBtnList.size() - 1);
+			targetElementIndex = Math.min(RandomUtil.getRandomNum(statusBtnList.size() - 1), 5);// 防止点击到超出显示页面Item
 			LogUtil.w("选中开始下载位置为{}", targetElementIndex);
 			AndroidElement targetElement = statusBtnList.get(targetElementIndex);
 			if (targetElement.getText().equals("打开")) {
 				LogUtil.e("已经是打开的状态");
-				return;
+				return null;
 			}
 			assertEquals(targetElement.getText(), "下载");
 			// 开始下载
 			targetElement.click();
+			return targetElement;
 		} else {
 			LogUtil.e("没有可下载的搜索结果");
 			throw new RuntimeException("没有可下载的搜索结果");
