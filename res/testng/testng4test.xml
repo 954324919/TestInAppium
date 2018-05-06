@@ -9,7 +9,6 @@
 	<test name="Test4Init" preserve-order="true">
 		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
 		<classes>
-			<!-- 测试工信部弹窗 -->
 			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
 				<methods>
 					<include name="initCheck" />
@@ -17,6 +16,21 @@
 					<include name="checkDenyProcotol" />
 					<include name="checkScrollProcotol" />
 					<include name="checkComfirmProcotol" />
+				</methods>
+			</class>
+			<!-- 测试权限授权 -->
+			<class name="com.cmic.GoAppiumTest.testcase.TestGrantPremissionActivity">
+				<methods>
+					<include name="initCheck" />
+					<include name="chekNotNotify" />
+					<include name="denyAllPremission" />
+					<include name="checkShowPermissionRalation" />
+					<include name="checkGetPermissionDetail" />
+					<include name="checkPermissionRefuse" />
+					<include name="checkPermissionRetry" />
+					<include name="allowAllPremission" />
+					<include name="testBack4SplashNoCancelTip" />
+					<include name="testBack4SplashCancelTip" />
 				</methods>
 			</class>
 		</classes>

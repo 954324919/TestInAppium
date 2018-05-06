@@ -5,30 +5,27 @@ import static org.testng.Assert.assertEquals;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
-import com.cmic.GoAppiumTest.base.DriverManger;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.middlepage.SearchResultPage;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.RandomUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 /**
@@ -36,51 +33,28 @@ import io.appium.java_client.android.AndroidElement;
  * 
  * @author kiwi
  */
-@Listeners(FailSnapshotListener.class)
-public class TestSearchResultActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+@Listeners(ExtentReportListener.class)
+public class TestSearchResultActivity extends BaseTest {
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
+	private SearchResultPage mSearchResultPage;
+
+	@Tips(description = "假设已经入SearchActivity的热词界面")
+	@Override
+	public void setUpBeforeClass() {
+		mSearchResultPage = new SearchResultPage();
+		mSearchResultPage.action.go2SelfPage();
 	}
 
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
+	@Override
+	public void tearDownAfterClass() {
 
-	@BeforeClass
-	@Tips(description = "假设已经入Setting&&未跳转到其他页面")
-	public void beforeClass() throws InterruptedException {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
-		PageRedirect.redirect2SearchActivity();
-		WaitUtil.implicitlyWait(5);
-		AndroidElement searchEt = mDriver.findElement(By.id("com.cmic.mmnes:id/searchText"));
-		searchEt.click();
-		searchEt.clear();
-		searchEt.sendKeys("和飞信");
-		WaitUtil.implicitlyWait(5);
-		mDriver.findElement(By.id("com.cmic.mmnes:id/search_icon_layout")).click();
-		WaitUtil.forceWait(2);
-		System.err.println("测试用例集[" + mTag + "]开始");
-	}
-
-	@AfterClass
-	public void afterClass() throws InterruptedException {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() {// 1
-		// TODO 后期需要确定是否为初次安装还是应用启动
 		// 先确认是否进入该页面
-		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.SearchActivity");
+		LogUtil.e("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
+		assertEquals(getCurrentPageName(), "SearchActivity");
 		boolean isPresent = ElementUtil.isElementPresentSafe(By.id("com.cmic.mmnes:id/search_count_tv"));
 		assertEquals(isPresent, true);
 		ScreenUtil.screenShot("进入必备搜索结果界面");
@@ -145,12 +119,12 @@ public class TestSearchResultActivity {
 		List<AndroidElement> eListItem = mDriver.findElements(By.id("com.cmic.mmnes:id/item_layout"));
 		LogUtil.printCurrentMethodName();
 		if (eListItem.isEmpty()) {
-			System.err.println("列表为空");
+			LogUtil.e("列表为空");
 			return;
 		}
 		eListItem.get(RandomUtil.getRandomNum(eListItem.size() - 1)).click();
 		WaitUtil.forceWait(2);
-		assertEquals(ContextUtil.getCurrentActivity(), ".activity.DetailActivity");
+		assertEquals(getCurrentPageName(), ".activity.DetailActivity");
 		PageRouteUtil.pressBack();
 		WaitUtil.forceWait(2);
 	}
@@ -169,7 +143,7 @@ public class TestSearchResultActivity {
 		AndroidElement targetElement = eListStatusBtn.get(randomInder);
 		// TODO 暂时取巧不够稳定
 		if (targetElement.getText().equals("打开")) {
-			System.err.println("已经是打开的状态");
+			LogUtil.e("已经是打开的状态");
 			return;
 		}
 		assertEquals(targetElement.getText(), "下载");

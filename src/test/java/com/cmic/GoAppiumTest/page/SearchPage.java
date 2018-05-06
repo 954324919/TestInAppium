@@ -1,0 +1,138 @@
+package com.cmic.GoAppiumTest.page;
+
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.support.PageFactory;
+import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BasePage;
+import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.page.action.SearchAction;
+import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
+import com.cmic.GoAppiumTest.util.WaitUtil;
+import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
+
+public class SearchPage extends BasePage {
+
+	@AndroidFindBy(id = "com.cmic.mmnes:id/tv_more")
+	public AndroidElement btnGetMore;// 加载更多的Button|收起
+
+	@AndroidFindBy(className = "android.widget.LinearLayout")
+	public List<AndroidElement> hotwordItemList;// 热词列表
+
+	@AndroidFindBy(id = "com.cmic.mmnes:id/delete_ll")
+	public AndroidElement btnClear;// 清除历史的按钮
+
+	@AndroidFindBy(id = "com.cmic.mmnes:id/searchText")
+	public AndroidElement searchContainer;// 内部热词
+
+	@AndroidFindBy(id = "com.cmic.mmnes:id/search_icon_layout")
+	public AndroidElement btnSubmitSearch;
+
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"搜索历史\")")
+	public AndroidElement tvHistoryLabel; // 历史基类的标签
+
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"热门\").resourceId(\"com.cmic.mmnes:id/tv_hot\")")
+	public AndroidElement tvHotWord;
+
+	public SearchPage() {
+		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
+		action = new SearchAction();
+	}
+
+	public void clickSubmitSearch() {
+		action.go2Click(btnSubmitSearch);
+		forceWait(1);
+	}
+
+	public void clickCleanHistory() {
+		action.go2Click(btnClear);
+		forceWait(1);
+	}
+
+	public void clickLoadMoreSwitch() {
+		action.go2ClickAndWait(btnGetMore, 1);
+	}
+
+	public int getCountOfTargetHotWord() {
+		return hotwordItemList != null ? hotwordItemList.size() : 0;
+	}
+
+	public String getCurrentSearchKeyWord() {
+		return searchContainer.getText();
+	}
+
+	public void go2SearchByKeyWord(String searchKeyWord) {
+		action.go2Click(searchContainer);// 获取焦点
+		forceWait(0.5);
+		action.go2Clear(searchContainer);
+		forceWait(0.5);
+		action.go2SendWord(searchContainer, searchKeyWord);
+		forceWait(0.5);
+		action.go2Click(btnSubmitSearch);
+		WaitUtil.forceWait(2);
+	}
+
+	public void go2SearchByKeyWordInRalation(String searchKeyWord) {
+		action.go2Click(searchContainer);// 获取焦点
+		forceWait(0.5);
+		action.go2Clear(searchContainer);
+		forceWait(0.5);
+		action.go2SendWord(searchContainer, searchKeyWord);
+		forceWait(2);
+	}
+
+	@Tips(description = "通过简单条目到达详情页面1")
+	public void go2DetailInRalationEasyItem() {
+		// 1.进行点击
+		int targetXPx = ScreenUtil.getDeviceWidth() / 2;
+		int targetYPx = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight()
+				+ ScreenUtil.dp2Px(App.RELATION_DIRECTION_ITEM_HEIGHT_DP * 2 + 10);
+		LogUtil.w("在go2DetailInRalationEasyItem实际点击的坐标为：{},{}", targetXPx, targetYPx);
+		ScreenUtil.singleTap(targetXPx, targetYPx);
+		WaitUtil.forceWait(2);
+	}
+
+	@Tips(description = "通过直达链接条目到达详情页")
+	public void go2DetailInRalationDerict() {
+		int targetXPx = ScreenUtil.getDeviceWidth() / 2;
+		int targetYPx = ScreenUtil.getStatusBarHeight() + ScreenUtil.getActionBarHeight()
+				+ ScreenUtil.dp2Px(App.RELATION_DIRECTION_ITEM_HEIGHT_DP) / 2;
+		LogUtil.w("在go2DetailInRalationDerict实际点击的坐标为：{},{}", targetXPx, targetYPx);
+		ScreenUtil.singleTap(targetXPx, targetYPx);
+		WaitUtil.forceWait(2);
+	}
+
+	public void randomClickHotword() {
+		Random random = new Random();
+		// TODO 模拟一个数字
+		int randomIndex = 0;
+		if (hotwordItemList.size() > 3) {
+			randomIndex = random.nextInt(hotwordItemList.size() - 3);
+			AndroidElement hotkeyItem = hotwordItemList.get(randomIndex);
+			String searchBeforePerform = hotkeyItem.getText();
+			if (searchBeforePerform.equals("软件") || searchBeforePerform.equals("游戏")
+					|| searchBeforePerform.equals("热门")) {
+				searchBeforePerform = hotwordItemList.get(randomIndex + 1).getText();
+			}
+			action.go2Click(hotkeyItem);
+			forceWait(1);
+		}
+	}
+
+	public void clickTargetUiSelectorElement(String searchHistoryItem) {
+		if (searchHistoryItem.length() > 5) {// 搜索条目过长导致条目不显示
+			searchHistoryItem = searchHistoryItem.substring(0, searchHistoryItem.length() / 2);
+		}
+		String itemHistoryUiSeletor = "new UiSelector().className(\"android.widget.TextView\").textContains(\""
+				+ searchHistoryItem + "\")";
+		AndroidElement item = driver.findElementByAndroidUIAutomator(itemHistoryUiSeletor);
+		item.click();
+		WaitUtil.forceWait(2);
+	}
+}

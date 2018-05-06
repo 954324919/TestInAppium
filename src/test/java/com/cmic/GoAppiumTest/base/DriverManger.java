@@ -3,17 +3,23 @@ package com.cmic.GoAppiumTest.base;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.FileUtil;
+import com.cmic.GoAppiumTest.util.PropertiesUtil;
+
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-
 public class DriverManger {
 
 	private static AndroidDriver<AndroidElement> driver = null;
 
+	private Properties capaConfig;
+	
 	public static AndroidDriver<AndroidElement> getDriver() {
 		if (driver == null) {
 			new DriverManger();
@@ -21,48 +27,36 @@ public class DriverManger {
 		return driver;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@Tips(riskPoint="必须联网防止Error: getaddrinfo ENOENT")
 	public DriverManger() {
-		// TODO Auto-generated constructor stub
-//		File appDir = new File("F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps");
-		File appDir = new File("D:/EclipseWorkspace/GoAppium/GoAppiumTest/src/test/java/apps");
+		String appDir = FileUtil.filePathTransformRelative("/res/apps");
 		File app = new File(appDir, "mmnes150.apk");
-		// File app = new File(appDir, "ContactManager.apk");
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-		capabilities.setCapability("platformName", "Android");// hock2Appium
-		// Emulator
-		// capabilities.setCapability("deviceName", "192.168.26.101:5555");
-		// capabilities.setCapability("udid", "192.168.26.101:5555");
-		// capabilities.setCapability("platformVersion", "6.0");
-		// XiaoMi4
-		// capabilities.setCapability("udid", "1475993b");
-		// capabilities.setCapability("deviceName", "1475993b");
-		// capabilities.setCapability("platformVersion", "6.0.1");
-		// XiaoMi6
-		// capabilities.setCapability("udid", "b31a1bc0");
-		// capabilities.setCapability("deviceName", "b31a1bc0");
-		// capabilities.setCapability("platformVersion", "7.1.1");
-		// N3
-		capabilities.setCapability("udid", "cf49f213");
-		capabilities.setCapability("deviceName", "cf49f213");
-		capabilities.setCapability("platformVersion", "7.1.2");
+		// 读取设备配置文件
+		capaConfig = PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
+		if (capaConfig == null) {
+			throw new RuntimeException("不存在目标的配置文件");
+		}
+		// 配置区域
+		capabilities.setCapability("platformName", capaConfig.getProperty("PLATFORM_TYPE"));// hock2Appium
+		capabilities.setCapability("udid", capaConfig.getProperty("UDID"));
+		capabilities.setCapability("deviceName", capaConfig.getProperty("DEVICE_NAME"));
+		capabilities.setCapability("platformVersion", capaConfig.getProperty("PLATFORM_VERSION"));
+		capabilities.setCapability("appPackage", capaConfig.getProperty("APP_PACKAGE_NAME"));
+		capabilities.setCapability("appActivity", capaConfig.getProperty("APP_LAUNCHER_ACTIVITY"));
+		// 键盘配置区域
 		capabilities.setCapability("unicodeKeyboard", true);
 		capabilities.setCapability("resetKeyboard", true);
-		capabilities.setCapability("noSign", true);
 		// 每次测试都重新安装app
+		capabilities.setCapability("noSign", true);
 		capabilities.setCapability("noReset", true);
 		capabilities.setCapability("app", app.getAbsolutePath());
-		// capabilities.setCapability("appPackage",
-		// "com.example.android.contactmanager");
-		// capabilities.setCapability("appActivity", ".ContactManager");
-		capabilities.setCapability("appPackage", "com.cmic.mmnes");
-		capabilities.setCapability("appActivity", "com.cmic.mmnes.activity.SplashActivity");
 		// 调用uiautomator2,获取toast
 		capabilities.setCapability("automationName", "uiautomator2");
 		try {
-			driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+			driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			driver = null;
@@ -73,5 +67,9 @@ public class DriverManger {
 		if (driver != null) {
 			driver.quit();
 		}
+	}
+	
+	public Properties getBaseCapabilities() {
+		return capaConfig;
 	}
 }

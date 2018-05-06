@@ -2,64 +2,36 @@ package com.cmic.GoAppiumTest.testcase;
 
 import static org.testng.Assert.assertEquals;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.cmic.GoAppiumTest.App;
-import com.cmic.GoAppiumTest.base.DriverManger;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
-import com.cmic.GoAppiumTest.helper.PageRedirect;
-import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidElement;
 
 /**
  * 用于测试一些主页（受影响较大的）非固定的功能，
  * 
  * @author kiwi
  */
-@Listeners(FailSnapshotListener.class)
-public class TestMainActivityExtra {
+@Listeners(ExtentReportListener.class)
+public class TestMainActivityExtra extends BaseTest {
 
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
-
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@BeforeClass
-	@Tips(description = "假设已经入MainAct&&未跳转到其他页面")
-	public void beforeClass() {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
+	@Override
+	public void setUpBeforeClass() {
 		// TODO 在没有卸载软件时，可能会报错
 		WaitUtil.implicitlyWait(2);// 等待1S
-		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.out.println("测试用例集[" + mTag + "]结束");
+	@Override
+	public void tearDownAfterClass() {
+		// TODO Auto-generated method stub
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -111,5 +83,4 @@ public class TestMainActivityExtra {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodName();
 	}
-
 }

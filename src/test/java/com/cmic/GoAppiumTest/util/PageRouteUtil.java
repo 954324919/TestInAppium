@@ -2,8 +2,6 @@ package com.cmic.GoAppiumTest.util;
 
 import com.cmic.GoAppiumTest.base.DriverManger;
 
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.android.AndroidKeyCode;
 
 /**
@@ -20,6 +18,7 @@ public class PageRouteUtil {
 	
 	// 访问目标
 	public static void goTargetActivity() {
+		//TODO 需要修复
 		DriverManger.getDriver().startActivity("com.example.android.contactmanager", "ContactManager");
 	}
 

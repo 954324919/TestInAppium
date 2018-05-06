@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 
-import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
@@ -73,7 +72,7 @@ public class AppUtil {
 	 * @param packageName
 	 */
 	public static void clearAppData(String packageName) {
-		System.err.println("清除应用缓存并杀死应用进程");
+		LogUtil.w("清除应用缓存并杀死应用进程");
 		AdbManager.excuteAdbShell("adb shell pm clear " + packageName);
 		WaitUtil.implicitlyWait(2);
 	}
@@ -84,6 +83,11 @@ public class AppUtil {
 
 	public static void killApp(String packageName) {
 		AdbManager.excuteAdbShell("adb shell am force-stop " + packageName);
+	}
+
+	public static boolean isInstallWithoutDriver(String packageName) {
+		String result = AdbManager.excuteAdbShellGetResultGrep("adb shell pm list packages", "com.cmic.mmnes");
+		return !(result.isEmpty());
 	}
 
 	public static void handleInfoSwitch2Native() {

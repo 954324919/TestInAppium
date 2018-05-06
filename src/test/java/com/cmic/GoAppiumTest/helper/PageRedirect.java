@@ -1,10 +1,15 @@
 package com.cmic.GoAppiumTest.helper;
 
+import java.util.List;
+import java.util.Random;
+
 import org.openqa.selenium.By;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.util.AppUtil;
+import com.cmic.GoAppiumTest.util.ContextUtil;
+import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -25,7 +30,7 @@ public class PageRedirect {
 	public static void redirect2SplashActivity() {
 		AppUtil.clearAppData(App.PACKAGE_NAME);// 清除缓存
 		AppUtil.launchApp();
-//		AppUtil.resetApp();
+		// AppUtil.resetApp();
 		WaitUtil.implicitlyWait(1);
 	}
 
@@ -40,6 +45,14 @@ public class PageRedirect {
 		element.click();
 	}
 
+	@Tips(description = "重回到Laucher,防止应用启动第三方软件进入任务栈顶造成紊乱", riskPoint = "可能导致Session丢失")
+	public static void redirect2Laucher() {
+		while (!ContextUtil.getCurrentPageActivtiy().equals("Launcher")) {
+			PageRouteUtil.pressBack();
+			WaitUtil.forceWait(1);
+		}
+	}
+
 	/**
 	 * 重定向到RequestiteActivity
 	 */
@@ -52,6 +65,63 @@ public class PageRedirect {
 			buttonAllow.click();
 			WaitUtil.implicitlyWait(1);// 等待1S
 		}
+	}
+
+	@Tips(description = "到达流量管家页面")
+	public static void redirect2TrafficManagerActivity() {
+		if (ContextUtil.getCurrentActivity().equals(".activity.MainActivity")) {// MainAct
+			WaitUtil.implicitlyWait(2);// 等待1S
+			AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/jump_ll"));
+			managerRly.click();
+		} else {
+			PageRedirect.redirect2MainActivity();
+			incFromMain2Traffic();
+		}
+	}
+
+	@Tips(description = "从MainAct到TrafficAct的增量操作")
+	public static void incFromMain2Traffic() {
+		WaitUtil.implicitlyWait(2);// 等待1S
+		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/jump_ll"));
+		managerRly.click();
+		WaitUtil.forceWait(3);
+	}
+
+	public static void redirect2DetailActivity() {
+		if (!ContextUtil.getCurrentPageActivtiy().equals("MainActivity")) {
+			PageRedirect.redirect2MainActivity();
+		}
+		Random randomIndex = new Random();// 主页显示16个Item
+		int index = 1 + randomIndex.nextInt(14);
+		// 定位点击
+		WaitUtil.implicitlyWait(10);
+		List<AndroidElement> eList = driver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
+		AndroidElement e = eList.get(index);
+		WaitUtil.implicitlyWait(2);
+		e.click();
+	}
+
+	@Tips(description = "到达关于页面=")
+	public static void redirect2AboutActivity() {
+		if (ContextUtil.getCurrentPageActivtiy().equals("AboutActivity")) {
+			return;
+		} else if (ContextUtil.getCurrentPageActivtiy().equals("SettingActivity")) {
+			// 不操作
+		} else {
+			redirect2SettingActivity();
+		}
+		WaitUtil.implicitlyWait(2);// 等待1S
+		AndroidElement aboutLly = driver.findElement(By.id("com.cmic.mmnes:id/ll_about"));
+		aboutLly.click();
+		WaitUtil.forceWait(3);
+	}
+
+	@Tips(description = "从MainAct到AboutAct的增量操作")
+	public static void incFromMain2About() {
+	}
+
+	@Tips(description = "从MainAct到DownloadManagerAct的增量操作")
+	public static void incFromSetting2About() {
 	}
 
 	/**
@@ -70,11 +140,31 @@ public class PageRedirect {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void redirect2DownloadManagerActivity() throws InterruptedException {
+	public static void redirect2DownloadManagerActivity() {
 		redirect2MainActivity();
+		incFromMain2DownloadManager();
+	}
+
+	@Tips(description = "从MainAct到DownloadManagerAct的增量操作")
+	public static void incFromMain2DownloadManager() {
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement managerRly = driver.findElement(By.id("com.cmic.mmnes:id/managerview"));
 		managerRly.click();
+		WaitUtil.forceWait(3);
+	}
+
+	/**
+	 * 定位到权限管理的Ralation页面
+	 */
+	public static void redirect2PermissionRalation() {
+		redirect2RequestPermissionActivity();
+		WaitUtil.implicitlyWait(5);
+		AndroidElement buttonAllow = driver
+				.findElement(By.id("com.android.packageinstaller:id/permission_deny_button"));
+		for (int i = 0; i < 4; i++) {
+			buttonAllow.click();
+			WaitUtil.forceWait(1);
+		}
 		WaitUtil.forceWait(2);
 	}
 
@@ -83,16 +173,43 @@ public class PageRedirect {
 	 * 
 	 * @throws InterruptedException
 	 */
-	public static void redirect2SettingActivity() throws InterruptedException {
+	public static void redirect2SettingActivity() {
 		redirect2DownloadManagerActivity();
+		incFromDownloadManager2Setting();// 等待1S
+	}
+
+	@Tips(description = "从DownloadManager到SettingAct的增量操作")
+	public static void incFromDownloadManager2Setting() {
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement settingRly = driver.findElement(By.id("com.cmic.mmnes:id/setting_iv"));
 		settingRly.click();
 		WaitUtil.forceWait(2);
 	}
 
-	public static void redirect2SearchActivity() throws InterruptedException {
+	@Tips(description = "从MainAct到SettingAct的增量操作")
+	public static void incFromMain2Setting() {
+		incFromMain2DownloadManager();
+		incFromDownloadManager2Setting();// 等待1S
+	}
+
+	public static void rediret2ShareActivity() {
+		if (!ContextUtil.getCurrentPageActivtiy().equals("SettingActivity")) {
+			redirect2SettingActivity();
+		}
+		WaitUtil.implicitlyWait(2);
+		AndroidElement shareLly = driver.findElement(By.id("com.cmic.mmnes:id/rl_share"));
+		shareLly.click();
+		WaitUtil.forceWait(3);
+
+	}
+
+	public static void redirect2SearchActivity() {
 		redirect2MainActivity();
+		incFromMain2Search();// 等待1S
+	}
+
+	@Tips(description = "从MainAct到SearchAct的增量操作")
+	public static void incFromMain2Search() {
 		WaitUtil.implicitlyWait(5);// 等待1S
 		AndroidElement searchLayout = driver.findElement(By.id("com.cmic.mmnes:id/search_layout"));
 		searchLayout.click();

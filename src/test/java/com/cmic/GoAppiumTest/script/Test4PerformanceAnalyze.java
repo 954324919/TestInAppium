@@ -16,30 +16,40 @@ import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
-import com.cmic.GoAppiumTest.testcase.RandomUtil;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.RandomUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 //TODO 由于当前的局限性，对这个测试用例暂且预估一个合理时间，确认进行Top指令的次数
 @Listeners(FailSnapshotListener.class)
-public class Test4PerformanceAnalyze {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+public class Test4PerformanceAnalyze extends BaseTest {
+
+	@Override
+	public void setUpBeforeClass() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void tearDownAfterClass() {
+		// TODO Auto-generated method stub
+
+	}
 
 	@BeforeMethod
 	public void tipBeforeTestCase() {
@@ -53,16 +63,17 @@ public class Test4PerformanceAnalyze {
 
 	@BeforeClass
 	@Tips(description = "从进入权限管理开始")
-	public void beforeClass() throws InterruptedException {
+	public void beforeClass() {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
 		PageRedirect.redirect2SplashActivity();
+		System.err.println("性能测试集[" + mTag + "]开始");
 	}
 
+	@Tips(description = "")
 	@AfterClass
-	public void afterClass() throws InterruptedException {// 执行一些初始化操作
+	public void afterClass() {// 执行一些初始化操作
 		System.err.println("性能测试集[" + mTag + "]结束");
-		AppUtil.unInstall(App.PACKAGE_NAME);
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -83,8 +94,9 @@ public class Test4PerformanceAnalyze {
 	@Tips(description = "启动Python测试脚本")
 	void initPythonScript() {// 2
 		// TODO 当前暂且用PY脚本，后期可改为Java
-		String result = AdbManager.excuteAdbShellGetResult(
-				"python D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\py\\get_cpu_mem_info.py");
+		String scriptPath = FileUtil.filePathTransformRelative(
+				"\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\py\\get_cpu_mem_info.py");
+		String result = AdbManager.excuteAdbShellGetResult("python " + scriptPath);
 		System.err.println(result);
 	}
 
@@ -324,20 +336,25 @@ public class Test4PerformanceAnalyze {
 		PageRedirect.redirect2MainActivity();
 	}
 
+	@Tips(description = "引入仅为了测试，无意义")
+	@Test(enabled = false)
+	public void launchAnalyzeScript() {
+		String scriptPath = FileUtil.filePathTransformRelative(
+				"\\src\\test\\java\\com\\cmic\\GoAppiumTest\\script\\py\\get_cpu_mem_info.py");
+		String result = AdbManager.excuteAdbShellGetResult("python " + scriptPath);
+		System.err.println(result);
+	}
+
 	private void goToDetailAct() {
 		Random randomIndex = new Random();// 主页显示16个Item
-		int index = 1 + randomIndex.nextInt(10);// 保证稳定性
+		int index = 1 + randomIndex.nextInt(4);// 保证稳定性
 		// 定位点击
 		WaitUtil.implicitlyWait(10);
 		List<AndroidElement> eList = mDriver.findElements(By.id("com.cmic.mmnes:id/index_item_rl"));
 		AndroidElement e = eList.get(index);
 		WaitUtil.implicitlyWait(2);
 		e.click();
-		try {
-			WaitUtil.forceWait(2);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		WaitUtil.forceWait(2);
 	}
 
 	private void goToDeatilByOtherInstall() {

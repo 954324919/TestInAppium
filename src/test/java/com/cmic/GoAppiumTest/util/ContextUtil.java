@@ -22,8 +22,8 @@ public class ContextUtil {
 		return DriverManger.getDriver().currentActivity();
 	}
 
-	//获取应用包名
-	@Tips(riskPoint="实际上是一种取巧的方式，不一定稳定")
+	// 获取应用包名
+	@Tips(riskPoint = "实际上是一种取巧的方式，不一定稳定")
 	public static String getPackageName() {
 		String execResult = AdbManager.excuteAdbShellGetResultGrep("adb shell dumpsys activity", "mFocusedActivity");
 		String[] spiltResult = execResult.split(" ");
@@ -68,5 +68,11 @@ public class ContextUtil {
 	// 卸载应用
 	public static void unInstallApk(String packageName) {
 		AdbManager.excuteAdbShell("adb uninstall " + packageName);
+	}
+
+	@Tips(description = "获取当前应用的Activity名称", riskPoint = "由于取最简的表达方式，有Activity重名的可能性")
+	public static String getCurrentPageActivtiy() {
+		String str = DriverManger.getDriver().currentActivity();
+		return str.substring(str.lastIndexOf(".") + 1);
 	}
 }

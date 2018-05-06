@@ -8,12 +8,20 @@ import com.cmic.GoAppiumTest.base.DriverManger;
 
 public class WaitUtil {
 
-	public static void forceWait(int secondWait) throws InterruptedException {
-		Thread.sleep(secondWait * 1000);
+	public static void forceWait(int secondWait) {
+		try {
+			Thread.sleep(secondWait * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static void forceWait(double secondWait) throws InterruptedException {
-		Thread.sleep((long) (secondWait * 1000));
+	public static void forceWait(double secondWait) {
+		try {
+			Thread.sleep((long) (secondWait * 1000));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void implicitlyWait(int secondWait) {

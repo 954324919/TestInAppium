@@ -4,17 +4,11 @@ import static org.testng.Assert.assertEquals;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.cmic.GoAppiumTest.App;
-import com.cmic.GoAppiumTest.base.AdbManager;
-import com.cmic.GoAppiumTest.base.DriverManger;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
@@ -23,12 +17,9 @@ import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.NetworkUtil;
-import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 /**
@@ -37,43 +28,29 @@ import io.appium.java_client.android.AndroidElement;
  *     考虑拆分所有耦合为单独的一个Test,Eg：DenyPermission以及之后的操作
  * @author ikiwi
  */
-@Listeners(FailSnapshotListener.class)
-public class TestGrantPremissionActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+@Listeners(ExtentReportListener.class)
+public class TestGrantPremissionActivity extends BaseTest {
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@BeforeClass
-	public void beforeClass() {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
+	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "从Splash页面，准备跳转")
+	@Override
+	public void setUpBeforeClass() {
 		if (ContextUtil.getCurrentActivity().equals(".permission.ui.GrantPermissionsActivity")) {
 
 		} else if (ElementUtil.isElementPresent(By.id("com.cmic.mmnes:id/tv_ok"))) {
 			WaitUtil.implicitlyWait(5);
 			mDriver.findElement(By.id("com.cmic.mmnes:id/tv_ok")).click();
 		}
-		System.out.println("测试用例集[" + mTag + "]开始");
 	}
 
-	@AfterClass
-	public void afterClass() {// 执行一些初始化操作
-		System.out.println("测试用例集[" + mTag + "]结束");
+	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
+	@Override
+	public void tearDownAfterClass() {
+
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
 	public void initCheck() throws InterruptedException {// 1
+		WaitUtil.forceWait(2);
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(".permission.ui.GrantPermissionsActivity", ContextUtil.getCurrentActivity());
 		assertEquals(true, DeviceUtil.moreThanTargetSdkVersion("6.0.0"));//
@@ -219,5 +196,11 @@ public class TestGrantPremissionActivity {
 		WaitUtil.implicitlyWait(2);
 		Assert.assertEquals(ContextUtil.getCurrentActivity(), ".activity.SplashActivity");
 		WaitUtil.implicitlyWait(1);
+	}
+
+	@Test
+	@Tips(description = "仅为了测试无意义BaseTest是否有效")
+	public void test4Test() {
+		LogUtil.printCurrentMethodName();
 	}
 }

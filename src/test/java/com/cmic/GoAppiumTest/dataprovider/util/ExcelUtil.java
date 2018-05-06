@@ -17,11 +17,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.FileUtil;
 
 public class ExcelUtil {
 
-	private static final String filePath = "F:/WorkSpace4Mars/GoAppiumTest/src/test/java/apps/dataprovider/search_data.xls";
+	private static final String filePath1 = FileUtil.filePathTransformRelative("/res/dataprovider/search_data.xlsx");
 
 	/**
 	 * 
@@ -93,6 +95,7 @@ public class ExcelUtil {
 
 	/**
 	 * 用于Appium的xml数据驱动形式
+	 * 
 	 * @param filepath
 	 * @param sheetName
 	 * @return
@@ -100,6 +103,75 @@ public class ExcelUtil {
 	 */
 	@Tips(riskPoint = "只适合包含首行标题栏的数据格式")
 	public static Object[][] readExcel(String filepath, String sheetName) throws Exception {
+		filepath = FileUtil.filePathTransformRelative(filepath);
+		InputStream is = null;
+		Workbook wb = null;
+		try {
+			is = new FileInputStream(filepath);
+			if (isExcel2003(filepath)) {
+				wb = new HSSFWorkbook(is);
+			} else if (isExcel2007(filepath)) {
+				wb = new XSSFWorkbook(is);
+			} else {
+				throw new Exception("读取的不是excel文件");
+			}
+			Sheet sheet = wb.getSheetAt(wb.getSheetIndex(sheetName));
+			List<String> titles = new ArrayList<String>();// 放置所有的标题
+			int rowSize = sheet.getLastRowNum() + 1;
+			int realSize = 0;
+			for (int j = 0; j < rowSize; j++) {// 遍历行
+				Row row = sheet.getRow(j);
+				if (row == null) {// 略过空行
+					continue;
+				}
+				realSize++;
+			}
+			Object[][] temp = new Object[realSize - 1][];
+			for (int j = 0; j < rowSize; j++) {// 遍历行
+				Row row = sheet.getRow(j);
+				if (row == null) {// 略过空行
+					continue;
+				}
+				int cellSize = row.getLastCellNum();// 行中有多少个单元格，也就是有多少列
+				if (j == 0) {// 第一行是标题行
+					for (int k = 0; k < cellSize; k++) {
+						Cell cell = row.getCell(k);
+						titles.add(cell.toString());
+					}
+				} else {// 其他行是数据行
+					temp[j - 1] = new Object[cellSize];
+					for (int k = 0; k < titles.size(); k++) {
+						Cell cell = row.getCell(k);
+						if (cell != null) {
+							temp[j - 1][k] = cell.toString();
+						}
+					}
+				}
+			}
+			return temp;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (wb != null) {
+				wb.close();
+			}
+			if (is != null) {
+				is.close();
+			}
+		}
+	}
+
+	/**
+	 * 用于Appium的xml数据驱动形式
+	 * 
+	 * @param filepath
+	 * @param sheetName
+	 * @return
+	 * @throws Exception
+	 */
+	@Tips(riskPoint = "只适合包含首行标题栏的数据格式/自动补齐路径")
+	public static Object[][] readExcelAuto(String filepath, String sheetName) throws Exception {
+		filepath = FileUtil.filePathTransformRelative(filepath);
 		InputStream is = null;
 		Workbook wb = null;
 		try {

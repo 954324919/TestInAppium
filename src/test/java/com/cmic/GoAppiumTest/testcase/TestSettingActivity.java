@@ -6,19 +6,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.base.DriverManger;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -26,30 +23,27 @@ import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-@Listeners(FailSnapshotListener.class)
-public class TestSettingActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
+@Listeners(ExtentReportListener.class)
+public class TestSettingActivity extends BaseTest {
+
+	@Override
+	public void setUpBeforeClass() {
+		PageRedirect.redirect2SettingActivity();
 	}
 
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
+	@Override
+	public void tearDownAfterClass() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@BeforeClass
 	@Tips(description = "假设已经入ManagerAct&&未跳转到其他页面")
-	public void beforeClass() throws Exception {
+	public void beforeClass() {
 		mTag = getClass().getSimpleName();
 		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
 		PageRedirect.redirect2SettingActivity();
 		System.err.println("测试用例集[" + mTag + "]开始");
 	}
@@ -102,11 +96,7 @@ public class TestSettingActivity {
 		WaitUtil.implicitlyWait(2);
 		AndroidElement notifyLly = mDriver.findElement(By.id("com.cmic.mmnes:id/setting_download_notice_layout"));
 		notifyLly.click();
-		try {
-			WaitUtil.forceWait(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		WaitUtil.forceWait(1);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

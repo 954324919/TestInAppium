@@ -1,6 +1,5 @@
 package com.cmic.GoAppiumTest.util;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +27,12 @@ public class LogUtil {
 		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 		StackTraceElement e = stackTrace[2];
 		System.err.println(e.getMethodName());
+	}
+
+	public static void printCurrentMethodNameInLog4J() {
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		StackTraceElement e = stackTrace[2];
+		w("当前调用方法为:{}", e.getMethodName());
 	}
 
 	public static Logger get(Class<?> clazz) {

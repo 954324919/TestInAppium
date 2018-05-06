@@ -4,19 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
-import com.cmic.GoAppiumTest.testcase.RandomUtil;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class ScreenUtil {
@@ -38,8 +34,7 @@ public class ScreenUtil {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("HH時mm分ss秒");
 		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
-		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
-
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
 		// 生成时间戳
 		String timeSuffix = sdf.format(new Date());
 		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
@@ -51,7 +46,7 @@ public class ScreenUtil {
 		File screen = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
 		try {
 			FileUtils.copyFile(screen,
-					new File(screenDir + "/" + (++App.PHONE_COUNT) + "." + msg + "-" + timeSuffix + ".jpg"));
+					new File(screenDir + File.separator + (++App.PHONE_COUNT) + "." + msg + "-" + timeSuffix + ".jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -61,8 +56,10 @@ public class ScreenUtil {
 		// 時間格式
 		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
 		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
-		String screenDir = "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
-		
+		// String screenDir =
+		// "D:/EclipseWorkspace/GoAppium/GoAppiumTest/target/screenshot";
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
+
 		// 生成时间戳
 		String timeSuffix = sdf.format(new Date());
 		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
@@ -83,6 +80,40 @@ public class ScreenUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static String screenShotForceReturnPath(String msg) {
+		// 時間格式
+		SimpleDateFormat sdf = new SimpleDateFormat("HHmmss");
+		// String screenDir = "F:/WorkSpace4Mars/GoAppiumTest/target/screenshot";
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
+
+		// 生成时间戳
+		String timeSuffix = sdf.format(new Date());
+		// 由于可能存在异常图片的且当被删除的可能，所以这边先判断目录是否存在
+		if (!(new File(screenDir).isDirectory())) {
+			// 判断是否存在该目录
+			new File(screenDir).mkdir();
+		}
+		// 调用方法捕捉画面
+		File file = null;
+		try {
+			file = new File(screenDir + File.separator + (++App.PHONE_COUNT) + "-" + msg + "-" + timeSuffix + ".jpg");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		File screen = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(screen, file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (file != null) {
+			return file.getAbsolutePath();
+		} else {
+			return "";
+		}
+
 	}
 
 	public static void lockScreen() {

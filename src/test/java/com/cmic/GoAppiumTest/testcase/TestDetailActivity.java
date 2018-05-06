@@ -7,32 +7,26 @@ import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
-import com.cmic.GoAppiumTest.base.DriverManger;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.base.BaseTest;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Heading;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.testcase.retry.FailRetry;
-import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PageRouteUtil;
+import com.cmic.GoAppiumTest.util.RandomUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil.Direction;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-import com.gargoylesoftware.htmlunit.Page;
 
-import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 /**
@@ -41,30 +35,14 @@ import io.appium.java_client.android.AndroidElement;
  * @author kiwi
  *
  */
-@Listeners(FailSnapshotListener.class)
-public class TestDetailActivity {
-	private String mTag;
-	private AndroidDriver<AndroidElement> mDriver;
+@Listeners(ExtentReportListener.class)
+public class TestDetailActivity extends BaseTest {
 
 	private String mTempItemName;
 
-	@BeforeMethod
-	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		System.out.println("测试用例[" + (++App.CASE_COUNT) + "]开始");
-	}
-
-	@AfterMethod
-	public void tipAfterTestCase() {
-		System.out.println("测试用例[" + (App.CASE_COUNT) + "]结束");
-	}
-
-	@BeforeClass
-	@Tips(description = "从主页进入,模拟一个随机位置", riskPoint = "主页未显示")
-	public void beforeClass() throws InterruptedException {
-		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
-		// TODO 在没有卸载软件时，可能会报错
+	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "假设已经入首页且显示正常，开始准备跳转到详情页")
+	@Override
+	public void setUpBeforeClass() {
 		PageRedirect.redirect2MainActivity();
 		Random randomIndex = new Random();// 主页显示16个Item
 		int index = 1 + randomIndex.nextInt(14);
@@ -75,12 +53,12 @@ public class TestDetailActivity {
 		WaitUtil.implicitlyWait(2);
 		mTempItemName = mDriver.findElements(By.id("com.cmic.mmnes:id/recommend_item_appname_tv")).get(index).getText();
 		e.click();
-		System.err.println("测试用例集[" + mTag + "]开始");
 	}
 
-	@AfterClass
-	public void afterClass() throws InterruptedException {// 执行一些初始化操作
-		System.err.println("测试用例集[" + mTag + "]结束");
+	@Tips(description = "继承自BaseActivity,用于增强@AfterClass")
+	@Override
+	public void tearDownAfterClass() {
+		//
 	}
 
 	@Test(retryAnalyzer = FailRetry.class)
@@ -294,7 +272,7 @@ public class TestDetailActivity {
 		WaitUtil.forceWait(2);
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "测试举报页面", riskPoint = "造成脏数据|遍历深度浅")
 	public void checkPostTipOffReport() throws InterruptedException {
 		WaitUtil.implicitlyWait(App.WAIT_TIME_IMPLICITLY);
