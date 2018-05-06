@@ -117,7 +117,7 @@ public class TestDetailActivity extends BaseTest {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, retryAnalyzer = FailRetry.class)
 	@Tips(description = "检查体验免安装", riskPoint = "可能不存在")
 	public void checkWithoutInstall() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
@@ -126,14 +126,17 @@ public class TestDetailActivity extends BaseTest {
 			assertEquals(getCurrentPageName(), "FavorActivity");
 			go2Backforward();// 无状态页面后退
 		}
+		assertEquals(detailPage.getCurrActivity(), "DetailActivity");
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "检查应用简介", riskPoint = "点击控件可能不在界面之内")
 	public void checkBriefIntroduction() {
 		LogUtil.printCurrentMethodNameInLog4J();
-		if (!getCurrentPageName().equals("DetailActivity"))
+		if (!getCurrentPageName().equals("DetailActivity")) {
 			LogUtil.e("页面异常");//
+			detailAction.go2SelfPage();
+		}
 		detailAction.go2Swipe2Bottom();//
 		String str1 = detailAction.go2GetPageResource();
 		if (detailPage.isElementShown(detailPage.appMarkDetail)) {// TODO
@@ -160,6 +163,7 @@ public class TestDetailActivity extends BaseTest {
 	@Tips(description = "检查其他人正在装")
 	public void checkOtherInstall() throws InterruptedException {
 		LogUtil.printCurrentMethodNameInLog4J();
+		detailAction.go2Swipe2Bottom();
 		detailPage.goRandomClick2DetailInOtherInstall();
 		detailAction.go2Backforward();
 	}
@@ -271,12 +275,13 @@ public class TestDetailActivity extends BaseTest {
 		Connection temp = detailAction.go2GetNetWorkStatus();
 		LogUtil.w("当前网络状态为{}", temp.name());
 		boolean isDataStatu = (temp == Connection.DATA);// 移动数据网络状态
-		detailAction.go2Click(detailPage.btnInstall);
+		detailAction.go2Click(detailPage.btnInstall);// 开始下载
 		if (!isDataStatu) {// 不是移动网络状态//WIFI
 			detailAction.go2ClickAndWait(detailPage.btnInstall, 0.5);// 马上点击停止，防止进入安装界面
 		} else {// 移动网络状态//DATA//CANTUSE
 			LogUtil.w("由于处于移动网络，进入弹窗提示页面");
-			detailAction.go2ClickAndWait(detailPage.btnInstall, 0.5);
+			DownloadDialogPage downloadDialogPage = new DownloadDialogPage();
+			downloadDialogPage.action.go2ClickAndWait(downloadDialogPage.downLoadGoOn, 1);// 点击弹窗开始
 			// 再点击暂停
 			detailAction.go2ClickAndWait(detailPage.btnInstall, 0.5);// 马上点击停止，防止进入安装界面
 		}

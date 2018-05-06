@@ -148,6 +148,7 @@ public class PerformanceAnalyze4PageObject extends BaseTest {
 		mainPage.action.go2SwipeFullScreen(Direction.LEFT, 80);
 		mainPage.action.go2SwipeFullScreen(Direction.RIGHT, 80);
 		mainPage.action.go2Swipe2Bottom();
+		mainPage.action.go2SwipeFullScreen(Direction.LEFT, 80);
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })
@@ -158,9 +159,7 @@ public class PerformanceAnalyze4PageObject extends BaseTest {
 		mTrafficPage.action.go2SelfPage();// 加载比较慢
 		// 操作
 		mTrafficPage.action.go2SwipeFullScreen(Direction.LEFT, 80);
-		mTrafficPage.forceWait(1);
 		mTrafficPage.action.go2SwipeFullScreen(Direction.RIGHT, 80);
-		mTrafficPage.forceWait(1);
 		mTrafficPage.drawDown2Refresh(50);// 下拉50%
 		mTrafficPage.forceWait(1.5);
 		mTrafficPage.action.go2Backforward();
@@ -224,7 +223,6 @@ public class PerformanceAnalyze4PageObject extends BaseTest {
 		detailAction.go2Swipe2Bottom();//
 		// 点击进入三层
 		goToDeatilByOtherInstall(); // 进入第2层
-		goToDeatilByOtherInstall(); // 进入第3层
 		// 不退回主页
 	}
 
@@ -267,7 +265,7 @@ public class PerformanceAnalyze4PageObject extends BaseTest {
 		}
 	}
 
-	@Test(dependsOnMethods = { "initCheck" })
+	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
 	public void extraAnalyze() {
 		new MainTempPage().action.go2SelfPage();
 	}

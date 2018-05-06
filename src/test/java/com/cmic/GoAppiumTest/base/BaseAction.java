@@ -45,7 +45,7 @@ public abstract class BaseAction {
 		}
 		e.click();
 	}
-	
+
 	public void killApp(String packageName) {
 		AppUtil.killApp(packageName);
 	}
@@ -64,8 +64,8 @@ public abstract class BaseAction {
 	public String go2GetText(AndroidElement e) {
 		return e.getText();
 	}
-	
-	public Object[][] readExcel(String filepath, String sheetName) throws Exception{
+
+	public Object[][] readExcel(String filepath, String sheetName) throws Exception {
 		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
 	}
 
@@ -172,6 +172,7 @@ public abstract class BaseAction {
 	@Tips(description = "点击后退键")
 	public void go2Backforward() {
 		PageRouteUtil.pressBack();
+		WaitUtil.forceWait(0.5);
 	}
 
 	@Tips(description = "安装app")

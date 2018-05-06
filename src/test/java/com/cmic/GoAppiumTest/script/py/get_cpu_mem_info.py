@@ -17,7 +17,7 @@ PATH = lambda p: os.path.abspath(p)
 
 #top次数
 # times = 2
-times = 40
+times = 50
 
 #设备当前运行应用的包名
 pkg_name = 'com.cmic.mmnes'

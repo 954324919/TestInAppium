@@ -237,7 +237,7 @@
 		</classes>
 	</test>
 	<!-- 数据驱动的测试用例 -->
-	<test name="Test4DataProvider" preserve-order="true" enabled="false">
+	<test name="Test4DataProvider" preserve-order="true">
 		<classes>
 			<class name="com.cmic.GoAppiumTest.dataprovider.CheckSearch4PageObject">
 				<methods>
@@ -247,7 +247,7 @@
 			</class>
 		</classes>
 	</test>
-	<test name="Test4PythonAnalyze" preserve-order="true" enabled="false">
+	<test name="Test4PythonAnalyze" preserve-order="true">
 		<classes>
 			<class name="com.cmic.GoAppiumTest.script.PerformanceAnalyze4PageObject">
 				<methods>

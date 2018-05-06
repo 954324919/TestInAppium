@@ -3,6 +3,8 @@ package com.cmic.GoAppiumTest.testcase4pageobject;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import java.util.Random;
+
+import org.openqa.selenium.TimeoutException;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.base.BaseTest;
@@ -40,6 +42,10 @@ public class TestSearchActivity extends BaseTest {
 		LogUtil.w("进行{}用例集的初始化检验，失败则跳过该用例集的所有测试", mTag);
 		assertEquals(getCurrentPageName(), "SearchActivity");
 		mSearchPage.snapScreen("进入必备应用搜索界面");
+		if (!mSearchPage.isElementShown(mSearchPage.tvHotWord)) {
+			LogUtil.e("{}显示超时", "进入必备应用搜索界面");
+			throw new TimeoutException("显示超时");
+		}
 	}
 
 	@Test(dependsOnMethods = { "initCheck" })

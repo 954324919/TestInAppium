@@ -36,6 +36,10 @@ public class SearchPage extends BasePage {
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"搜索历史\")")
 	public AndroidElement tvHistoryLabel; // 历史基类的标签
 
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"热门\").resourceId(\"com.cmic.mmnes:id/tv_hot\")")
+	public AndroidElement tvHotWord;
+
 	public SearchPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new SearchAction();
