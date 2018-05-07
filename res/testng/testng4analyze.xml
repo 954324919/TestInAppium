@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite" parallel="false">
+	<!-- 一个测试套束 -->
+	<!-- 一个完整的测试功能 -->
+	<!-- 一个完整的测试类 -->
+	<!-- 一个测试集 -->
+	<!-- 测试用例 -->
+	<!-- 性能分析的测试用例 -->
+	<test name="Test4PythonAnalyze" preserve-order="true" enabled="false">
+		<classes>
+			<class name="com.cmic.GoAppiumTest.script.PerformanceAnalyze4PageObject">
+				<methods>
+					<include name="initCheck" />
+					<include name="passSplashAct" />
+					<include name="passPermissionGrantAct" />
+					<include name="passRequestPageAct" />
+					<include name="passMainAct" />
+					<include name="passTrafficManagerAct" />
+					<include name="passSearchAct" />
+					<include name="passDownloadManagerAct" />
+					<include name="passDetailAct" />
+					<include name="goWebviewPage" />
+					<include name="goDownload" />
+					<include name="extraAnalyze" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+	<!-- 进行一些指标的收集 -->
+	<test name="Test4CollectIndex">
+		<classes>
+			<!-- 统计加载时间 -->
+			<class name="com.cmic.GoAppiumTest.biz.indexcollect.PageLoadIndexCollect">
+				<methods>
+					<include name="initCheck" />
+				</methods>
+			</class>
+			<!-- 统计下载时间 -->
+			<class name="com.cmic.GoAppiumTest.biz.indexcollect.DownloadIndexCollect">
+				<methods>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

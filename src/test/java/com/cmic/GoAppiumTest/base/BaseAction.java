@@ -7,6 +7,7 @@ import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.DeviceUtil;
 import com.cmic.GoAppiumTest.util.ElementUtil;
+import com.cmic.GoAppiumTest.util.EssentialUtil;
 import com.cmic.GoAppiumTest.util.KeyboardUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.NetworkUtil;
@@ -314,5 +315,13 @@ public abstract class BaseAction {
 	public void go2ClickAndWait(AndroidElement e, double waitSecond) {
 		e.click();
 		WaitUtil.forceWait(waitSecond);
+	}
+
+	public double getTimeDiffElementShow(AndroidElement e) {
+		long beforeTime = System.currentTimeMillis();
+		if (e.isDisplayed()) {
+			return EssentialUtil.getTheTimeDiff(beforeTime);
+		}
+		return 0;
 	}
 }

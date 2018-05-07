@@ -65,7 +65,6 @@ public class Test4PerformanceAnalyze extends BaseTest {
 	@Tips(description = "从进入权限管理开始")
 	public void beforeClass() {
 		mTag = getClass().getSimpleName();
-		mDriver = DriverManger.getDriver();
 		PageRedirect.redirect2SplashActivity();
 		System.err.println("性能测试集[" + mTag + "]开始");
 	}

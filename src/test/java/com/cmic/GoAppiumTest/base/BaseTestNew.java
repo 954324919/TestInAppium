@@ -25,7 +25,7 @@ import com.cmic.GoAppiumTest.util.WaitUtil;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
-public abstract class BaseTest {
+public abstract class BaseTestNew {
 	protected String mTag;
 	protected static AndroidDriver<AndroidElement> mDriver;
 
@@ -44,38 +44,38 @@ public abstract class BaseTest {
 	@BeforeClass
 	public void beforeClass() {
 		mTag = getClass().getSimpleName();
-		LogUtil.w("测试用例集[{}]开始", mTag);
 		// 屏幕截图
-		setUpBeforeClass();
-		ScreenUtil.screenShot("进入" + mTag);
+		setUpBeforeClassOrigin();
 	}
 
-	public abstract void setUpBeforeClass();
+	public abstract void setUpBeforeClassOrigin();
 
-	public abstract void tearDownAfterClass();
+	public abstract void tearDownAfterClassOrigin();
+
+	public abstract void setUpBeforeMTestCaseOrigin();
+
+	public abstract void tearDownAfterMTestCaseOrigin();
 
 	@AfterClass
 	public void afterClass() {// 执行一些初始化操作
-		tearDownAfterClass();
-		LogUtil.w("测试用例集[{}]结束", mTag);
+		tearDownAfterClassOrigin();
 	}
 
 	@BeforeMethod
 	public void tipBeforeTestCase() {
-		// 点击同意并使用
-		LogUtil.i("测试用例[{}]开始", ++App.CASE_COUNT);
+		setUpBeforeMTestCaseOrigin();
 	}
 
 	@AfterMethod
 	public void tipAfterTestCase() {
-		LogUtil.i("测试用例[{}]结束", App.CASE_COUNT);
+		tearDownAfterMTestCaseOrigin();
 	}
 
 	@BeforeSuite
 	public void beforeSuit() {
 		// TODO 补充适配
 		String packageName = capaConfig.getProperty("APP_PACKAGE_NAME");
-		//LogUtil.d("Hello SuitBefore{}",packageName);//TODO 0501 在有多个可调式设备时会出现异常，需要Fix
+		// LogUtil.d("Hello SuitBefore{}",packageName);//TODO 0501 在有多个可调式设备时会出现异常，需要Fix
 		if (AppUtil.isInstallWithoutDriver(packageName)) {
 			AppUtil.unInstall(packageName);
 		}
@@ -87,26 +87,5 @@ public abstract class BaseTest {
 	public void afterSuit() {
 		// AppUtil.unInstall(App.PACKAGE_NAME);
 		mDriver.quit();
-	}
-
-	@Tips(description = "获取当前应用的Activity名称")
-	public String getCurrentPageName() {
-		return ContextUtil.getCurrentPageActivtiy();
-	}
-
-	@Tips(description = "获取当前应用的Activity名称")
-	public String getCurrentPackageName() {
-		return ContextUtil.getCurrentPageActivtiy();
-	}
-
-	@Tips(description = "用于非确定的页面返回")
-	public void go2Backforward() {
-		PageRouteUtil.pressBack();
-		WaitUtil.forceWait(1);
-	}
-
-	@Tips(description = "用于某些非确定页面滚动到底部")
-	public void go2Swipe2Bottom() {
-		ScrollUtil.scrollToBase();
 	}
 }
