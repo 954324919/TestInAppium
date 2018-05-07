@@ -83,7 +83,7 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 		LogUtil.printCurrentMethodNameInLog4J();
 		mSplashPage = new SplashPage();
 		mSplashPage.action.go2AppReset();
-		LogUtil.i("启动完成时间为:{}", mSplashPage.action.getTimeDiffElementShow(mSplashPage.btnAccept));
+		LogUtil.i("启动完成时间为:{}", mSplashPage.action.go2GetTimeDiffElementShow(mSplashPage.btnAccept));
 	}
 
 	@Tips(description = "使用PageObject不够准确，还是采用显示等待")
@@ -92,7 +92,7 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 		LogUtil.printCurrentMethodNameInLog4J();
 		mSplashPage = new SplashPage();
 		mSplashPage.action.goLaunchApp();
-		LogUtil.i("启动完成时间为:{}", mSplashPage.action.getTimeDiffElementShow(mSplashPage.btnAccept));
+		LogUtil.i("启动完成时间为:{}", mSplashPage.action.go2GetTimeDiffElementShow(mSplashPage.btnAccept));
 	}
 
 	@Tips(description = "启动到首页")

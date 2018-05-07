@@ -55,7 +55,6 @@ public class NotificationPage extends BasePage {
 	}
 
 	public class NotificationAction extends BaseAction {
-
 		public NotificationAction() {
 			// TODO Auto-generated constructor stub
 		}

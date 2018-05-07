@@ -317,7 +317,7 @@ public abstract class BaseAction {
 		WaitUtil.forceWait(waitSecond);
 	}
 
-	public double getTimeDiffElementShow(AndroidElement e) {
+	public double go2GetTimeDiffElementShow(AndroidElement e) {
 		long beforeTime = System.currentTimeMillis();
 		if (e.isDisplayed()) {
 			return EssentialUtil.getTheTimeDiff(beforeTime);

@@ -24,7 +24,7 @@ public class MainTempPage extends BasePage {
 	private AndroidElement updateNumPoint;// 右上角角标计数
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.LinearLayout\").resourceId(\"com.cmic.mmnes:id/search_layout\").childSelector(new UiSelector().className(\"android.widget.TextView\"))")
-	private AndroidElement rollKeyword;// 滚动热词[outside]
+	public AndroidElement rollKeyword;// 滚动热词[outside]
 
 	public MainTempPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
