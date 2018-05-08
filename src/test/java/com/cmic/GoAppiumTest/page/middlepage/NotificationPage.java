@@ -23,7 +23,11 @@ public class NotificationPage extends BasePage {
 
 	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(xpath = "//android.widget.Switch[@content-desc='WLAN,']")
-	public AndroidElement eWifiSwitch;
+	public AndroidElement eWifiSwitchClose;
+
+	@WithTimeout(time = 5, unit = TimeUnit.SECONDS)
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.Switch\").textContains(\"开启\")")
+	public AndroidElement eWifiSwitchOpen;
 
 	public NotificationPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
@@ -37,7 +41,7 @@ public class NotificationPage extends BasePage {
 			// 不操作
 		} else {
 			action.go2SelfPage();
-			action.go2ClickAndWait(eWifiSwitch, 2);
+			action.go2ClickAndWait(eWifiSwitchClose, 1);
 			action.go2CloseNotification();
 		}
 	}
@@ -47,7 +51,7 @@ public class NotificationPage extends BasePage {
 		Connection beforeStatus = action.go2GetNetWorkStatus();
 		if (beforeStatus == Connection.ALL || beforeStatus == Connection.WIFI) {
 			action.go2SelfPage();
-			action.go2ClickAndWait(eWifiSwitch, 2);
+			action.go2ClickAndWait(eWifiSwitchOpen, 1);
 			action.go2CloseNotification();
 		} else {
 			// 不操作

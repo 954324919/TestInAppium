@@ -73,6 +73,12 @@ public abstract class BaseAction {
 	@Tips(description = "回到当前页面")
 	public abstract void go2SelfPage();
 
+	@Tips(description = "")
+	public void go2SelfPageWithResetApp() {
+		AppUtil.resetApp();
+		// TODO 操作
+	}
+
 	@Tips(description = "双击按钮")
 	public void go2DoubleTap() {
 

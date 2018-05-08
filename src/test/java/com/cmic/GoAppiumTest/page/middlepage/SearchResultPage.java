@@ -42,10 +42,6 @@ public class SearchResultPage extends BasePage {
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\")")
 	public List<AndroidElement> statusBtnList;// 具体到某个Tab中的下载按钮结果
 
-	@WithTimeout(time = 3, unit = TimeUnit.SECONDS)
-	@AndroidFindBy(id = "com.cmic.mmnes:id/mm_down_goon")
-	public AndroidElement downLoadGoOn;// 下载继续按钮
-
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").resourceId(\"com.cmic.mmnes:id/status_btn\").textContains(\"打开\")")
 	public List<AndroidElement> downLoadOpenList;
 
@@ -55,19 +51,23 @@ public class SearchResultPage extends BasePage {
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"建议你 \")")
 	public AndroidElement errorTip;
 
+	@AndroidFindBy(xpath = "//android.support.v7.widget.RecyclerView[@resource-id='com.cmic.mmnes:id/search_rv']/android.widget.RelativeLayout[1]")
+	public AndroidElement firstItem;
+
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.support.v7.widget.RecyclerView\").resourceId(\"com.cmic.mmnes:id/search_rv\").childSelector(new UiSelector().className(\"android.widget.RelativeLayout\")).instance(0).childSelector(new UiSelector().resourceId(\"com.cmic.mmnes:id/slogan2\"))")
+	public AndroidElement tvAppFirstSize;
+
+	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.support.v7.widget.RecyclerView\").resourceId(\"com.cmic.mmnes:id/search_rv\").childSelector(new UiSelector().className(\"android.widget.RelativeLayout\")).instance(0).childSelector(new UiSelector().resourceId(\"com.cmic.mmnes:id/status_btn\"))")
+	public AndroidElement btnAppFirstDownload;
+
 	public SearchResultPage() {
 		PageFactory.initElements(new AppiumFieldDecorator(driver, 30, TimeUnit.SECONDS), this);
 		action = new SearchResultAction();
 	}
 
-	public boolean isDialogShow() {
-		try {
-			downLoadGoOn.isDisplayed();
-			return true;
-		} catch (NoSuchElementException e) {
-			LogUtil.e(e.toString());
-			return false;
-		}
+	public double getAppSize() {
+		String appSizeText = action.go2GetText(tvAppFirstSize);
+		return Double.parseDouble(appSizeText.replaceAll("M", ""));
 	}
 
 	public boolean getErrorTipVisiable() {
@@ -78,24 +78,8 @@ public class SearchResultPage extends BasePage {
 		return isElementIsPresent(searchResultCount);
 	}
 
-	@Tips(description = "Dialog是否显示")
-	public boolean isDownloadGoOnShow() {
-		try {
-			downLoadGoOn.isDisplayed();
-			return true;
-		} catch (NoSuchElementException e) {
-			LogUtil.d(e.toString());
-			return false;
-		}
-	}
-
 	public void click2GameTab() {
 		action.go2Click(searchResultTabGame);
-		forceWait(1);
-	}
-
-	public void click2GoOnDownload() {
-		action.go2Click(downLoadGoOn);
 		forceWait(1);
 	}
 
@@ -127,6 +111,10 @@ public class SearchResultPage extends BasePage {
 
 	public int getTargetTabDownloadBtnCount() {
 		return statusBtnList.size();
+	}
+
+	public String go2GetDownloadSpeedRate() {
+		return null;
 	}
 
 	@Tips(description = "随机点击")
