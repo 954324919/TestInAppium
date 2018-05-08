@@ -51,6 +51,10 @@ public abstract class BaseAction {
 		AppUtil.killApp(packageName);
 	}
 
+	public void go2CloseApp() {
+		AppUtil.closeApp();
+	}
+
 	public void go2TapByPoint(int x, int y) {
 		ScreenUtil.singleTap(x, y);
 	}
@@ -218,6 +222,11 @@ public abstract class BaseAction {
 	public void go2SoftReset() {
 		AppUtil.softResetApp();
 	}
+	
+	@Tips
+	public void go2ResetDirect() {
+		AppUtil.softResetDirect();
+	}
 
 	@Tips(description = "模拟按下安卓手机键")
 	public void go2PressAndroidKey(int androidKeyCode) {
@@ -325,7 +334,9 @@ public abstract class BaseAction {
 
 	public double go2GetTimeDiffElementShow(AndroidElement e) {
 		long beforeTime = System.currentTimeMillis();
-		if (e.isDisplayed()) {
+		if (e == null) {
+			LogUtil.e("空");
+		} else if (e.isDisplayed()) {
 			return EssentialUtil.getTheTimeDiff(beforeTime);
 		}
 		return 0;

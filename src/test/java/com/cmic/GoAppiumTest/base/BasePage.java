@@ -58,6 +58,16 @@ public class BasePage {
 		}
 	}
 
+	@Tips(description = "获取当前应用的Activity名称")
+	public String getCurrentPageName() {
+		return ContextUtil.getCurrentPageActivtiy();
+	}
+
+	@Tips(description = "获取页面数据源")
+	public String getPageResource() {
+		return driver.getPageSource();
+	}
+
 	@Tips(description = "等待直到控件可可视")
 	protected void waitForVisibilityOf(By locator) {
 		WebDriverWait wait = new WebDriverWait(driver, 30);

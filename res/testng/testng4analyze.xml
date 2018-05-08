@@ -31,16 +31,15 @@
 	<test name="Test4CollectIndex">
 		<classes>
 			<!-- 统计加载时间 -->
-			<!-- 统计下载时间 -->
-			<class name="com.cmic.GoAppiumTest.biz.indexcollect.DownloadIndexCollect">
+			<class name="com.cmic.GoAppiumTest.biz.indexcollect.PageLoadIndexCollect">
 				<methods>
-					<include name="download" />
-					<include name="downloadWithoutWifi" />
+					<include name="checkWifiOpen" />
+					<include name="loadMainPage" />
+					<include name="loadTrafficPage" />
 				</methods>
 			</class>
 		</classes>
 	</test>
 </suite>
 
-<!-- <class name="com.cmic.GoAppiumTest.biz.indexcollect.PageLoadIndexCollect"> 
-	<methods> </methods> </class> -->
+<!-- -->

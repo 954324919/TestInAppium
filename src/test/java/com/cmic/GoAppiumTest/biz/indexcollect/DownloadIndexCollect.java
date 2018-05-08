@@ -28,9 +28,10 @@ public class DownloadIndexCollect extends BaseTest4IndexCollect {
 
 	@Override
 	public void setUpBeforeClass() {
+		// TODO
 	}
 
-	@Test
+	@Test(enabled = false)
 	@Tips(description = "下载在Wifi环境", riskPoint = "变量控制")
 	public void download() {
 		LogUtil.printCurrentMethodNameInLog4J();
@@ -62,7 +63,7 @@ public class DownloadIndexCollect extends BaseTest4IndexCollect {
 		}
 	}
 
-	@Test
+	@Test(dependsOnMethods = { "download" }, enabled = false)
 	@Tips(description = "下载在移动数据网路", riskPoint = "变量控制")
 	public void downloadWithoutWifi() {
 		LogUtil.printCurrentMethodNameInLog4J();

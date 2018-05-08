@@ -34,6 +34,18 @@ public class AppUtil {
 		}
 	}
 
+	public static void softResetDirect() {
+		DriverManger.getDriver().pressKeyCode(AndroidKeyCode.HOME);
+		try {
+			WaitUtil.implicitlyWait(5);
+			AndroidElement remoteAppWidget = DriverManger.getDriver()
+					.findElement(By.xpath("//android.widget.TextView[@text='必备应用' and @content-desc='必备应用']"));
+			remoteAppWidget.click();
+		} catch (NoSuchElementException e) {
+			Assert.assertEquals(true, false);
+		}
+	}
+
 	@Tips(description = "后台运行")
 	public static void runInBackground4AWhile() {
 		AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
@@ -48,7 +60,8 @@ public class AppUtil {
 		}
 	}
 
-	// 关闭应用，其实就是按home键把应用置于后台
+	// 关闭应用，其实就是按home键把应用置于后台 <- 这个傻逼害死我了，其实是把应用杀死
+	@Tips(description = "杀死应用", riskPoint = "在PageObject中会导致页面Session丢失,建议采用killApp")
 	public static void closeApp() {
 		DriverManger.getDriver().closeApp();
 	}
