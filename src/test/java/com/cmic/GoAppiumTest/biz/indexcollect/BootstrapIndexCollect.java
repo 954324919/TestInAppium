@@ -1,9 +1,17 @@
 package com.cmic.GoAppiumTest.biz.indexcollect;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.bean.BarChartData;
 import com.cmic.GoAppiumTest.biz.base.BaseTest4IndexCollect;
 import com.cmic.GoAppiumTest.helper.AndroidDriverWait;
 import com.cmic.GoAppiumTest.helper.ExpectedCondition4AndroidDriver;
@@ -12,25 +20,56 @@ import com.cmic.GoAppiumTest.page.SplashPage;
 import com.cmic.GoAppiumTest.page.middlepage.MainTempPage;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.EssentialUtil;
+import com.cmic.GoAppiumTest.util.JFreeCharUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.android.AndroidKeyCode;
 
 @Tips(description = "统计应用启动时间", riskPoint = "使用PageObject较之DriverWait不够准确，不采用")
 public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 
 	private SplashPage mSplashPage;
 
+	private Map<String, HashMap<String, ArrayList<Double>>> indexMap;
+	private HashMap<String, ArrayList<Double>> innerMap;
+
 	@Override
 	public void tearDownAfterClass() {
-		// TODO Auto-generated method stub
+
+		List<BarChartData> chartDatas = new ArrayList<>();
+
+		// 进行图表绘制
+		Iterator<Map.Entry<String, HashMap<String, ArrayList<Double>>>> it = indexMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, HashMap<String, ArrayList<Double>>> entryOutside = it.next();
+			// 内部Map
+			HashMap<String, ArrayList<Double>> innerMap = entryOutside.getValue();
+			Iterator<Map.Entry<String, ArrayList<Double>>> itInner = innerMap.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, ArrayList<Double>> entryInner = itInner.next();
+				double sum = 0;
+				for (Double collectedIndex : entryInner.getValue()) {// 循环
+					sum += collectedIndex;
+				}
+				BarChartData barChartData = new BarChartData(entryInner.getKey(), entryOutside.getKey(),
+						sum / entryInner.getValue().size());
+				chartDatas.add(barChartData);
+			}
+		}
+		new JFreeCharUtil.BarChartBuilder()//
+				.setTitle("几种不同情况下的页面平均加载速度")//
+				.setXAxisName("X轴:测试事件").setYAxisName("Y轴:加载时间/秒")//
+				.setImagePath("E:\\WebWorkSpace\\TestPackage\\target\\测试结果.jpg")//
+				.setDataSource(chartDatas)//
+				.outputImage();
 	}
 
 	@Override
 	public void setUpBeforeClass() {
 		AppUtil.killApp(App.PACKAGE_NAME);
+		// 初始化统计的数据
+		indexMap = new HashMap<>();
 	}
 
 	@Test(timeOut = 15000, invocationCount = 2)
@@ -45,15 +84,17 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 				public Boolean apply(AndroidDriver<AndroidElement> arg0) {
 					AndroidElement e = arg0.findElement(By.id("com.cmic.mmnes:id/tv_ok"));
 					long afterTime = System.currentTimeMillis();
-					if (e != null)
-						LogUtil.i("启动完成时间为:{}", EssentialUtil.getTheTimeDiff(beforeTime, afterTime));
+					if (e != null) {
+						double diffTime = EssentialUtil.getTheTimeDiff(beforeTime, afterTime);
+						LogUtil.i("启动完成时间为:{}", diffTime);
+						addCollectedData("bootstrapInResetApp", diffTime);
+					}
 					return true;// 不关注结果
 				}
 			});
 		} catch (Exception e) {
 			LogUtil.e("元素寻找超时(15秒)");
 		}
-
 	}
 
 	@Test(timeOut = 15000, invocationCount = 2)
@@ -69,8 +110,11 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 				public Boolean apply(AndroidDriver<AndroidElement> arg0) {
 					AndroidElement e = arg0.findElement(By.id("com.cmic.mmnes:id/tv_ok"));
 					long afterTime = System.currentTimeMillis();
-					if (e != null)
-						LogUtil.i("启动完成时间为:{}", EssentialUtil.getTheTimeDiff(beforeTime, afterTime));
+					if (e != null) {
+						double diffTime = EssentialUtil.getTheTimeDiff(beforeTime, afterTime);
+						LogUtil.i("启动完成时间为:{}", diffTime);
+						addCollectedData("bootstrapInLauncherApp", diffTime);
+					}
 					return true;
 				}
 			});
@@ -85,7 +129,9 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 		LogUtil.printCurrentMethodNameInLog4J();
 		mSplashPage = new SplashPage();
 		mSplashPage.action.go2AppReset();
-		LogUtil.i("启动完成时间为:{}", mSplashPage.action.go2GetTimeDiffElementShow(mSplashPage.btnAccept));
+		double diffTime = mSplashPage.action.go2GetTimeDiffElementShow(mSplashPage.btnAccept);
+		LogUtil.i("启动完成时间为:{}", diffTime);
+
 	}
 
 	@Tips(description = "使用PageObject不够准确，还是采用显示等待")
@@ -94,7 +140,8 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 		LogUtil.printCurrentMethodNameInLog4J();
 		mSplashPage = new SplashPage();
 		mSplashPage.action.goLaunchApp();
-		LogUtil.i("启动完成时间为:{}", mSplashPage.action.go2GetTimeDiffElementShow(mSplashPage.btnAccept));
+		double diffTime = mSplashPage.action.go2GetTimeDiffElementShow(mSplashPage.btnAccept);
+		LogUtil.i("启动完成时间为:{}", diffTime);
 	}
 
 	@Tips(description = "启动到首页|迁移到PageLoadingCollect")
@@ -104,7 +151,8 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 		// mSplashPage.action.go2killApp(App.PACKAGE_NAME);
 		mSplashPage.action.go2SoftReset();
 		MainTempPage mainTempPage = new MainTempPage();
-		LogUtil.i("启动完成时间为:{}", mainTempPage.action.go2GetTimeDiffElementShow(mainTempPage.rollKeyword));
+		double diffTime = mainTempPage.action.go2GetTimeDiffElementShow(mainTempPage.rollKeyword);
+		LogUtil.i("启动完成时间为:{}", diffTime);
 	}
 
 	@Tips(description = "启动到首页|迁移到PageLoadingCollect")
@@ -138,5 +186,15 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 	@Test(enabled = false)
 	public void bootstrapInBackground() {
 
+	}
+
+	public void addCollectedData(String category, double value) {
+		if (innerMap.containsKey(category)) {
+			innerMap.get(category).add(value);
+		} else {
+			ArrayList<Double> tempList = new ArrayList<>();
+			tempList.add(value);
+			innerMap.put(category, tempList);
+		}
 	}
 }
