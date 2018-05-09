@@ -30,12 +30,37 @@
 	<!-- 进行一些指标的收集 -->
 	<test name="Test4CollectIndex">
 		<classes>
+			<!-- 统计启动时间 -->
+			<class name="com.cmic.GoAppiumTest.biz.indexcollect.BootstrapIndexCollect">
+				<methods>
+					<include name="bootstrapInResetApp" />
+					<include name="bootstrapInLauncherApp" />
+				</methods>
+			</class>
 			<!-- 统计加载时间 -->
 			<class name="com.cmic.GoAppiumTest.biz.indexcollect.PageLoadIndexCollect">
 				<methods>
 					<include name="checkWifiOpen" />
+					<include name="loadMainFirstInit" />
 					<include name="loadMainPage" />
+					<include name="loadTrafficPageResetApp" />
 					<include name="loadTrafficPage" />
+					<include name="loadSearchPageResetApp" />
+					<include name="loadSearchPage" />
+					<include name="checkWifiClose" />
+					<include name="loadMainFirstInitWithoutWifi" />
+					<include name="loadMainPageWithoutWifi" />
+					<include name="loadTrafficPageWithoutWifiAndResetApp" />
+					<include name="loadTrafficPageWithoutWifi" />
+					<include name="loadSearchPageWithoutWifiAndResetApp" />
+					<include name="loadSearchPageWithoutWifi" />
+				</methods>
+			</class>
+			<!-- 统计下载时间 -->
+			<class name="com.cmic.GoAppiumTest.biz.indexcollect.DownloadIndexCollect">
+				<methods>
+					<include name="download" />
+					<include name="downloadWithoutWifi" />
 				</methods>
 			</class>
 		</classes>

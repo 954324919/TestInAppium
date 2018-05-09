@@ -10,12 +10,14 @@ import com.cmic.GoAppiumTest.util.WaitUtil;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import io.appium.java_client.pagefactory.WithTimeout;
 
 public class TrafficManagerPage extends BasePage {
 
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"按类型查看\")")
 	public AndroidElement tabTrafficType;// 按类型查看
 
+	@WithTimeout(time = 10, unit = TimeUnit.SECONDS)
 	@AndroidFindBy(uiAutomator = "new UiSelector().className(\"android.widget.TextView\").textContains(\"按套餐查看\")")
 	public AndroidElement tabTrafficSuit;// 按套餐查看
 

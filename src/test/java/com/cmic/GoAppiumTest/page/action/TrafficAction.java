@@ -4,7 +4,6 @@ import com.cmic.GoAppiumTest.base.BaseAction;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
 import com.cmic.GoAppiumTest.util.ContextUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.WaitUtil;
 
 public class TrafficAction extends BaseAction {
 
@@ -15,7 +14,6 @@ public class TrafficAction extends BaseAction {
 	@Override
 	public void go2SelfPage() {
 		String curContext = ContextUtil.getCurrentPageActivtiy();
-		LogUtil.e("上下文为{}", curContext);
 		if (curContext.equals("TrafficDetailActivity")) {
 			return;
 		} else if (curContext.equals("MainActivity")) {

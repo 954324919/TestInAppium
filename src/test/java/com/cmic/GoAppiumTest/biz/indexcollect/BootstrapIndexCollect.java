@@ -33,7 +33,7 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 		AppUtil.killApp(App.PACKAGE_NAME);
 	}
 
-	@Test(timeOut = 15000, invocationCount = 3)
+	@Test(timeOut = 15000, invocationCount = 2)
 	public void bootstrapInResetApp() {
 		LogUtil.printCurrentMethodNameInLog4J();
 		AppUtil.resetApp();
@@ -56,7 +56,7 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 
 	}
 
-	@Test(timeOut = 15000, invocationCount = 3)
+	@Test(timeOut = 15000, invocationCount = 2)
 	public void bootstrapInLauncherApp() {
 		LogUtil.printCurrentMethodNameInLog4J();
 		AppUtil.launchApp();
