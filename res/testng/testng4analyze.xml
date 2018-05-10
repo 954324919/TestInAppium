@@ -27,14 +27,20 @@
 			</class>
 		</classes>
 	</test>
-	<!-- 进行一些指标的收集 -->
-	<test name="Test4CollectIndex">
+	<!-- 进行一些数据指标的收集 -->
+	<test name="Test4CollectIndex" preserve-order="true" enabled="false">
 		<classes>
 			<!-- 统计启动时间 -->
 			<class name="com.cmic.GoAppiumTest.biz.indexcollect.BootstrapIndexCollect">
 				<methods>
+					<include name="checkWifiOpen" />
 					<include name="bootstrapInResetApp" />
 					<include name="bootstrapInLauncherApp" />
+					<include name="afterWifiConditinoDataCollect" />
+					<include name="checkWifiClose" />
+					<include name="bootstrapInResetAppWithoutWifi" />
+					<include name="bootsrtapInLauncherAppWithoutWifi" />
+					<include name="afterNoWifiConditinoDataCollect" />
 				</methods>
 			</class>
 			<!-- 统计加载时间 -->
@@ -59,7 +65,9 @@
 			<!-- 统计下载时间 -->
 			<class name="com.cmic.GoAppiumTest.biz.indexcollect.DownloadIndexCollect">
 				<methods>
+					<include name="checkWifiOpen" />
 					<include name="download" />
+					<include name="checkWifiClose" />
 					<include name="downloadWithoutWifi" />
 				</methods>
 			</class>
@@ -67,4 +75,3 @@
 	</test>
 </suite>
 
-<!-- -->

@@ -143,7 +143,7 @@
 				<configuration>
 					<parallel>methods</parallel>
 					<threadCount>20</threadCount>
-					<!-- <debugForkedProcess>true</debugForkedProcess> 开启debug调试 -->
+					<!--<debugForkedProcess>true</debugForkedProcess>  --> <!--开启debug调试 -->
 					<suiteXmlFiles>
 						<suiteXmlFile>res\testng\testng4analyze.xml</suiteXmlFile>
 						<!-- <suiteXmlFile>res\testng\testng4pythonscript.xml</suiteXmlFile> -->
