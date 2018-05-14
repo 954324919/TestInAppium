@@ -52,6 +52,7 @@ import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 
 import com.cmic.GoAppiumTest.bean.BarChartData;
+import com.cmic.GoAppiumTest.bean.LineCharEntity;
 
 public class JFreeCharUtil {
 	private static String NO_DATA_MSG = "数据加载失败";
@@ -157,6 +158,17 @@ public class JFreeCharUtil {
 					}
 				}
 			}
+		}
+		return dataset;
+	}
+
+	/**
+	 * 创建类别数据集合[单类型category为""||Mul类型category不为""]
+	 */
+	public static DefaultCategoryDataset createDefaultDatasetInLineChatData(List<LineCharEntity> dataSource) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		for (LineCharEntity data : dataSource) {
+			dataset.setValue(data.yAxis, data.category, data.xAxis);
 		}
 		return dataset;
 	}
@@ -511,6 +523,96 @@ public class JFreeCharUtil {
 		return str != null ? str.matches("^[-+]?(([0-9]+)((([.]{0})([0-9]*))|(([.]{1})([0-9]+))))$") : false;
 	}
 
+	/**
+	 * 构建线性图表
+	 * 
+	 * @author cmic
+	 *
+	 */
+	public static class LineChartBuilder {
+		private String xAxisName = "X轴";// x轴名
+		private String yAxisName = "Y轴";// y轴名
+		private String title = "标题名称";// 标题名
+		// private int width;//宽度
+		// private int height;//高度
+		private String imgSavePath;
+		private DefaultCategoryDataset dataSource;
+
+		public LineChartBuilder setXAxisName(String xAxisName) {
+			this.xAxisName = xAxisName;
+			return this;
+		}
+
+		public LineChartBuilder setYAxisName(String yAxisName) {
+			this.yAxisName = yAxisName;
+			return this;
+		}
+
+		public LineChartBuilder setTitle(String title) {
+			this.title = title;
+			return this;
+		}
+
+		public LineChartBuilder setImagePath(String imgSavePath) {
+			this.imgSavePath = imgSavePath;
+			return this;
+		}
+
+		public LineChartBuilder setDataSource(DefaultCategoryDataset dataSource) {
+			this.dataSource = dataSource;
+			return this;
+		}
+
+		public void outputImage() {
+			if (imgSavePath == null) {
+				throw new RuntimeException("图片生成地址没有指定");
+			} else if (dataSource == null) {
+				throw new RuntimeException("数据源没有指定");
+			}
+			// 2：创建Chart[创建不同图形]
+			JFreeChart chart = ChartFactory.createLineChart(title, xAxisName, yAxisName, dataSource);
+			// 3:设置抗锯齿，防止字体显示不清楚
+			setAntiAlias(chart);// 抗锯齿
+			// 4:对柱子进行渲染[[采用不同渲染]]
+			setLineRender(chart.getCategoryPlot(), false, true);//
+			// 5:对其他部分进行渲染
+			setXAixs(chart.getCategoryPlot());// X坐标轴渲染
+			setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
+			// 设置标注无边框
+			CategoryPlot plot = chart.getCategoryPlot();
+			plot.setBackgroundPaint(Color.WHITE);
+			plot.setRangeGridlinePaint(Color.BLUE);// 纵坐标格线颜色
+			plot.setDomainGridlinePaint(Color.BLACK);// 横坐标格线颜色
+			plot.setDomainGridlinesVisible(true);// 显示横坐标格线
+			plot.setRangeGridlinesVisible(true);// 显示纵坐标格线
+
+			LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
+			DecimalFormat decimalformat1 = new DecimalFormat("##.##");// 数据点显示数据值的格式
+			renderer.setItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", decimalformat1));
+			// 上面这句是设置数据项标签的生成器
+			renderer.setItemLabelsVisible(true);// 设置项标签显示
+			renderer.setBaseItemLabelsVisible(true);// 基本项标签显示
+			// 上面这几句就决定了数据点按照设定的格式显示数据值
+			plot.setRenderer(renderer); // 给柱图添加呈现器
+
+			// 设置标注无边框
+			chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
+			chart.getTitle().setMargin(10, 0, 0, 0);
+			try {
+				ChartUtilities.saveChartAsJPEG(new File(imgSavePath), chart, 840, 540);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 构建柱形图表
+	 * 
+	 * @author cmic
+	 *
+	 */
 	public static class BarChartBuilder {
 		private String xAxisName = "X轴";// x轴名
 		private String yAxisName = "Y轴";// y轴名
@@ -544,7 +646,7 @@ public class JFreeCharUtil {
 			this.dataSource = dataSource;
 			return this;
 		}
-		
+
 		public BarChartBuilder setDataSource(List<BarChartData> chartDatas) {
 			this.dataSource = createDefaultDatasetInChatData(chartDatas);
 			return this;

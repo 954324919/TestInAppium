@@ -27,6 +27,7 @@ import com.cmic.GoAppiumTest.page.middlepage.NotificationPage;
 import com.cmic.GoAppiumTest.page.middlepage.MainTempPage.MainTempAction;
 import com.cmic.GoAppiumTest.util.AppUtil;
 import com.cmic.GoAppiumTest.util.EssentialUtil;
+import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.JFreeCharUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 
@@ -51,7 +52,7 @@ public class BootstrapIndexCollect extends BaseTest4IndexCollect {
 		new JFreeCharUtil.BarChartBuilder()//
 				.setTitle("几种不同情况下应用平均启动速度")//
 				.setXAxisName("X轴:测试情景").setYAxisName("Y轴:加载时间/秒")//
-				.setImagePath("D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\target\\chart\\应用启动速度指标.jpg")//
+				.setImagePath(FileUtil.filePathTransformRelative("/target/chart/应用启动速度指标.jpg"))//
 				.setDataSource(chartDatas)//
 				.outputImage();
 		// 释放
