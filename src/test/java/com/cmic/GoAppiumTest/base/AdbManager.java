@@ -18,6 +18,32 @@ public class AdbManager {
 		}
 	}
 	
+	public static String executeAdbCmdFilter(String cmd, String filterWord) {
+		Runtime rt = Runtime.getRuntime();
+		Process pr = null;
+		try {
+			pr = rt.exec(cmd);
+			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+			String line = null;
+			StringBuilder sb = new StringBuilder();
+			while ((line = input.readLine()) != null) {
+				if (line.contains(filterWord)) {
+					// 进行精度更高的匹配
+					sb.append(line);
+					sb.append("\n");
+				}
+			}
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		} finally {
+			if (pr != null)
+				pr.destroy();
+		}
+	}
+
+	
 	@Tips
 	public static String executeAdbCmd(String cmd, int offsetLine) {
 		Runtime rt = Runtime.getRuntime();
