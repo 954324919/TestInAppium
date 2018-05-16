@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 
 import com.cmic.GoAppiumTest.helper.Tips;
 
-
 public class AdbManager {
 	// 执行adb命令
 	@SuppressWarnings("unused")
@@ -17,7 +16,7 @@ public class AdbManager {
 			System.out.println("执行命令:" + s + "出错");
 		}
 	}
-	
+
 	public static String executeAdbCmdFilter(String cmd, String filterWord) {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
@@ -43,7 +42,6 @@ public class AdbManager {
 		}
 	}
 
-	
 	@Tips
 	public static String executeAdbCmd(String cmd, int offsetLine) {
 		Runtime rt = Runtime.getRuntime();
@@ -87,7 +85,7 @@ public class AdbManager {
 			return "";
 		}
 	}
-	
+
 	public static String excuteAdbShellGetResultGrep(String cmd, String targetString) {
 		try {
 			Runtime rt = Runtime.getRuntime();
@@ -108,7 +106,7 @@ public class AdbManager {
 			return "";
 		}
 	}
-	
+
 	@Tips(description = "更优的处理方法", riskPoint = "应用名不一定是最后一个")
 	public static String executeAdbCmd(String cmd, String exactTargetString) {
 		Runtime rt = Runtime.getRuntime();
@@ -167,7 +165,7 @@ public class AdbManager {
 			return "";
 		}
 	}
-	
+
 	@Tips(description = "获取Pid", riskPoint = "可能不同的Adb版本会导致错误")
 	public static String easyGetPid(String pkn) {
 		return executeAdbCmd("adb shell ps", pkn).split(" +")[1];
@@ -182,7 +180,7 @@ public class AdbManager {
 	public static String easyGetUidFormat(String pkn) {
 		return executeAdbCmd("adb shell ps", pkn).split(" +")[0].replace("u0_a", "10");
 	}
-	
+
 	@Tips(description = "更优的处理方法", riskPoint = "应用名不一定是最后一个")
 	public static String executeAdbCmd(String cmd) {
 		Runtime rt = Runtime.getRuntime();
@@ -197,9 +195,7 @@ public class AdbManager {
 				sb.append("\n");
 			}
 			return sb.toString();
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "";
 		} finally {

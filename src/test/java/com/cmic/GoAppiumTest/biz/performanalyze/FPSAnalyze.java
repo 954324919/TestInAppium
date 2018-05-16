@@ -3,7 +3,9 @@ package com.cmic.GoAppiumTest.biz.performanalyze;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,8 +19,8 @@ import com.cmic.GoAppiumTest.util.JFreeCharUtil;
 public class FPSAnalyze {
 	// 两个关键指标60帧每秒以及16.67毫秒,表征肉眼视觉对图像刷新的临界值，大于此人就会意识到刷新卡顿 1000/60≈16.67
 	// !(Fps的相关介绍)[https://testerhome.com/topics/4436]
-	
-	@Tips(description="示例代码")
+
+	@Tips(description = "示例代码")
 	public void main(String[] args) throws NumberFormatException, IOException, InterruptedException {
 		// System.err.println(getFocusWindow());
 		// getFPSInGFXinfo(pkgName);
@@ -31,7 +33,7 @@ public class FPSAnalyze {
 		runable.cancel();
 		executor.shutdown();
 	}
-	
+
 	@Tips(description = "获取windows")
 	public static String getFocusWindow() {
 		String result = AdbManager.executeAdbCmdFilter("adb shell dumpsys window", "mFocusedWindow").trim();
@@ -44,9 +46,9 @@ public class FPSAnalyze {
 		String[] temp = targetWindowDesc.split(" +");
 		return temp[temp.length - 1];
 	}
-	
+
 	@Tips(description = "更优的处理FPS方法")
-	public static double[] getFPSInSurfaceFlinger() {
+	public static FpsEntity getFPSInSurfaceFlinger() {
 		String curWindow = getFocusWindow();// 当前窗体名称，用于获取SurfaceFliger
 		double[] result = new double[4];
 		if (curWindow == null || curWindow.isEmpty()) {// 可能存在当前窗体不可获取的问题
@@ -119,11 +121,11 @@ public class FPSAnalyze {
 				}
 			}
 			if (frames > 0) {
-				result[0] = beginRenderTime;// 采样时间点
-				result[1] = jank * 100.0 / frames;// 掉帧率
-				result[2] = frames * 1000 / totalCountPeriod;// FPS 帧/MS
-				result[3] = totalCountPeriod / frames;// 每一帧耗时
-				return result;
+				result[0] = jank * 100.0 / frames;// 掉帧率
+				result[1] = frames * 1000 / totalCountPeriod;// FPS 帧/MS
+				result[2] = totalCountPeriod / frames;// 每一帧耗时
+				FpsEntity e = new FpsEntity(result[0], result[1], result[2]);
+				return e;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -139,39 +141,61 @@ public class FPSAnalyze {
 		}
 		return null;
 	}
-	
-	 class FPSInfoGet implements Runnable {
-			private List<LineCharEntity> fpsResultList = new ArrayList<LineCharEntity>();
-			private boolean forceStop;
 
-			public FPSInfoGet() {
-				this.forceStop = false;
-			}
+	public static class FpsEntity {
+		public double jankFrameRate;// 跳帧率
+		public double fps;// 刷新频率
+		public double perRenderTime;// 每帧渲染时间
+		@Tips(description = "简单处理为加入时间，作为x轴的节点")
+		private String recordTime;// 采样时间点
 
-			public void run() {
-				try {
-					while (!forceStop) {
-						Thread.sleep(2000);
-						double[] temp;
-						if ((temp = getFPSInSurfaceFlinger()) != null) {
-							fpsResultList.add(new LineCharEntity(temp[0] + "", temp[1], "掉帧率|百分比"));
-							fpsResultList.add(new LineCharEntity(temp[0] + "", temp[2], "FPS|帧/微秒"));
-							fpsResultList.add(new LineCharEntity(temp[0] + "", temp[3], "每一帧耗时|微秒"));
-						}
+		public FpsEntity(double jankRate, double fps, double perRenderTime) {
+			this.jankFrameRate = jankRate;
+			this.fps = fps;
+			this.perRenderTime = perRenderTime;
+			SimpleDateFormat format = new SimpleDateFormat("mm分ss秒");
+			// 放入采样点
+			this.recordTime = format.format(new Date());
+		}
+
+		public String getRecordTime() {
+			return recordTime;
+		}
+	}
+
+	class FPSInfoGet implements Runnable {
+		private List<LineCharEntity> fpsResultList = new ArrayList<LineCharEntity>();
+		private boolean forceStop;
+
+		public FPSInfoGet() {
+			this.forceStop = false;
+		}
+
+		public void run() {
+			try {
+				while (!forceStop) {
+					Thread.sleep(2000);
+					FpsEntity temp;
+					if ((temp = getFPSInSurfaceFlinger()) != null) {
+						fpsResultList.add(new LineCharEntity(temp.getRecordTime(), temp.jankFrameRate, "掉帧率|百分比"));
+						fpsResultList.add(new LineCharEntity(temp.getRecordTime() + "", temp.fps, "FPS|帧/微秒"));
+						fpsResultList
+								.add(new LineCharEntity(temp.getRecordTime() + "", temp.perRenderTime, "每一帧耗时|微秒"));
 					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
-			}
-
-			public void cancel() {
-				this.forceStop = true;
-				new JFreeCharUtil.LineChartBuilder().setTitle("测试过程FPS相关指标变化趋势")//
-						.setXAxisName("X轴:时间").setYAxisName("")//
-						.setImagePath("D:\\Allin\\fps.png")//
-						.setDataSource(JFreeCharUtil.createDefaultDatasetInLineChatData(fpsResultList))//
-						.outputImage();
-				fpsResultList.clear();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
+
+		public void cancel() {
+			this.forceStop = true;
+			new JFreeCharUtil.LineChartBuilder().setTitle("测试过程FPS相关指标变化趋势")//
+					.setXAxisName("X轴:时间").setYAxisName("")//
+					.setImagePath("D:\\Allin\\fps.png")//
+					.setDataSource(JFreeCharUtil.createDefaultDatasetInLineChatData(fpsResultList))//
+					.outputImage();
+			fpsResultList.clear();
+		}
+	}
 }

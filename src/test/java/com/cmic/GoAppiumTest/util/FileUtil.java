@@ -7,6 +7,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.Tips;
 
@@ -25,10 +26,17 @@ public class FileUtil {
 		DriverManger.getDriver().pushFile("sdcard/test.txt", data);
 	}
 
-	public static void pullFile() {
+	public static void pullFile(String remotePath) {
 		// 下载文件举例：
-		byte[] resultDate = DriverManger.getDriver().pullFile("sdcard/test.txt");
+		byte[] resultDate = DriverManger.getDriver().pullFile(remotePath);
 		System.out.println(new String(Base64.decodeBase64(resultDate)));
+	}
+
+	@Tips(description = "获取手机终端远程文件到本地目录", riskPoint = "当前只用于tcpdump的抓包，兼容性有待提高")
+	public static void pullFile(String remotePath, String localPath) {
+//		AdbManager.excuteAdbShell("adb pull " + remotePath + " " + filePathTransform(localPath));
+		System.err.println("adb pull " + remotePath + " " + filePathTransform(localPath));
+		AdbManager.excuteAdbShell("adb pull " + remotePath + " " + filePathTransform(localPath));
 	}
 
 	public static void pullFilefolder() {
