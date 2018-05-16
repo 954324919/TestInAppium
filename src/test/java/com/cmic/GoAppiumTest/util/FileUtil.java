@@ -34,7 +34,8 @@ public class FileUtil {
 
 	@Tips(description = "获取手机终端远程文件到本地目录", riskPoint = "当前只用于tcpdump的抓包，兼容性有待提高")
 	public static void pullFile(String remotePath, String localPath) {
-//		AdbManager.excuteAdbShell("adb pull " + remotePath + " " + filePathTransform(localPath));
+		// AdbManager.excuteAdbShell("adb pull " + remotePath + " " +
+		// filePathTransform(localPath));
 		System.err.println("adb pull " + remotePath + " " + filePathTransform(localPath));
 		AdbManager.excuteAdbShell("adb pull " + remotePath + " " + filePathTransform(localPath));
 	}
@@ -155,6 +156,30 @@ public class FileUtil {
 			String[] fileNode = relativePath.split("/");
 			StringBuilder sb = new StringBuilder();
 			sb.append(App.CLASSPATH);
+			for (String node : fileNode) {
+				sb.append(node).append(File.separator);
+			}
+			return sb.toString().substring(0, sb.toString().length() - 1);
+		}
+	}
+
+	/**
+	 * 文件路径变换提升兼容性[原始的变化方式，用于非TestNg的应用执行]
+	 * 
+	 * @param relativePath
+	 *            相对路径
+	 * @return
+	 */
+	@Tips(riskPoint = "提供兼容性的适配，但推荐使用标准的Linux相对路径")
+	public static String filePathTransformRelativeRaw(String relativePath) {
+		String OSName = System.getProperties().getProperty("os.name"); // 操作系统名称
+		if (OSName.contains("Linux")) {// Linux类的操作系统
+			return App.USER_DIR_RAW + relativePath.replaceAll("\\", File.separator);
+		} else {// 使用Win
+			// 直接使用ReplaceAll发生问题，故采用此方法替代
+			String[] fileNode = relativePath.split("/");
+			StringBuilder sb = new StringBuilder();
+			sb.append(App.USER_DIR_RAW);
 			for (String node : fileNode) {
 				sb.append(node).append(File.separator);
 			}

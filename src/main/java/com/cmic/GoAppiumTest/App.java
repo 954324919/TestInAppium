@@ -2,13 +2,24 @@ package com.cmic.GoAppiumTest;
 
 import java.io.File;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.LogUtil;
 
 /**
  * @描述 全局配置参数
  * @author kiwi
  */
 public class App {
+
+	// ----------------- 用于测试的代码 ---------------
+
+	static {// 最先执行
+		PropertyConfigurator.configure("./res/log4j/log4j.properties");
+	}
+	// ----------------- 进行TestNg时需要注释 -----------
+	
 	public static int CASE_COUNT = 0;
 	public static int PHONE_COUNT = 0;
 
@@ -39,6 +50,8 @@ public class App {
 	// 默认用户目录为当前工作目录
 	@Tips(description = "由于TestNg的特殊性，USER_DIR获取的是:classPath/target", riskPoint = "可能导致歧义")
 	public static final File USER_DIR = new File(System.getProperty("user.dir")).getParentFile();
+	@Tips(description = "在不进行TestNg时，用于目录是classPath")
+	public static final File USER_DIR_RAW = new File(System.getProperty("user.dir"));
 	public static final File CLASSPATHROOT = USER_DIR;
 	public static final String CLASSPATH = CLASSPATHROOT.getAbsolutePath();
 
@@ -53,4 +66,13 @@ public class App {
 	public static final int WAIT_TIME_IMPLICITLY = 20;
 	public static final int WAIT_TIME_FORCE = 5;
 
+
+	// ----------------- 用于测试的代码 ---------------
+
+	@Tips(description = "入口函数")
+	public static void main(String[] args) {
+		LogUtil.i("{}万岁!", "理解");
+	}
+
+	// ----------------- 进行TestNg时需要注释 -----------
 }
