@@ -1,6 +1,12 @@
 package com.cmic.GoAppiumTest;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.PropertyConfigurator;
 
@@ -15,11 +21,11 @@ public class App {
 
 	// ----------------- 用于测试的代码 ---------------
 
-	static {// 最先执行
-		PropertyConfigurator.configure("./res/log4j/log4j.properties");
-	}
+	// static {// 最先执行
+	// PropertyConfigurator.configure("./res/log4j/log4j.properties");
+	// }
 	// ----------------- 进行TestNg时需要注释 -----------
-	
+
 	public static int CASE_COUNT = 0;
 	public static int PHONE_COUNT = 0;
 
@@ -66,13 +72,17 @@ public class App {
 	public static final int WAIT_TIME_IMPLICITLY = 20;
 	public static final int WAIT_TIME_FORCE = 5;
 
-
 	// ----------------- 用于测试的代码 ---------------
 
 	@Tips(description = "入口函数")
-	public static void main(String[] args) {
-		LogUtil.i("{}万岁!", "理解");
+	public static void main(String[] args) throws IOException {
+		long before = System.currentTimeMillis();
+		BufferedImage f1 = ImageUtil.getImageFromFile(
+				new File("D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\target\\screenshot\\1.png"));
+		BufferedImage f2 = ImageUtil
+				.getImageFromFile(new File("D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\target\\screenshot\\2.p"));
+		LogUtil.w("图片相似度为{}", ImageUtil.compareImage(f1, f2));
+		LogUtil.i("时间差为{},{}万岁!", System.currentTimeMillis() - before, "理解");
 	}
-
 	// ----------------- 进行TestNg时需要注释 -----------
 }

@@ -1,9 +1,13 @@
 package com.cmic.GoAppiumTest.util;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -50,6 +54,26 @@ public class ScreenUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @param standard
+	 *            标准图片名称
+	 * @param actual
+	 *            实际截图名称
+	 * @return 相似度 100为完全相同
+	 */
+	@Tips(description = "对比2张图片的相似度")
+	public static double compareImageByPath(String standard, String actual) {
+		LogUtil.i("开始图片全图对比");
+		String path1 = FileUtil.filePathTransformRelativeRaw(standard);
+		String path2 = FileUtil.filePathTransformRelativeRaw(actual);
+		LogUtil.i("图片1：" + path1);
+		LogUtil.i("图片2：" + path2);
+		// 标准图片
+		BufferedImage image1 = ImageUtil.getImageFromFile(new File(path1));
+		BufferedImage image2 = ImageUtil.getImageFromFile(new File(path2));
+		return ImageUtil.compareImage(image1, image2);
 	}
 
 	public static void screenShotForce(String msg) {
@@ -139,6 +163,135 @@ public class ScreenUtil {
 			}
 		}
 		return 0;
+	}
+
+	/**
+	 * 根据控件元素进行截图
+	 * 
+	 * @param me
+	 *            控件元素
+	 * @param picName
+	 */
+	@Tips(description = "获取元素的截图")
+	public static void captureByElement(AndroidElement element, String picName) {
+		int x = element.getLocation().x;
+		int y = element.getLocation().y;
+		int w = element.getSize().width;
+		int h = element.getSize().height;
+		File srcFile = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
+		File targetFile = null;
+		if (!(new File(screenDir).isDirectory())) {
+			// 判断是否存在该目录
+			new File(screenDir).mkdir();
+		}
+		// 调用方法捕捉画面
+		try {
+			targetFile = new File(screenDir + File.separator + (++App.PHONE_COUNT) + "-" + picName + ".jpg");
+			LogUtil.i("[截图]保存地址：" + targetFile.getPath());
+			FileUtils.copyFile(srcFile, targetFile);
+			BufferedImage image = ImageUtil.getImageFromFile(targetFile);
+			LogUtil.i("截图：起始坐标[" + x + "," + y + "],宽" + w + ",高" + h);
+			BufferedImage subimage = ImageUtil.getSubImage(image, x, y, w, h);
+			FileOutputStream output = new FileOutputStream(targetFile);
+			ImageIO.write(subimage, "png", output);
+			output.close();
+		} catch (IOException e) {
+			LogUtil.i("[截图]搬迁图片失败", e);
+		}
+	}
+
+	/**
+	 * 根据控件元素进行截图
+	 * 
+	 * @param me
+	 *            控件元素
+	 * @param picName
+	 */
+	@Tips(description = "获取元素的截图")
+	public static BufferedImage captureByElementWithReturn(AndroidElement element, String picName) {
+		int x = element.getLocation().x;
+		int y = element.getLocation().y;
+		int w = element.getSize().width;
+		int h = element.getSize().height;
+		File srcFile = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
+		File targetFile = null;
+		if (!(new File(screenDir).isDirectory())) {
+			// 判断是否存在该目录
+			new File(screenDir).mkdir();
+		}
+		// 调用方法捕捉画面
+		try {
+			targetFile = new File(screenDir + File.separator + (++App.PHONE_COUNT) + "-" + picName + ".jpg");
+			LogUtil.i("[截图]保存地址：" + targetFile.getPath());
+			FileUtils.copyFile(srcFile, targetFile);
+			BufferedImage image = ImageUtil.getImageFromFile(targetFile);
+			LogUtil.i("截图：起始坐标[" + x + "," + y + "],宽" + w + ",高" + h);
+			BufferedImage subimage = ImageUtil.getSubImage(image, x, y, w, h);
+			FileOutputStream output = new FileOutputStream(targetFile);
+			ImageIO.write(subimage, "png", output);
+			output.close();
+			return subimage;
+		} catch (IOException e) {
+			LogUtil.i("[截图]搬迁图片失败", e);
+		}
+		return null;
+	}
+
+	public static BufferedImage captureByElementWithoutSave(AndroidElement element) {
+		int x = element.getLocation().x;
+		int y = element.getLocation().y;
+		int w = element.getSize().width;
+		int h = element.getSize().height;
+		File srcFile = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
+		BufferedImage image = ImageUtil.getImageFromFile(srcFile);
+		LogUtil.i("截图：起始坐标[" + x + "," + y + "],宽" + w + ",高" + h);
+		BufferedImage subimage = ImageUtil.getSubImage(image, x, y, w, h);
+		return subimage;
+	}
+
+	/**
+	 * 根据控件元素进行截图
+	 * 
+	 * @param me
+	 *            控件元素
+	 * @param picName
+	 */
+	@Tips(description = "获取元素的截图")
+	public static BufferedImage captureByElementWithReturn(AndroidElement element, String picName,
+			boolean formatTheName) {
+		int x = element.getLocation().x;
+		int y = element.getLocation().y;
+		int w = element.getSize().width;
+		int h = element.getSize().height;
+		File srcFile = DriverManger.getDriver().getScreenshotAs(OutputType.FILE);
+		String screenDir = FileUtil.filePathTransformRelative("/target/screenshot");
+		File targetFile = null;
+		if (!(new File(screenDir).isDirectory())) {
+			// 判断是否存在该目录
+			new File(screenDir).mkdir();
+		}
+		// 调用方法捕捉画面
+		try {
+			if (formatTheName) {
+				targetFile = new File(screenDir + File.separator + (++App.PHONE_COUNT) + "-" + picName + ".jpg");
+			} else {
+				targetFile = new File(screenDir + File.separator + picName + ".jpg");
+			}
+			LogUtil.i("[截图]保存地址：" + targetFile.getPath());
+			FileUtils.copyFile(srcFile, targetFile);
+			BufferedImage image = ImageUtil.getImageFromFile(targetFile);
+			LogUtil.i("截图：起始坐标[" + x + "," + y + "],宽" + w + ",高" + h);
+			BufferedImage subimage = ImageUtil.getSubImage(image, x, y, w, h);
+			FileOutputStream output = new FileOutputStream(targetFile);
+			ImageIO.write(subimage, "png", output);
+			output.close();
+			return subimage;
+		} catch (IOException e) {
+			LogUtil.i("[截图]搬迁图片失败", e);
+		}
+		return null;
 	}
 
 	public static void singleTap(int x, int y) {

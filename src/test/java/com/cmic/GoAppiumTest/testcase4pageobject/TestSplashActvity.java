@@ -1,5 +1,8 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
+import static org.testng.Assert.assertEquals;
+
+import java.awt.image.BufferedImage;
 import java.util.NoSuchElementException;
 
 import org.testng.Assert;
@@ -14,8 +17,11 @@ import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SplashPage;
 import com.cmic.GoAppiumTest.testcase4pageobject.retry.FailRetry;
+import com.cmic.GoAppiumTest.util.ImageUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
+import com.gargoylesoftware.htmlunit.javascript.host.html.Image;
 
 @Listeners(FailSnapshotListener.class)
 public class TestSplashActvity extends BaseTest {
@@ -82,6 +88,21 @@ public class TestSplashActvity extends BaseTest {
 		WaitUtil.implicitlyWait(5);
 		LogUtil.printCurrentMethodNameInLog4J();
 		mSpalashPage.clickAcceptProtocol();
+	}
+
+	// ========================= 以下为测试代码 =============================
+
+	@Tips(description = "检查图片差分的逻辑")
+	@Test(dependsOnMethods = "initCheck")
+	public void checkImageDiff() {
+		BufferedImage b1 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.btnAccept);
+		BufferedImage b2 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.btnAccept);
+		LogUtil.e("1差分度为{}", ImageUtil.compareImage(b1, b2));
+		BufferedImage b3 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.cbNoTip);
+		mSpalashPage.action.go2Click(mSpalashPage.cbNoTip);
+		BufferedImage b4 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.cbNoTip);
+		LogUtil.e("2差分度为{}", ImageUtil.compareImage(b3, b4));
+		LogUtil.e("2差分度为{}", ImageUtil.compareImage(b1, b4));
 	}
 
 	@Test

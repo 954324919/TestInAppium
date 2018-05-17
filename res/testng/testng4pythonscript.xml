@@ -10,30 +10,10 @@
 		<!-- 此部分测试仅发生在第一进入应用时发生，作为一个单独的Classes -->
 		<classes>
 			<!-- 测试工信部弹窗 -->
-			<class name="com.cmic.GoAppiumTest.testcase.TestSplashActivity">
+			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestSplashActvity">
 				<methods>
 					<include name="initCheck" />
-				</methods>
-			</class>
-		</classes>
-	</test>
-
-	<test name="Test4PythonAnalyze" preserve-order="true">
-		<classes>
-			<class name="com.cmic.GoAppiumTest.script.Test4PerformanceAnalyze">
-				<methods>
-					<include name="initCheck" />
-					<include name="passSplashAct" />
-					<include name="passPermissionGrantAct" />
-					<include name="passRequestPageAct" />
-					<include name="passMainAct" />
-					<include name="passTrafficManagerAct" />
-					<include name="passSearchAct" />
-					<include name="passDownloadManagerAct" />
-					<include name="passDetailAct" />
-					<include name="goWebviewPage" />
-					<include name="goDownload" />
-					<include name="extraAnalyze" />
+					<include name="checkImageDiff" />
 				</methods>
 			</class>
 		</classes>
