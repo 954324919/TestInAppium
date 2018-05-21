@@ -1,23 +1,30 @@
 package com.cmic.GoAppiumTest;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import org.apache.log4j.PropertyConfigurator;
-
-import com.cmic.GoAppiumTest.helper.Tips;
-import com.cmic.GoAppiumTest.util.LogUtil;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * @描述 全局配置参数
  * @author kiwi
  */
 public class App {
+
+	public static String savePath;// App的保存路径
+	static {
+		try {
+			Properties p = new Properties();
+			InputStream in = ClassLoader.class.getResourceAsStream("/res/jenkins/jks.properties");
+			p.load(in);
+			in.close();
+			savePath = p.getProperty("savePath");
+			System.err.println("App保存路径为" + savePath);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	// ----------------- 用于测试的代码 ---------------
 
@@ -76,13 +83,7 @@ public class App {
 
 	@Tips(description = "入口函数")
 	public static void main(String[] args) throws IOException {
-		long before = System.currentTimeMillis();
-		BufferedImage f1 = ImageUtil.getImageFromFile(
-				new File("D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\target\\screenshot\\1.png"));
-		BufferedImage f2 = ImageUtil
-				.getImageFromFile(new File("D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\target\\screenshot\\2.p"));
-		LogUtil.w("图片相似度为{}", ImageUtil.compareImage(f1, f2));
-		LogUtil.i("时间差为{},{}万岁!", System.currentTimeMillis() - before, "理解");
+		System.out.println("Hello Appium!");
 	}
 	// ----------------- 进行TestNg时需要注释 -----------
 }

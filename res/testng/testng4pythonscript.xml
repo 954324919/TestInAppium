@@ -13,10 +13,9 @@
 			<class name="com.cmic.GoAppiumTest.testcase4pageobject.TestSplashActvity">
 				<methods>
 					<include name="initCheck" />
-					<include name="checkImageDiff" />
 				</methods>
 			</class>
 		</classes>
 	</test>
 </suite>
-<!-- -->
+<!--<include name="checkImageDiff" /> -->

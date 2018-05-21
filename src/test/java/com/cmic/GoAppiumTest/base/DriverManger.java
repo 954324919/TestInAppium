@@ -8,18 +8,21 @@ import java.util.Properties;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.FileUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.PropertiesUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+
 public class DriverManger {
 
 	private static AndroidDriver<AndroidElement> driver = null;
 
 	private Properties capaConfig;
-	
+
 	public static AndroidDriver<AndroidElement> getDriver() {
 		if (driver == null) {
 			new DriverManger();
@@ -27,10 +30,13 @@ public class DriverManger {
 		return driver;
 	}
 
-	@Tips(riskPoint="必须联网防止Error: getaddrinfo ENOENT")
+	@Tips(riskPoint = "必须联网防止Error: getaddrinfo ENOENT")
 	public DriverManger() {
-		String appDir = FileUtil.filePathTransformRelative("/res/apps");
-		File app = new File(appDir, "mmnes150.apk");
+		// String filePath = App.savePath + File.separator + "RawAttachment";
+		String filePath = "D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\res\\apps";
+		// LogUtil.e("格式化路径为{}", filePath);
+		// String appDir = FileUtil.filePathTransformRelative("/res/apps");
+		File app = new File(filePath, "mmnes150.apk");
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
@@ -68,7 +74,7 @@ public class DriverManger {
 			driver.quit();
 		}
 	}
-	
+
 	public Properties getBaseCapabilities() {
 		return capaConfig;
 	}

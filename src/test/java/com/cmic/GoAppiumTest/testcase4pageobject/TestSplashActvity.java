@@ -1,7 +1,5 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
-import static org.testng.Assert.assertEquals;
-
 import java.awt.image.BufferedImage;
 import java.util.NoSuchElementException;
 
@@ -13,7 +11,7 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SplashPage;
 import com.cmic.GoAppiumTest.testcase4pageobject.retry.FailRetry;
@@ -21,9 +19,8 @@ import com.cmic.GoAppiumTest.util.ImageUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
-import com.gargoylesoftware.htmlunit.javascript.host.html.Image;
 
-@Listeners(FailSnapshotListener.class)
+@Listeners(ExtentReportListener.class)
 public class TestSplashActvity extends BaseTest {
 
 	private SplashPage mSpalashPage;

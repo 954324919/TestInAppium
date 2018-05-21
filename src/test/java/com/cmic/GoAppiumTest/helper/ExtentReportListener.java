@@ -1,6 +1,5 @@
 package com.cmic.GoAppiumTest.helper;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.testng.ITestContext;
@@ -9,7 +8,6 @@ import org.testng.ITestResult;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.ExtentManager;
 import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
