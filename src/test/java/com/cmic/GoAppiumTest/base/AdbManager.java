@@ -2,8 +2,13 @@ package com.cmic.GoAppiumTest.base;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.cmic.GoAppiumTest.bean.DeviceEntity;
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.YamlUtil;
 
 public class AdbManager {
 	// 执行adb命令
@@ -181,7 +186,7 @@ public class AdbManager {
 		return executeAdbCmd("adb shell ps", pkn).split(" +")[0].replace("u0_a", "10");
 	}
 
-	@Tips(description = "更优的处理方法", riskPoint = "应用名不一定是最后一个")
+	@Tips(description = "更优的处理方法")
 	public static String executeAdbCmd(String cmd) {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
@@ -202,5 +207,68 @@ public class AdbManager {
 			if (pr != null)
 				pr.destroy();
 		}
+	}
+
+	/**
+	 * 
+	 * @param cmd
+	 * @param serialNumber
+	 *            序列号
+	 * @return
+	 */
+	@Tips(description = "多终端的adb调用转换")
+	public static String executeMulAdbCmd(String cmd, String serialNumber) {
+		String tramsformCmd = cmd.replace("{}", serialNumber);
+		LogUtil.e(tramsformCmd);
+		return executeAdbCmd(tramsformCmd);
+	}
+
+	@Tips(description = "系统SDK版本", riskPoint = "空格导致的转换异常，用Trim")
+	public static int getTargetSdk(String serialNumber) {
+		String tempResult = AdbManager.executeMulAdbCmd("adb {} shell getprop ro.build.version.sdk",
+				"-s " + serialNumber);
+		LogUtil.i(tempResult);
+		try {
+			return Integer.parseInt(tempResult.trim());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Tips(description = "获取挂载设备列表")
+	public static List<DeviceEntity> fetchTheMountDeviceInfo() {
+		List<DeviceEntity> deviceList = new ArrayList<>();
+		if (getTheMountDeviceNum() > 0) {
+			String result = AdbManager.executeAdbCmd("adb devices");
+			String[] resultSplitWord = result.split("\n");
+			//
+			for (int i = 1; i < resultSplitWord.length; i++) {
+				String[] temp = resultSplitWord[i].trim().split("\\t");
+				LogUtil.i("设备序列号为{},设备名称为{}", temp[0], temp[1]);
+				DeviceEntity entity = new DeviceEntity();
+				entity.setDeviceName(temp[1]);
+				entity.setSerialNumber(temp[0]);// 设备序列号
+				//
+				int targetSdk = AdbManager.getTargetSdk(temp[0].trim());
+				LogUtil.w("目标sdk为{}", targetSdk);
+				entity.setTargetSdk(targetSdk);
+				deviceList.add(entity);
+			}
+			// YamlUtil.bean2Yaml("res/ini", "deviceInfo.yaml", deviceList);
+			// 每次取到最新
+		} else {
+			LogUtil.e("不存在挂载的设备");
+		}
+		return deviceList;
+	}
+
+	@Tips(description = "获取挂载设备数目")
+	public static int getTheMountDeviceNum() {
+		String result = AdbManager.executeAdbCmd("adb devices");
+		if (result.contains("daemon started successfully")) {// 重新获取
+			result = AdbManager.executeAdbCmd("adb devices");
+		}
+		return result.split("\n").length - 1;
 	}
 }

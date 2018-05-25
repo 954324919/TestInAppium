@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
+
 /**
  * @描述 全局配置参数
  * @author kiwi
@@ -27,10 +29,7 @@ public class App {
 	}
 
 	// ----------------- 用于测试的代码 ---------------
-
-	// static {// 最先执行
-	// PropertyConfigurator.configure("./res/log4j/log4j.properties");
-	// }
+	
 	// ----------------- 进行TestNg时需要注释 -----------
 
 	public static int CASE_COUNT = 0;

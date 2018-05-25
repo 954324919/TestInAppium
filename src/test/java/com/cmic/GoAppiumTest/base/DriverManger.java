@@ -3,12 +3,15 @@ package com.cmic.GoAppiumTest.base;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.bean.DeviceEntity;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -18,6 +21,13 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
 public class DriverManger {
+
+	private static List<DeviceEntity> deviceList = new ArrayList<>();
+
+	// 获取当前挂载的设备列表
+	static {
+		deviceList = AdbManager.fetchTheMountDeviceInfo();
+	}
 
 	private static AndroidDriver<AndroidElement> driver = null;
 
@@ -32,6 +42,7 @@ public class DriverManger {
 
 	@Tips(riskPoint = "必须联网防止Error: getaddrinfo ENOENT")
 	public DriverManger() {
+		LogUtil.e("FromHere2TheAppiumAutoTest{}", deviceList.size());
 		// String filePath = App.savePath + File.separator + "RawAttachment";
 		String filePath = "D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\res\\apps";
 		// LogUtil.e("格式化路径为{}", filePath);
@@ -50,6 +61,7 @@ public class DriverManger {
 		capabilities.setCapability("udid", capaConfig.getProperty("UDID"));
 		capabilities.setCapability("deviceName", capaConfig.getProperty("DEVICE_NAME"));
 		capabilities.setCapability("platformVersion", capaConfig.getProperty("PLATFORM_VERSION"));
+		// 测试包名
 		capabilities.setCapability("appPackage", capaConfig.getProperty("APP_PACKAGE_NAME"));
 		capabilities.setCapability("appActivity", capaConfig.getProperty("APP_LAUNCHER_ACTIVITY"));
 		// 键盘配置区域

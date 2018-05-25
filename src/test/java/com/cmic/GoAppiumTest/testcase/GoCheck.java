@@ -15,7 +15,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.aventstack.extentreports.model.Log;
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
 import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
 import com.cmic.GoAppiumTest.helper.PageRedirect;
@@ -43,9 +45,13 @@ import io.appium.java_client.android.AndroidKeyCode;
  */
 @Listeners(FailSnapshotListener.class)
 public class GoCheck {
-
 	private AndroidDriver<AndroidElement> driver = DriverManger.getDriver();
 	private AndroidDriver<AndroidElement> mDriver = DriverManger.getDriver();
+
+	@Tips(description = "读取终端信息")
+	public void check1() {
+
+	}
 
 	public static void main() {
 		new JFreeCharUtil.BarChartBuilder()//
@@ -106,48 +112,6 @@ public class GoCheck {
 	// }
 	// }
 
-	@Test
-	public void test() throws InterruptedException {
-		AndroidElement e1 = driver.findElementByXPath("//android.widget.Button[@content-desc=\"Add Contact\"]");
-		e1.click();
-		Thread.sleep(3000);
-		driver.pressKeyCode(AndroidKeyCode.BACK);
-	}
-
-	@Test
-	public void test1() throws InterruptedException {
-		AndroidElement el = driver.findElementById("com.example.android.contactmanager:id/addContactButton");
-		if (el == null) {
-			assertEquals(true, false);
-			return;
-		}
-		el.click();
-		Thread.sleep(3000);
-		driver.pressKeyCode(AndroidKeyCode.BACK);
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
-	public void goAnyWhere() {
-		ContextUtil.goTargetActivity("com.cmic.mmnes", ".SearchActivity");
-		WaitUtil.implicitlyWait(2);
-		PageRouteUtil.pressBack();
-		ContextUtil.goTargetActivity("com.example.android.contactmanager", ".ContactAdder");
-		WaitUtil.implicitlyWait(2);
-		PageRouteUtil.pressBack();
-	}
-
-	@Test(dependsOnMethods = { "initCheck" }, enabled = false)
-	public void futureHope() {// 检查重定向通过
-		PageRedirect.redirect2RequestiteActivity();
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
-	public void testNetworkStatus() {
-		System.err.println(NetworkUtil.getNetworkState());
-		System.err.println(DeviceUtil.getDeviceTime());
-	}
-
-	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "点击随机的一个热词Item", riskPoint = "耦合度过高，与下列clickTheClearSearchRly风险点太高")
 	public void randomCheckOne() throws InterruptedException {
 		LogUtil.printCurrentMethodName();
