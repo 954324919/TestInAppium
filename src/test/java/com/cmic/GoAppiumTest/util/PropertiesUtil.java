@@ -2,6 +2,7 @@ package com.cmic.GoAppiumTest.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,19 @@ public class PropertiesUtil {
 				return null;
 			}
 		} else {
-			System.err.println("文件不存在");
+			throw new RuntimeException("不存在目标的配置文件");
+		}
+	}
+
+	@Tips(description = "加载配置文件",riskPoint="")
+	public static Properties load(InputStream in) {
+		try {
+			InputStreamReader iReader = new InputStreamReader(in, "UTF-8");
+			Properties p = new Properties();
+			p.load(iReader);
+			return p;
+		} catch (IOException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

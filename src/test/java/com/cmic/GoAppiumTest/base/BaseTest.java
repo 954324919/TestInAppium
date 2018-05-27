@@ -31,7 +31,6 @@ public abstract class BaseTest {
 
 	private static Properties capaConfig;
 	static {// 最先执行
-		// Log4j
 		String log4jConfigFilePath = FileUtil.filePathTransformRelative("/res/log4j/log4j.properties");
 		PropertyConfigurator.configure(log4jConfigFilePath);
 
@@ -75,7 +74,7 @@ public abstract class BaseTest {
 	public void beforeSuit() {
 		// TODO 补充适配
 		String packageName = capaConfig.getProperty("APP_PACKAGE_NAME");
-		//LogUtil.d("Hello SuitBefore{}",packageName);//TODO 0501 在有多个可调式设备时会出现异常，需要Fix
+		// LogUtil.d("Hello SuitBefore{}",packageName);//TODO 0501 在有多个可调式设备时会出现异常，需要Fix
 		if (AppUtil.isInstallWithoutDriver(packageName)) {
 			AppUtil.unInstall(packageName);
 		}

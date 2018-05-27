@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -23,44 +24,61 @@ import io.appium.java_client.android.AndroidElement;
 public class DriverManger {
 
 	private static List<DeviceEntity> deviceList = new ArrayList<>();
-
+	private static Properties capaConfig;
 	// 获取当前挂载的设备列表
 	static {
+		// 初始化测试应用的配置信息
+		capaConfig = PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
+		if (capaConfig == null) {
+			throw new RuntimeException("不存在目标的配置文件");
+		}
+		// 加载挂载设备列表
 		deviceList = AdbManager.fetchTheMountDeviceInfo();
 	}
 
 	private static AndroidDriver<AndroidElement> driver = null;
 
-	private Properties capaConfig;
-
 	public static AndroidDriver<AndroidElement> getDriver() {
 		if (driver == null) {
-			new DriverManger();
+			synchronized (DriverManger.class) {
+				if (driver == null) {
+					new DriverManger();
+				}
+			}
 		}
 		return driver;
 	}
 
 	@Tips(riskPoint = "必须联网防止Error: getaddrinfo ENOENT")
-	public DriverManger() {
-		LogUtil.e("FromHere2TheAppiumAutoTest{}", deviceList.size());
-		// String filePath = App.savePath + File.separator + "RawAttachment";
-		String filePath = "D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\res\\apps";
-		// LogUtil.e("格式化路径为{}", filePath);
-		// String appDir = FileUtil.filePathTransformRelative("/res/apps");
-		File app = new File(filePath, "mmnes150.apk");
-
-		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-		// 读取设备配置文件
-		capaConfig = PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
-		if (capaConfig == null) {
-			throw new RuntimeException("不存在目标的配置文件");
+	private DriverManger() {
+		DeviceEntity targetMouteDevice = deviceCheck();// 当前只支持1个设备
+		if (targetMouteDevice == null) {// 检查目标测试设备是否符合被挂载
+			throw new RuntimeException("不存在对应的设备");
 		}
+		// LogUtil.w("可访问的挂载设备数目为{}，第一个UDID为{}", deviceList.size(),
+		// deviceList.get(0).getSerialNumber());
+		// String filePath = "D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\res\\apps";
+		// LogUtil.e("格式化路径为{}", filePath);
+		//String appDir = FileUtil.filePathTransformRelative("/res/apps");
+		// 读取设备配置文件
+		// 0527之前的方式(没有引入Jenkins) capaConfig =
+		// PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
+		// if (capaConfig == null) {
+		// throw new RuntimeException("不存在目标的配置文件");
+		// }
 		// 配置区域
-		capabilities.setCapability("platformName", capaConfig.getProperty("PLATFORM_TYPE"));// hock2Appium
-		capabilities.setCapability("udid", capaConfig.getProperty("UDID"));
-		capabilities.setCapability("deviceName", capaConfig.getProperty("DEVICE_NAME"));
-		capabilities.setCapability("platformVersion", capaConfig.getProperty("PLATFORM_VERSION"));
+		// capabilities.setCapability("platformName",
+		// capaConfig.getProperty("PLATFORM_TYPE"));// 当前只支持Android
+
+		// 获取测试应用
+		String appDir = App.SAVEPATH + File.separator + "RawAttachment";
+		File app = new File(appDir, "mmnes150.apk");
+		// 配置区域
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability("platformName", "Android");
+		capabilities.setCapability("udid", targetMouteDevice.getSerialNumber());
+		capabilities.setCapability("deviceName", targetMouteDevice.getDeviceBrand());
+		capabilities.setCapability("platformVersion", targetMouteDevice.getTargetSdk());
 		// 测试包名
 		capabilities.setCapability("appPackage", capaConfig.getProperty("APP_PACKAGE_NAME"));
 		capabilities.setCapability("appActivity", capaConfig.getProperty("APP_LAUNCHER_ACTIVITY"));
@@ -73,12 +91,31 @@ public class DriverManger {
 		capabilities.setCapability("app", app.getAbsolutePath());
 		// 调用uiautomator2,获取toast
 		capabilities.setCapability("automationName", "uiautomator2");
+		// WebDriver
+		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
 		try {
 			driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			driver = null;
 		}
+	}
+
+	private DeviceEntity deviceCheck() {
+		String deviceName = App.DEVICENAME_LIST;
+		String deviceModelName = App.DEVICEMODEL_LIST;
+		// 0527当前默认只挂载一个设备
+		deviceName = deviceName.split(",")[0];
+		deviceModelName = deviceModelName.split(",")[0];
+		// FIXME 该部分的代码逻辑还需要优化，需求不太情绪
+		for (int i = 0; i < deviceList.size(); i++) {// 找到1个匹配
+			if (deviceList.get(i).getDeviceModelName().equals(deviceModelName)) {
+				DeviceEntity temp = deviceList.get(i);
+				temp.setDeviceBrand(deviceName);
+				return temp;
+			}
+		}
+		return null;
 	}
 
 	public void quitDriver() {

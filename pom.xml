@@ -12,7 +12,12 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- 应用App保存路径 -->
 		<savePath></savePath>
+		<!-- 测试设备列表 -->
+		<deviceList></deviceList>
+		<!-- 测试设备型号列表 -->
+		<deviceModelList></deviceModelList>
 	</properties>
 
 	<dependencies>

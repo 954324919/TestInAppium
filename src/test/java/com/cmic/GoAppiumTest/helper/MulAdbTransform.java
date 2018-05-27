@@ -43,7 +43,6 @@ public class MulAdbTransform {
 				String[] temp = resultSplitWord[i].trim().split("\\t");
 				LogUtil.i("设备序列号为{},设备名称为{}", temp[0], temp[1]);
 				DeviceEntity entity = new DeviceEntity();
-				entity.setDeviceName(temp[1]);
 				entity.setSerialNumber(temp[0]);// 设备序列号
 				//
 				int targetSdk = AdbManager.getTargetSdk(temp[0].trim());
@@ -66,7 +65,6 @@ public class MulAdbTransform {
 				String[] temp = resultSplitWord[i].trim().split("\\t");
 				LogUtil.i("设备序列号为{},设备名称为{}", temp[0], temp[1]);
 				DeviceEntity entity = new DeviceEntity();
-				entity.setDeviceName(temp[1]);
 				entity.setSerialNumber(temp[0]);// 设备序列号
 				//
 				int targetSdk = AdbManager.getTargetSdk(temp[0].trim());

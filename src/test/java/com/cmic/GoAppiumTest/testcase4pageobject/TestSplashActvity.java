@@ -128,5 +128,10 @@ public class TestSplashActvity extends BaseTest {
 	public Object[][] data() throws Exception {
 		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
 	}
-
+	
+	@Test(dependsOnMethods = "initCheck")
+	public void checkCapaField() {
+		LogUtil.printCurrentMethodNameInLog4J();
+		LogUtil.w("UDID为{}",mDriver.getCapabilities().getCapability("udid").toString());
+	}
 }

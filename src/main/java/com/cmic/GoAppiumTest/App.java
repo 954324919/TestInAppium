@@ -3,9 +3,8 @@ package com.cmic.GoAppiumTest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
-
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  * @描述 全局配置参数
@@ -13,23 +12,29 @@ import org.apache.log4j.PropertyConfigurator;
  */
 public class App {
 
-	public static String savePath;// App的保存路径
+	public static String SAVEPATH;// App的保存路径
+	@Tips(description = "设备名称列表，当前版本默认只有1个挂载设备", riskPoint = "要求和型号完全对应")
+	public static String DEVICENAME_LIST;//
+	@Tips(description = "设备型号列表，当前版本默认只有1个挂载设备", riskPoint = "要求和名称完全对应")
+	public static String DEVICEMODEL_LIST;
+
 	static {
+		InputStream in = ClassLoader.class.getResourceAsStream("/res/jenkins/jks.properties");
+		Properties iniFromJks = new Properties();
 		try {
-			Properties p = new Properties();
-			InputStream in = ClassLoader.class.getResourceAsStream("/res/jenkins/jks.properties");
-			p.load(in);
-			in.close();
-			savePath = p.getProperty("savePath");
-			System.err.println("App保存路径为" + savePath);
+			InputStreamReader iReader = new InputStreamReader(in, "UTF-8");
+			iniFromJks.load(iReader);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} // 配置项从Jenkins传入
+		SAVEPATH = iniFromJks.getProperty("APP_SAVEPATH","D:\\Jenkins\\TestAutomation\\Parpare\\mailResultSave");
+		DEVICENAME_LIST = iniFromJks.getProperty("DEVICENAME_LIST");
+		DEVICEMODEL_LIST = iniFromJks.getProperty("DEVICEMODE_LLIST");
+		System.out.println("App保存路径为" + DEVICENAME_LIST);
 	}
 
 	// ----------------- 用于测试的代码 ---------------
-	
+
 	// ----------------- 进行TestNg时需要注释 -----------
 
 	public static int CASE_COUNT = 0;
@@ -82,7 +87,7 @@ public class App {
 
 	@Tips(description = "入口函数")
 	public static void main(String[] args) throws IOException {
-		System.out.println("Hello Appium!");
+		System.out.println("Hello GoAppium!");
 	}
 	// ----------------- 进行TestNg时需要注释 -----------
 }

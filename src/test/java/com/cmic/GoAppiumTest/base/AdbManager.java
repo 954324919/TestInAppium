@@ -219,7 +219,7 @@ public class AdbManager {
 	@Tips(description = "多终端的adb调用转换")
 	public static String executeMulAdbCmd(String cmd, String serialNumber) {
 		String tramsformCmd = cmd.replace("{}", serialNumber);
-		LogUtil.e(tramsformCmd);
+	//	LogUtil.i(tramsformCmd);
 		return executeAdbCmd(tramsformCmd);
 	}
 
@@ -227,12 +227,24 @@ public class AdbManager {
 	public static int getTargetSdk(String serialNumber) {
 		String tempResult = AdbManager.executeMulAdbCmd("adb {} shell getprop ro.build.version.sdk",
 				"-s " + serialNumber);
-		LogUtil.i(tempResult);
+	//	LogUtil.d(tempResult);// 查看日志
 		try {
 			return Integer.parseInt(tempResult.trim());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	@Tips(description = "设备名称")
+	public static String getDeviceName(String serialNumber) {
+		String tempResult = AdbManager.executeMulAdbCmd("adb {} shell getprop ro.product.model", "-s " + serialNumber);
+	//	LogUtil.d(tempResult);
+		try {
+			return tempResult.trim();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -245,20 +257,21 @@ public class AdbManager {
 			//
 			for (int i = 1; i < resultSplitWord.length; i++) {
 				String[] temp = resultSplitWord[i].trim().split("\\t");
-				LogUtil.i("设备序列号为{},设备名称为{}", temp[0], temp[1]);
+				String deviceModelName = getDeviceName(temp[0]);
+				//LogUtil.i("发现挂载设备序列号为{},设备型号为{}", temp[0], deviceModelName);
 				DeviceEntity entity = new DeviceEntity();
-				entity.setDeviceName(temp[1]);
+				entity.setDeviceModelName(deviceModelName);// 设置设备型号
 				entity.setSerialNumber(temp[0]);// 设备序列号
 				//
 				int targetSdk = AdbManager.getTargetSdk(temp[0].trim());
-				LogUtil.w("目标sdk为{}", targetSdk);
+				//LogUtil.i("其安卓系统SDK为{}", targetSdk);
 				entity.setTargetSdk(targetSdk);
 				deviceList.add(entity);
 			}
 			// YamlUtil.bean2Yaml("res/ini", "deviceInfo.yaml", deviceList);
 			// 每次取到最新
 		} else {
-			LogUtil.e("不存在挂载的设备");
+			//LogUtil.e("不存在挂载的设备");
 		}
 		return deviceList;
 	}
