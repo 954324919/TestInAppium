@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.LogUtil;
+
 /**
  * @描述 全局配置参数
  * @author kiwi
@@ -30,7 +33,7 @@ public class App {
 		SAVEPATH = iniFromJks.getProperty("APP_SAVEPATH","D:\\Jenkins\\TestAutomation\\Parpare\\mailResultSave");
 		DEVICENAME_LIST = iniFromJks.getProperty("DEVICENAME_LIST");
 		DEVICEMODEL_LIST = iniFromJks.getProperty("DEVICEMODE_LLIST");
-		System.out.println("App保存路径为" + DEVICENAME_LIST);
+		LogUtil.i("App保存路径为{}",DEVICENAME_LIST);
 	}
 
 	// ----------------- 用于测试的代码 ---------------
@@ -87,7 +90,7 @@ public class App {
 
 	@Tips(description = "入口函数")
 	public static void main(String[] args) throws IOException {
-		System.out.println("Hello GoAppium!");
+		LogUtil.i("Hello GoAppium!");
 	}
 	// ----------------- 进行TestNg时需要注释 -----------
 }

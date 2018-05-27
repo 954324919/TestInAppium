@@ -4,7 +4,6 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 
 public class FailSnapshotListener implements ITestListener {
@@ -50,5 +49,4 @@ public class FailSnapshotListener implements ITestListener {
 		// 在所有测试运行之后调用，并且所有的配置方法都被调用
 
 	}
-
 }

@@ -10,7 +10,19 @@ import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.LogUtil;
 import com.cmic.GoAppiumTest.util.YamlUtil;
 
+@Tips(description = "adb操作")
 public class AdbManager {
+
+	static int mountDeviceCount;
+
+	static {
+		String result = AdbManager.executeAdbCmdOnly4Init("adb devices");
+		if (result.contains("daemon started successfully")) {// 重新获取
+			result = AdbManager.executeAdbCmdOnly4Init("adb devices");
+		}
+		mountDeviceCount = result.split("\n").length - 1;
+	}
+
 	// 执行adb命令
 	@SuppressWarnings("unused")
 	public static void excuteAdbShell(String s) {
@@ -219,7 +231,7 @@ public class AdbManager {
 	@Tips(description = "多终端的adb调用转换")
 	public static String executeMulAdbCmd(String cmd, String serialNumber) {
 		String tramsformCmd = cmd.replace("{}", serialNumber);
-	//	LogUtil.i(tramsformCmd);
+		// LogUtil.i(tramsformCmd);
 		return executeAdbCmd(tramsformCmd);
 	}
 
@@ -227,7 +239,7 @@ public class AdbManager {
 	public static int getTargetSdk(String serialNumber) {
 		String tempResult = AdbManager.executeMulAdbCmd("adb {} shell getprop ro.build.version.sdk",
 				"-s " + serialNumber);
-	//	LogUtil.d(tempResult);// 查看日志
+		// LogUtil.d(tempResult);// 查看日志
 		try {
 			return Integer.parseInt(tempResult.trim());
 		} catch (Exception e) {
@@ -239,7 +251,7 @@ public class AdbManager {
 	@Tips(description = "设备名称")
 	public static String getDeviceName(String serialNumber) {
 		String tempResult = AdbManager.executeMulAdbCmd("adb {} shell getprop ro.product.model", "-s " + serialNumber);
-	//	LogUtil.d(tempResult);
+		// LogUtil.d(tempResult);
 		try {
 			return tempResult.trim();
 		} catch (Exception e) {
@@ -258,30 +270,49 @@ public class AdbManager {
 			for (int i = 1; i < resultSplitWord.length; i++) {
 				String[] temp = resultSplitWord[i].trim().split("\\t");
 				String deviceModelName = getDeviceName(temp[0]);
-				//LogUtil.i("发现挂载设备序列号为{},设备型号为{}", temp[0], deviceModelName);
+				// LogUtil.i("发现挂载设备序列号为{},设备型号为{}", temp[0], deviceModelName);
 				DeviceEntity entity = new DeviceEntity();
 				entity.setDeviceModelName(deviceModelName);// 设置设备型号
 				entity.setSerialNumber(temp[0]);// 设备序列号
 				//
 				int targetSdk = AdbManager.getTargetSdk(temp[0].trim());
-				//LogUtil.i("其安卓系统SDK为{}", targetSdk);
+				// LogUtil.i("其安卓系统SDK为{}", targetSdk);
 				entity.setTargetSdk(targetSdk);
 				deviceList.add(entity);
 			}
 			// YamlUtil.bean2Yaml("res/ini", "deviceInfo.yaml", deviceList);
 			// 每次取到最新
 		} else {
-			//LogUtil.e("不存在挂载的设备");
+			// LogUtil.e("不存在挂载的设备");
 		}
 		return deviceList;
 	}
 
 	@Tips(description = "获取挂载设备数目")
 	public static int getTheMountDeviceNum() {
-		String result = AdbManager.executeAdbCmd("adb devices");
-		if (result.contains("daemon started successfully")) {// 重新获取
-			result = AdbManager.executeAdbCmd("adb devices");
+		return mountDeviceCount;
+	}
+
+	@Tips(description = "更优的处理方法")
+	public static String executeAdbCmdOnly4Init(String cmd) {
+		Runtime rt = Runtime.getRuntime();
+		Process pr = null;
+		try {
+			pr = rt.exec(cmd);
+			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+			String line = null;
+			StringBuilder sb = new StringBuilder();
+			while ((line = input.readLine()) != null) {
+				sb.append(line);
+				sb.append("\n");
+			}
+			return sb.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		} finally {
+			if (pr != null)
+				pr.destroy();
 		}
-		return result.split("\n").length - 1;
 	}
 }
