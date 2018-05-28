@@ -3,12 +3,15 @@ package com.cmic.GoAppiumTest.util;
 import org.openqa.selenium.Capabilities;
 
 import com.cmic.GoAppiumTest.App;
+import com.cmic.GoAppiumTest.base.AdbManager;
 import com.cmic.GoAppiumTest.base.DriverManger;
+import com.cmic.GoAppiumTest.helper.Tips;
 
 public class DeviceUtil {
 
 	public static Capabilities capabilities = DriverManger.getDriver().getCapabilities();
 
+	@Tips(description = "本项目中DeviceVersion暂且用版本代码号代替")
 	public static String getDeviceVersion() {
 		return capabilities.getCapability("platformVersion").toString();
 	}
@@ -32,6 +35,7 @@ public class DeviceUtil {
 	 */
 	public static boolean moreThanTargetSdkVersion(String targetSdk) {
 		String currentSdk = getDeviceVersion();// 7.1.2
+		LogUtil.e(currentSdk);
 		try {
 			String temp = currentSdk.substring(0, currentSdk.indexOf("."));
 			String temp1 = targetSdk.substring(0, targetSdk.indexOf("."));
@@ -41,6 +45,15 @@ public class DeviceUtil {
 				return false;
 			}
 		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Tips(description = "使用apiCode代替platformVersion")
+	public static boolean moreThanTargetSdkVersion(int apiCode) {
+		if (AdbManager.getTargetSdk(AdbManager.udid) >= apiCode) {
+			return true;
+		} else {
 			return false;
 		}
 	}

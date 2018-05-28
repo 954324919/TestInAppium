@@ -148,6 +148,14 @@
 					<include>*.properties</include>
 				</includes>
 			</resource>
+			<resource>
+				<filtering>true</filtering>  <!-- 加上filter会过滤该资源路径中的文件 -->
+				<directory>res/log4j</directory>
+				<targetPath>res/log4j</targetPath>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -167,11 +175,11 @@
 					<threadCount>20</threadCount>
 					<!--<debugForkedProcess>true</debugForkedProcess> --> <!--开启debug调试 -->
 					<suiteXmlFiles>
-						<suiteXmlFile>res\testng\testng4pythonscript.xml</suiteXmlFile>
+						<suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile> 
+						<!-- <suiteXmlFile>res\testng\testng4pythonscript.xml</suiteXmlFile> -->
 						<!--<suiteXmlFile>res\testng\testng4pageObject.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng4analyze.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng4grid.xml</suiteXmlFile> -->
-						<!-- <suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng.xml</suiteXmlFile> -->
 					</suiteXmlFiles>
 					<argLine>-Dfile.encoding=UTF-8</argLine>

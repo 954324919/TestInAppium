@@ -29,7 +29,7 @@ public class TestGrantPremissionActivity extends BaseTest {
 	@Tips(description = "继承自BaseActivity,用于增强@BeforeClass", triggerTime = "从Splash页面，准备跳转")
 	@Override
 	public void setUpBeforeClass() {
-		if (DeviceUtil.moreThanTargetSdkVersion("6.0.0")) {
+		if (DeviceUtil.moreThanTargetSdkVersion(23)) {
 			// LogUtil.w("设备Android系统版本为{}", DeviceUtil.getDeviceVersion());
 		} else {
 			LogUtil.e("设备Android版本低于6.0,没有权限管理特性");

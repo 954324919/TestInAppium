@@ -1,19 +1,23 @@
 package com.cmic.GoAppiumTest.base;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
+
 import com.cmic.GoAppiumTest.bean.DeviceEntity;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.LogUtil;
-import com.cmic.GoAppiumTest.util.YamlUtil;
 
 @Tips(description = "adb操作")
 public class AdbManager {
 
 	static int mountDeviceCount;
+	// 获取UDID
+	public static String udid = DriverManger.getUdid();
 
 	static {
 		String result = AdbManager.executeAdbCmdOnly4Init("adb devices");
@@ -23,14 +27,15 @@ public class AdbManager {
 		mountDeviceCount = result.split("\n").length - 1;
 	}
 
-	// 执行adb命令
-	@SuppressWarnings("unused")
-	public static void excuteAdbShell(String s) {
+	@Tips(description = "执行adb命令,不关注返回")
+	public static void excuteAdbShell(String cmd) {
 		Runtime runtime = Runtime.getRuntime();
 		try {
-			runtime.exec(s);
-		} catch (Exception e) {
-			System.out.println("执行命令:" + s + "出错");
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			runtime.exec(mulAdbTransform(cmd, udid));
+		} catch (IOException e) {
+			LogUtil.e("执行命令:" + mulAdbTransform(cmd, udid) + "出错");
+			e.printStackTrace();
 		}
 	}
 
@@ -38,7 +43,8 @@ public class AdbManager {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
 		try {
-			pr = rt.exec(cmd);
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
 			StringBuilder sb = new StringBuilder();
@@ -65,7 +71,8 @@ public class AdbManager {
 		Process pr = null;
 		int index = 0;
 		try {
-			pr = rt.exec(cmd);
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
 			StringBuilder sb = new StringBuilder();
@@ -88,7 +95,8 @@ public class AdbManager {
 	public static String excuteAdbShellGetResult(String cmd) {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			Process pr = rt.exec(cmd); // cmd /c calc
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			Process pr = rt.exec(mulAdbTransform(cmd, udid)); // cmd /c calc
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream(), "GBK"));
 			String line = null;
 			StringBuilder sb = new StringBuilder();
@@ -106,7 +114,8 @@ public class AdbManager {
 	public static String excuteAdbShellGetResultGrep(String cmd, String targetString) {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			Process pr = rt.exec(cmd); // cmd /c calc
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			Process pr = rt.exec(mulAdbTransform(cmd, udid)); // cmd /c calc
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
 			StringBuilder sb = new StringBuilder();
@@ -129,7 +138,8 @@ public class AdbManager {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
 		try {
-			pr = rt.exec(cmd);
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
 			StringBuilder sb = new StringBuilder();
@@ -153,10 +163,30 @@ public class AdbManager {
 		}
 	}
 
+	/**
+	 * 
+	 * @param cmd
+	 *            adb指令
+	 * @param udid
+	 *            表征唯一的挂载设备，也即是serialNumber
+	 * @return
+	 */
+	@Tips(description = "多设备的adb命令转换")
+	private static String mulAdbTransform(String cmd, String udid) {
+		if (cmd.startsWith("adb shell ")) {
+			StringBuilder sb = new StringBuilder(cmd);
+			sb.insert(cmd.indexOf("adb") + 4, " ").insert(cmd.indexOf("adb") + 4, "-s " + udid);
+			return sb.toString();
+		} else {
+			return cmd;
+		}
+	}
+
 	public static String executeAdbCmd(String cmd, String targetString, boolean onlyFirst) {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			Process pr = rt.exec(cmd); // cmd /c calc
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			Process pr = rt.exec(mulAdbTransform(cmd, udid)); // cmd /c calc
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
 			StringBuilder sb = new StringBuilder();
@@ -203,7 +233,8 @@ public class AdbManager {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
 		try {
-			pr = rt.exec(cmd);
+			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
 			StringBuilder sb = new StringBuilder();

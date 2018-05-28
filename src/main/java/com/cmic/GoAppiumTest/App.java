@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+import org.apache.log4j.PropertyConfigurator;
+
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.FileUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
 
 /**
@@ -15,25 +18,31 @@ import com.cmic.GoAppiumTest.util.LogUtil;
  */
 public class App {
 
-	public static String SAVEPATH;// App的保存路径
+	@Tips(description = "App的保存路径")
+	public static String SAVEPATH;
 	@Tips(description = "设备名称列表，当前版本默认只有1个挂载设备", riskPoint = "要求和型号完全对应")
 	public static String DEVICENAME_LIST;//
 	@Tips(description = "设备型号列表，当前版本默认只有1个挂载设备", riskPoint = "要求和名称完全对应")
 	public static String DEVICEMODEL_LIST;
 
 	static {
-		InputStream in = ClassLoader.class.getResourceAsStream("/res/jenkins/jks.properties");
+		InputStream inLog4j = ClassLoader.class.getResourceAsStream("/res/log4j/log4j.properties");
+		InputStream inJks = ClassLoader.class.getResourceAsStream("/res/jenkins/jks.properties");
+		Properties iniLog4j = new Properties();
 		Properties iniFromJks = new Properties();
 		try {
-			InputStreamReader iReader = new InputStreamReader(in, "UTF-8");
+			// 配置Log4J
+			iniLog4j.load(inLog4j);
+			PropertyConfigurator.configure(iniLog4j);
+			// 读取从Jenkins构建引入的参数作为全局变量
+			InputStreamReader iReader = new InputStreamReader(inJks, "UTF-8");// 防止中文乱码
 			iniFromJks.load(iReader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} // 配置项从Jenkins传入
-		SAVEPATH = iniFromJks.getProperty("APP_SAVEPATH","D:\\Jenkins\\TestAutomation\\Parpare\\mailResultSave");
+		SAVEPATH = iniFromJks.getProperty("APP_SAVEPATH", "D:\\Jenkins\\TestAutomation\\Parpare\\mailResultSave");
 		DEVICENAME_LIST = iniFromJks.getProperty("DEVICENAME_LIST");
 		DEVICEMODEL_LIST = iniFromJks.getProperty("DEVICEMODE_LLIST");
-		LogUtil.i("App保存路径为{}",DEVICENAME_LIST);
 	}
 
 	// ----------------- 用于测试的代码 ---------------

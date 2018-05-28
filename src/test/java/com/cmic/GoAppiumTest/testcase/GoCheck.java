@@ -86,12 +86,6 @@ public class GoCheck {
 	@AfterClass
 	public void afterClass() {
 		AppUtil.unInstall(App.PACKAGE_NAME);
-
-		// mDriver = DriverManger.getDriver();
-		// String packageName = App.PACKAGE_NAME;
-		// if (AppUtil.isInstallWithoutDriver(packageName)) {
-		// AppUtil.unInstall(packageName);
-		// }
 	}
 
 	/**

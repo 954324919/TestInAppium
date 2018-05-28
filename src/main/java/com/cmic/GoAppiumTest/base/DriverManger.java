@@ -24,7 +24,8 @@ import io.appium.java_client.android.AndroidElement;
 public class DriverManger {
 
 	private static List<DeviceEntity> deviceList = new ArrayList<>();
-	private static Properties capaConfig;
+	public static Properties capaConfig;
+	public static DeviceEntity device;
 	// 获取当前挂载的设备列表
 	static {
 		// 初始化测试应用的配置信息
@@ -51,25 +52,12 @@ public class DriverManger {
 
 	@Tips(riskPoint = "必须联网防止Error: getaddrinfo ENOENT")
 	private DriverManger() {
-		DeviceEntity targetMouteDevice = deviceCheck();// 当前只支持1个设备
+		device = deviceCheck();// 当前只支持1个设备
+		DeviceEntity targetMouteDevice = device;// 当前只支持1个设备
 		if (targetMouteDevice == null) {// 检查目标测试设备是否符合被挂载
 			throw new RuntimeException("不存在对应的设备");
 		}
-		// LogUtil.w("可访问的挂载设备数目为{}，第一个UDID为{}", deviceList.size(),
-		// deviceList.get(0).getSerialNumber());
-		// String filePath = "D:\\EclipseWorkspace\\GoAppium\\GoAppiumTest\\res\\apps";
-		// LogUtil.e("格式化路径为{}", filePath);
-		//String appDir = FileUtil.filePathTransformRelative("/res/apps");
-		// 读取设备配置文件
-		// 0527之前的方式(没有引入Jenkins) capaConfig =
-		// PropertiesUtil.load(FileUtil.filePathTransformRelative("/res/ini/capa.properties"));
-		// if (capaConfig == null) {
-		// throw new RuntimeException("不存在目标的配置文件");
-		// }
-		// 配置区域
-		// capabilities.setCapability("platformName",
-		// capaConfig.getProperty("PLATFORM_TYPE"));// 当前只支持Android
-
+		LogUtil.e("设备信息为{},{}",targetMouteDevice.getDeviceBrand(),targetMouteDevice.getSerialNumber());
 		// 获取测试应用
 		String appDir = App.SAVEPATH + File.separator + "RawAttachment";
 		File app = new File(appDir, "mmnes150.apk");
@@ -126,5 +114,10 @@ public class DriverManger {
 
 	public Properties getBaseCapabilities() {
 		return capaConfig;
+	}
+
+	@Tips(description = "获取UDID")
+	public static String getUdid() {
+		return device.getSerialNumber();
 	}
 }
