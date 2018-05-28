@@ -175,9 +175,9 @@
 					<threadCount>20</threadCount>
 					<!--<debugForkedProcess>true</debugForkedProcess> --> <!--开启debug调试 -->
 					<suiteXmlFiles>
-						<suiteXmlFile>res\testng\testng4pageObject.xml</suiteXmlFile>
+						<suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile>
 						<!-- <suiteXmlFile>res\testng\testng4pythonscript.xml</suiteXmlFile> -->
-						<!--res\testng\testng4test.xml<suiteXmlFile></suiteXmlFile> -->
+						<!--<suiteXmlFile>res\testng\testng4pageObject.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng4analyze.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng4grid.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng.xml</suiteXmlFile> -->

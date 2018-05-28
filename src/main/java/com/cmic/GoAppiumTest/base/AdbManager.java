@@ -309,13 +309,13 @@ public class AdbManager {
 			for (int i = 1; i < resultSplitWord.length; i++) {
 				String[] temp = resultSplitWord[i].trim().split("\\t");
 				String deviceModelName = getDeviceName(temp[0]);
-				// LogUtil.i("发现挂载设备序列号为{},设备型号为{}", temp[0], deviceModelName);
+				LogUtil.i("发现挂载设备序列号为{},设备型号为{}", temp[0], deviceModelName);
 				DeviceEntity entity = new DeviceEntity();
 				entity.setDeviceModelName(deviceModelName);// 设置设备型号
 				entity.setSerialNumber(temp[0]);// 设备序列号
 				//
 				int targetSdk = AdbManager.getTargetSdk(temp[0].trim());
-				// LogUtil.i("其安卓系统SDK为{}", targetSdk);
+				LogUtil.i("其安卓系统SDK为{}", targetSdk);
 				entity.setTargetSdk(targetSdk);
 				deviceList.add(entity);
 			}
