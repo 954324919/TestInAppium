@@ -120,7 +120,7 @@ public class PerformanceAnalyze4PageObject extends BaseTest {
 	@Test(dependsOnMethods = { "initCheck" })
 	@Tips(description = "通过授权管理")
 	public void passPermissionGrantAct() throws InterruptedException {// 3
-		if (DeviceUtil.moreThanTargetSdkVersion("6.0")) {// 是否有授权管理页面
+		if (DeviceUtil.moreThanTargetSdkVersion(23)) {// 是否有授权管理页面
 			LogUtil.printCurrentMethodNameInLog4J();
 			PermissionPage permissionPage = new PermissionPage();// 只在该方法内使用，不作为属性
 			permissionPage.clickAllowTillAll();

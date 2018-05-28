@@ -88,6 +88,14 @@ public class LogUtil {
 		log.warn(format, arguments);
 	}
 
+	public static void w(boolean extend, String format, Object... arguments) {
+		StringBuilder formatTemp = new StringBuilder(format);
+		if (extend) {
+			format = "<重要提示> " + formatTemp.toString();
+		}
+		w(innerGet(), format, arguments);
+	}
+
 	public static void w(Throwable e, String format, Object... arguments) {
 		w(innerGet(), e, format(format, arguments));
 	}
@@ -98,14 +106,6 @@ public class LogUtil {
 
 	private static void w(Logger log, Throwable e, String format, Object... arguments) {
 		log.warn(format(format, arguments), e);
-	}
-
-	public static void e(String format, Object... arguments) {
-		e(innerGet(), format, arguments);
-	}
-
-	public static void e(String msg) {
-		innerGet().error(msg);
 	}
 
 	private static void e(Logger log, String format, Object... arguments) {
@@ -122,6 +122,14 @@ public class LogUtil {
 
 	private static String format(String template, Object... values) {
 		return String.format(template.replace("{}", "%s"), values);
+	}
+
+	public static void e(String format, Object... arguments) {
+		e(innerGet(), format, arguments);
+	}
+
+	public static void e(String msg) {
+		innerGet().error(msg);
 	}
 
 	private static Logger innerGet() {

@@ -59,7 +59,7 @@ public abstract class BaseTest {
 		mDriver = DriverManger.getDriver();
 		// TODO 补充适配
 		String packageName = DriverManger.capaConfig.getProperty("APP_PACKAGE_NAME");
-		 LogUtil.w("Hello SuitBefore{}",packageName);
+		LogUtil.d("自动化测试老子来了!!{}", packageName);
 		if (AppUtil.isInstallWithoutDriver(packageName)) {
 			AppUtil.unInstall(packageName);
 		}
@@ -70,6 +70,7 @@ public abstract class BaseTest {
 	public void afterSuit() {
 		// AppUtil.unInstall(App.PACKAGE_NAME);
 		mDriver.quit();
+		AdbManager.excuteAdbShell("adb kill-server");
 	}
 
 	@Tips(description = "获取当前应用的Activity名称")

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Assert;
 
+import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.bean.DeviceEntity;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.util.LogUtil;
@@ -15,23 +16,30 @@ import com.cmic.GoAppiumTest.util.LogUtil;
 @Tips(description = "adb操作")
 public class AdbManager {
 
+	static List<DeviceEntity> deviceList; // 当前挂载的设备列表
+	static DeviceEntity targetDevice;// 符合目标的设备
 	static int mountDeviceCount;
 	// 获取UDID
-	public static String udid = DriverManger.getUdid();
+	public static String udid = "cf49f213";
 
 	static {
-		String result = AdbManager.executeAdbCmdOnly4Init("adb devices");
+		String result = executeAdbCmdOnly4Init("adb devices");
 		if (result.contains("daemon started successfully")) {// 重新获取
-			result = AdbManager.executeAdbCmdOnly4Init("adb devices");
+			result = executeAdbCmdOnly4Init("adb devices");
 		}
 		mountDeviceCount = result.split("\n").length - 1;
+
+		// 加载挂载设备列表
+		deviceList = AdbManager.fetchTheMountDeviceInfo();
+		//
+		targetDevice = deviceCheck();
 	}
 
 	@Tips(description = "执行adb命令,不关注返回")
 	public static void excuteAdbShell(String cmd) {
 		Runtime runtime = Runtime.getRuntime();
 		try {
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			runtime.exec(mulAdbTransform(cmd, udid));
 		} catch (IOException e) {
 			LogUtil.e("执行命令:" + mulAdbTransform(cmd, udid) + "出错");
@@ -43,7 +51,7 @@ public class AdbManager {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
 		try {
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
@@ -71,7 +79,7 @@ public class AdbManager {
 		Process pr = null;
 		int index = 0;
 		try {
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
@@ -95,7 +103,7 @@ public class AdbManager {
 	public static String excuteAdbShellGetResult(String cmd) {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			Process pr = rt.exec(mulAdbTransform(cmd, udid)); // cmd /c calc
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream(), "GBK"));
 			String line = null;
@@ -114,7 +122,7 @@ public class AdbManager {
 	public static String excuteAdbShellGetResultGrep(String cmd, String targetString) {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			Process pr = rt.exec(mulAdbTransform(cmd, udid)); // cmd /c calc
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
@@ -138,7 +146,7 @@ public class AdbManager {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
 		try {
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
@@ -185,7 +193,7 @@ public class AdbManager {
 	public static String executeAdbCmd(String cmd, String targetString, boolean onlyFirst) {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			Process pr = rt.exec(mulAdbTransform(cmd, udid)); // cmd /c calc
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
@@ -233,7 +241,7 @@ public class AdbManager {
 		Runtime rt = Runtime.getRuntime();
 		Process pr = null;
 		try {
-			LogUtil.w("执行命令{}",mulAdbTransform(cmd, udid));//新增
+			// LogUtil.d("执行命令{}", mulAdbTransform(cmd, udid));// 新增
 			pr = rt.exec(mulAdbTransform(cmd, udid));
 			BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			String line = null;
@@ -345,5 +353,23 @@ public class AdbManager {
 			if (pr != null)
 				pr.destroy();
 		}
+	}
+
+	private static DeviceEntity deviceCheck() {
+		String deviceName = App.DEVICENAME_LIST;
+		String deviceModelName = App.DEVICEMODEL_LIST;
+		// 0527当前默认只挂载一个设备
+		deviceName = deviceName.split(",")[0];
+		deviceModelName = deviceModelName.split(",")[0];
+		// FIXME 该部分的代码逻辑还需要优化，需求不太情绪
+		List<DeviceEntity> deviceList = AdbManager.deviceList;
+		for (int i = 0; i < deviceList.size(); i++) {// 找到1个匹配
+			if (deviceList.get(i).getDeviceModelName().equals(deviceModelName)) {
+				DeviceEntity temp = deviceList.get(i);
+				temp.setDeviceBrand(deviceName);
+				return temp;
+			}
+		}
+		return null;
 	}
 }
