@@ -1,5 +1,7 @@
 package com.cmic.GoAppiumTest.base;
 
+import java.io.File;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -16,6 +18,7 @@ import com.cmic.GoAppiumTest.util.PageRouteUtil;
 import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.ScrollUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
+import com.cmic.GoAppiumTest.util.ZipUtil;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -69,8 +72,22 @@ public abstract class BaseTest {
 	@Tips(description = "结束整个测试Suit,暂时关闭卸载")
 	public void afterSuit() {
 		// AppUtil.unInstall(App.PACKAGE_NAME);
+		// 退出当前AppiumSession
 		mDriver.quit();
+		// 杀死Adb，禁止其持有target文件导致不能进行mvn clean
 		AdbManager.excuteAdbShell("adb kill-server");
+		// 压缩target文件，以便作为测试报告的附件发送
+		String srcPath = new File(System.getProperty("user.dir")).getAbsolutePath();// 获得Target文件夹的路径
+		String zipPath = new File(System.getProperty("user.dir")).getParentFile().getAbsolutePath() + File.separator
+				+ "temp";
+		LogUtil.w("压缩目录为{}", zipPath);
+		LogUtil.w("源码目录为{}", srcPath);
+		String zipFileName = "target.zip";
+		try {
+			ZipUtil.zip(srcPath, zipPath, zipFileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Tips(description = "获取当前应用的Activity名称")
