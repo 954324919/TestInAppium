@@ -1,14 +1,54 @@
 package com.cmic.GoAppiumTest;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Properties;
+
+import org.apache.log4j.PropertyConfigurator;
 
 import com.cmic.GoAppiumTest.helper.Tips;
+import com.cmic.GoAppiumTest.util.FileUtil;
+import com.cmic.GoAppiumTest.util.LogUtil;
 
 /**
  * @描述 全局配置参数
  * @author kiwi
  */
 public class App {
+
+	@Tips(description = "App的保存路径")
+	public static String SAVEPATH;
+	@Tips(description = "设备名称列表，当前版本默认只有1个挂载设备", riskPoint = "要求和型号完全对应")
+	public static String DEVICENAME_LIST;//
+	@Tips(description = "设备型号列表，当前版本默认只有1个挂载设备", riskPoint = "要求和名称完全对应")
+	public static String DEVICEMODEL_LIST;
+
+	static {
+		InputStream inLog4j = ClassLoader.class.getResourceAsStream("/res/log4j/log4j.properties");
+		InputStream inJks = ClassLoader.class.getResourceAsStream("/res/jenkins/jks.properties");
+		Properties iniLog4j = new Properties();
+		Properties iniFromJks = new Properties();
+		try {
+			// 配置Log4J
+			iniLog4j.load(inLog4j);
+			PropertyConfigurator.configure(iniLog4j);
+			// 读取从Jenkins构建引入的参数作为全局变量
+			InputStreamReader iReader = new InputStreamReader(inJks, "UTF-8");// 防止中文乱码
+			iniFromJks.load(iReader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} // 配置项从Jenkins传入
+		SAVEPATH = iniFromJks.getProperty("APP_SAVEPATH", "D:\\Jenkins\\TestAutomation\\Parpare\\mailResultSave");
+		DEVICENAME_LIST = iniFromJks.getProperty("DEVICENAME_LIST");
+		DEVICEMODEL_LIST = iniFromJks.getProperty("DEVICEMODE_LLIST");
+	}
+
+	// ----------------- 用于测试的代码 ---------------
+
+	// ----------------- 进行TestNg时需要注释 -----------
+
 	public static int CASE_COUNT = 0;
 	public static int PHONE_COUNT = 0;
 
@@ -39,6 +79,8 @@ public class App {
 	// 默认用户目录为当前工作目录
 	@Tips(description = "由于TestNg的特殊性，USER_DIR获取的是:classPath/target", riskPoint = "可能导致歧义")
 	public static final File USER_DIR = new File(System.getProperty("user.dir")).getParentFile();
+	@Tips(description = "在不进行TestNg时，用于目录是classPath")
+	public static final File USER_DIR_RAW = new File(System.getProperty("user.dir"));
 	public static final File CLASSPATHROOT = USER_DIR;
 	public static final String CLASSPATH = CLASSPATHROOT.getAbsolutePath();
 
@@ -53,4 +95,11 @@ public class App {
 	public static final int WAIT_TIME_IMPLICITLY = 20;
 	public static final int WAIT_TIME_FORCE = 5;
 
+	// ----------------- 用于测试的代码 ---------------
+
+	@Tips(description = "入口函数")
+	public static void main(String[] args) throws IOException {
+		LogUtil.i("Hello GoAppium!");
+	}
+	// ----------------- 进行TestNg时需要注释 -----------
 }

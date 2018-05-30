@@ -12,6 +12,12 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- 应用App保存路径 -->
+		<savePath></savePath>
+		<!-- 测试设备列表 -->
+		<deviceList></deviceList>
+		<!-- 测试设备型号列表 -->
+		<deviceModelList></deviceModelList>
 	</properties>
 
 	<dependencies>
@@ -20,7 +26,7 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.9.10</version>
-			<scope>test</scope>
+			<!-- <scope>test</scope>决定了testng包的应用范围 -->
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
@@ -115,12 +121,42 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.25</version>
-			<scope>test</scope>
+			<version>1.7.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 图表工具 https://mvnrepository.com/artifact/org.jfree/jfreechart -->
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.19</version>
 		</dependency>
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<filtering>true</filtering>  <!-- 加上filter会过滤该资源路径中的文件 -->
+				<directory>res/jenkins</directory>
+				<targetPath>res/jenkins</targetPath>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<filtering>true</filtering>  <!-- 加上filter会过滤该资源路径中的文件 -->
+				<directory>res/log4j</directory>
+				<targetPath>res/log4j</targetPath>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -137,13 +173,13 @@
 				<configuration>
 					<parallel>methods</parallel>
 					<threadCount>20</threadCount>
-					<!-- <debugForkedProcess>true</debugForkedProcess> 开启debug调试 -->
+					<!--<debugForkedProcess>true</debugForkedProcess> --> <!--开启debug调试 -->
 					<suiteXmlFiles>
-						<suiteXmlFile>res\testng\testng4pageObject.xml</suiteXmlFile>
+						<suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile>
 						<!-- <suiteXmlFile>res\testng\testng4pythonscript.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng4pageObject.xml</suiteXmlFile> -->
+						<!-- <suiteXmlFile>res\testng\testng4analyze.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng4grid.xml</suiteXmlFile> -->
-						<!-- <suiteXmlFile>res\testng\testng4test.xml</suiteXmlFile> -->
 						<!-- <suiteXmlFile>res\testng\testng.xml</suiteXmlFile> -->
 					</suiteXmlFiles>
 					<argLine>-Dfile.encoding=UTF-8</argLine>

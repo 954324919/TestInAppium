@@ -1,0 +1,4 @@
+- !!com.cmic.GoAppiumTest.bean.DeviceEntity {deviceName: device, serialNumber: b31a1bc0,
+  targetSdk: 26}
+- !!com.cmic.GoAppiumTest.bean.DeviceEntity {deviceName: device, serialNumber: cf49f213,
+  targetSdk: 25}

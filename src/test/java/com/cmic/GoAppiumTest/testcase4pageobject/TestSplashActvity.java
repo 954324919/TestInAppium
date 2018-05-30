@@ -1,5 +1,6 @@
 package com.cmic.GoAppiumTest.testcase4pageobject;
 
+import java.awt.image.BufferedImage;
 import java.util.NoSuchElementException;
 
 import org.testng.Assert;
@@ -10,14 +11,16 @@ import org.testng.annotations.Test;
 import com.cmic.GoAppiumTest.App;
 import com.cmic.GoAppiumTest.base.BaseTest;
 import com.cmic.GoAppiumTest.dataprovider.util.ExcelUtil;
-import com.cmic.GoAppiumTest.helper.FailSnapshotListener;
+import com.cmic.GoAppiumTest.helper.ExtentReportListener;
 import com.cmic.GoAppiumTest.helper.Tips;
 import com.cmic.GoAppiumTest.page.SplashPage;
 import com.cmic.GoAppiumTest.testcase4pageobject.retry.FailRetry;
+import com.cmic.GoAppiumTest.util.ImageUtil;
 import com.cmic.GoAppiumTest.util.LogUtil;
+import com.cmic.GoAppiumTest.util.ScreenUtil;
 import com.cmic.GoAppiumTest.util.WaitUtil;
 
-@Listeners(FailSnapshotListener.class)
+@Listeners(ExtentReportListener.class)
 public class TestSplashActvity extends BaseTest {
 
 	private SplashPage mSpalashPage;
@@ -84,6 +87,21 @@ public class TestSplashActvity extends BaseTest {
 		mSpalashPage.clickAcceptProtocol();
 	}
 
+	// ========================= 以下为测试代码 =============================
+
+	@Tips(description = "检查图片差分的逻辑")
+	@Test(dependsOnMethods = "initCheck")
+	public void checkImageDiff() {
+		BufferedImage b1 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.btnAccept);
+		BufferedImage b2 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.btnAccept);
+		LogUtil.e("1差分度为{}", ImageUtil.compareImage(b1, b2));
+		BufferedImage b3 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.cbNoTip);
+		mSpalashPage.action.go2Click(mSpalashPage.cbNoTip);
+		BufferedImage b4 = ScreenUtil.captureByElementWithoutSave(mSpalashPage.cbNoTip);
+		LogUtil.e("2差分度为{}", ImageUtil.compareImage(b3, b4));
+		LogUtil.e("2差分度为{}", ImageUtil.compareImage(b1, b4));
+	}
+
 	@Test
 	@Tips(description = "为了测试，模拟进行一个正常的用例")
 	public void check4Usual() {
@@ -110,5 +128,10 @@ public class TestSplashActvity extends BaseTest {
 	public Object[][] data() throws Exception {
 		return ExcelUtil.readExcel(App.SEARCH_DATA_PROVIDER, App.SEARCH_SHEET_NAME);
 	}
-
+	
+	@Test(dependsOnMethods = "initCheck")
+	public void checkCapaField() {
+		LogUtil.printCurrentMethodNameInLog4J();
+		LogUtil.w("UDID为{}",mDriver.getCapabilities().getCapability("udid").toString());
+	}
 }

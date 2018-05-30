@@ -247,6 +247,7 @@
 			</class>
 		</classes>
 	</test>
+	<!-- 性能分析的测试用例 -->
 	<test name="Test4PythonAnalyze" preserve-order="true">
 		<classes>
 			<class name="com.cmic.GoAppiumTest.script.PerformanceAnalyze4PageObject">

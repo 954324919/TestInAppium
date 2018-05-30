@@ -53,7 +53,7 @@ public class TestGrantPremissionActivity extends BaseTest {
 		WaitUtil.forceWait(2);
 		System.err.println("进行[" + getClass().getSimpleName() + "]用例集的初始化检验，失败则跳过该用例集的所有测试");
 		assertEquals(".permission.ui.GrantPermissionsActivity", ContextUtil.getCurrentActivity());
-		assertEquals(true, DeviceUtil.moreThanTargetSdkVersion("6.0.0"));//
+		assertEquals(true, DeviceUtil.moreThanTargetSdkVersion(23));//
 		WaitUtil.forceWait(2);
 	}
 
